@@ -48,6 +48,10 @@
 .st2t {
   fill: url(#SVGID_3_TYPED); }
 
+.eb-typography-base div {
+  display: flex;
+  justify-content: space-between; }
+
 .input-wrapper {
   width: 20%;
   display: flex;
