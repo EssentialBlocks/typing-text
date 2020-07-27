@@ -1,13 +1,9 @@
 {
-	"name": "create-block/typing-text",
+	"name": "block/typing-text",
 	"title": "Typing Text",
 	"category": "widgets",
-	"icon": "smiley",
-	"description": "Example block written with ESNext standard and JSX support – build step required.",
-	"textdomain": "create-block",
-	"supports": {
-		"html": false
-	},
+	"description": "Make Your Website Interactive With Typing Text Animation",
+	"textdomain": "typing-text",
 	"editorScript": "file:./build/index.js",
 	"editorStyle": "file:./build/index.css",
 	"style": "file:./build/style-index.css"
