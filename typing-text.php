@@ -64,9 +64,11 @@ function create_block_typing_text_block_init() {
   );
     
 
-	register_block_type( 'create-block/typing-text', array(
-		'editor_script' => 'create-block-typing-text-block-editor',
-		'style'         => 'create-block-typing-text-block',
-	) );
+	if( ! WP_Block_Type_Registry::get_instance()->is_registered( 'essential-blocks/typing-text' ) ) {
+    register_block_type( 'create-block/typing-text', array(
+      'editor_script' => 'create-block-typing-text-block-editor',
+      'style'         => 'create-block-typing-text-block',
+    ) );
+  }
 }
 add_action( 'init', 'create_block_typing_text_block_init' );
