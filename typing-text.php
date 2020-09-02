@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
- * Version:         1.0.0
+ * Version:         1.0.1
  * Author:          WPDeveloper
  * Author URI:      https://wpdeveloper.net
  * License:         GPL-3.0-or-later
@@ -28,7 +28,7 @@ function create_block_typing_text_block_init() {
 	$script_asset_path = "$dir/build/index.asset.php";
 	if ( ! file_exists( $script_asset_path ) ) {
 		throw new Error(
-			'You need to run `npm start` or `npm run build` for the "block/typing-text" block first.'
+			'You need to run `npm start` or `npm run build` for the "typing-text/typing-text-block" block first.'
 		);
 	}
 	$index_js     = 'build/index.js';
@@ -66,7 +66,7 @@ function create_block_typing_text_block_init() {
     
 
 	if( ! WP_Block_Type_Registry::get_instance()->is_registered( 'essential-blocks/typing-text' ) ) {
-    register_block_type( 'block/typing-text', array(
+    register_block_type( 'typing-text/typing-text-block', array(
       'editor_script' => 'create-block-typing-text-block-editor',
       'style'         => 'create-block-typing-text-block',
     ) );
