@@ -2,6 +2,8 @@
  * WordPress dependencies
  */
 import { Component } from "@wordpress/element";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * External dependencies
@@ -14,14 +16,15 @@ import {
 } from "react-sortable-hoc";
 
 const DragHandle = SortableHandle(() => (
-	<span className="fa fa-ellipsis-v drag-handle" />
+	<span className="drag-handle">
+		<FontAwesomeIcon icon={faEllipsisV} />
+	</span>
 ));
 
 const TrashIcon = ({ onDeleteItem, text }) => (
-	<span
-		className="fa fa-trash eb-typed-sortable-trash"
-		onClick={() => onDeleteItem(text)}
-	/>
+	<span className="eb-typed-sortable-trash" onClick={() => onDeleteItem(text)}>
+		<FontAwesomeIcon icon={faTrash} />
+	</span>
 );
 
 const SortableItem = SortableElement(
