@@ -215,11 +215,11 @@ class Edit extends Component {
 			),
 			<div className="eb-typed-wrapper" style={wrapperStyle}>
 				<span className="eb-typed-prefix" style={prefixStyle}>
-					{prefix}&nbsp;
+					{prefix}
 				</span>
 				<span className="eb-typed-text" ref={this.block} style={typedStyle} />
 				<span className="eb-typed-suffix" style={suffixStyle}>
-					&nbsp;{suffix}
+					{suffix}
 				</span>
 			</div>,
 		];

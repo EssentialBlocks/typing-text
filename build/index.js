@@ -15439,14 +15439,14 @@ var Edit = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/React.createElement("span", {
         className: "eb-typed-prefix",
         style: prefixStyle
-      }, prefix, "\xA0"), /*#__PURE__*/React.createElement("span", {
+      }, prefix), /*#__PURE__*/React.createElement("span", {
         className: "eb-typed-text",
         ref: this.block,
         style: typedStyle
       }), /*#__PURE__*/React.createElement("span", {
         className: "eb-typed-suffix",
         style: suffixStyle
-      }, "\xA0", suffix))];
+      }, suffix))];
     }
   }]);
 
@@ -16406,12 +16406,11 @@ var Save = function Save(_ref) {
     "data-fade": fadeOut,
     "data-fade-delay": fadeOutDelay,
     "data-loop": loop,
-    "data-cursor": showCursor // data-gradient={gradient}
-
+    "data-cursor": showCursor
   }, /*#__PURE__*/React.createElement("span", {
     className: "eb-typed-prefix",
     style: prefixStyle
-  }, prefix, "\xA0"), /*#__PURE__*/React.createElement("span", {
+  }, prefix), /*#__PURE__*/React.createElement("span", {
     className: "eb-typed-text-wrapper is-hidden"
   }, typedText.map(function (item) {
     return /*#__PURE__*/React.createElement("span", {
@@ -16423,7 +16422,7 @@ var Save = function Save(_ref) {
   }), /*#__PURE__*/React.createElement("span", {
     className: "eb-typed-suffix",
     style: suffixStyle
-  }, "\xA0", suffix));
+  }, suffix));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Save);
