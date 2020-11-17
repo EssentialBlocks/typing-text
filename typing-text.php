@@ -49,18 +49,18 @@ function create_block_typing_text_block_init() {
 	);
 
   $typed_js = 'src/js/typed.min.js';
-  wp_enqueue_script(
+  wp_register_script(
     'essential-blocks-typedjs',
     plugins_url($typed_js, __FILE__),
-    array( "jquery","wp-editor"),
+    array( "jquery"),
     true
   );
 
   $frontend_js = 'src/frontend.js';
-  wp_enqueue_script(
+  wp_register_script(
     'essential-blocks-typing-text-frontend',
     plugins_url($frontend_js, __FILE__),
-    array( "jquery","wp-editor"),
+    array( "jquery","essential-blocks-typedjs"),
     true
   );
     
@@ -69,6 +69,7 @@ function create_block_typing_text_block_init() {
     register_block_type( 'typing-text/typing-text-block', array(
       'editor_script' => 'create-block-typing-text-block-editor',
       'style'         => 'create-block-typing-text-block',
+      'script'       => 'essential-blocks-typing-text-frontend'
     ) );
   }
 }
