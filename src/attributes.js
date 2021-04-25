@@ -1,4 +1,28 @@
+import * as prefixObjs from ".//typographyPrefixConstants";
+import { generateTypographyAttributes } from "./helpers";
+
 const attributes = {
+	// responsive control attributes ⬇
+	resOption: {
+		type: "string",
+		default: "desktop",
+	},
+	// uniqueIdNumber attribute for making unique className
+	uniqueIdNumber: {
+		type: "number",
+	},
+	blockId: {
+		type: "string",
+	},
+	blockRoot: {
+		type: "string",
+		default: "essential_block",
+	},
+	blockMeta: {
+		type: "object",
+	},
+	// typography attributes ⬇
+	...generateTypographyAttributes(Object.values(prefixObjs)),
 	prefix: {
 		type: "string",
 		source: "text",
@@ -30,84 +54,14 @@ const attributes = {
 	},
 	prefixColor: {
 		type: "string",
-	},
-	prefixFontFamily: {
-		type: "string",
-	},
-	prefixFontSize: {
-		type: "number",
-	},
-	prefixFontUnit: {
-		type: "string",
-		default: "px",
-	},
-	prefixFontWeight: {
-		type: "string",
-	},
-	prefixTransform: {
-		type: "string",
-		default: "none",
-	},
-	prefixDecoration: {
-		type: "string",
-		default: "none",
-	},
-	prefixLetterSpacing: {
-		type: "number",
+		default: "#000000"
 	},
 	typedTextColor: {
 		type: "string",
 	},
-	typedFontFamily: {
-		type: "string",
-	},
-	typedFontUnit: {
-		type: "string",
-		default: "px",
-	},
-	typedFontSize: {
-		type: "number",
-	},
-	typedFontWeight: {
-		type: "string",
-	},
-	typedTransform: {
-		type: "string",
-		default: "none",
-	},
-	typedDecoration: {
-		type: "string",
-		default: "none",
-	},
-	typedLetterSpacing: {
-		type: "number",
-	},
 	suffixTextColor: {
 		type: "string",
-	},
-	suffixFontFamily: {
-		type: "string",
-	},
-	suffixFontUnit: {
-		type: "string",
-		default: "px",
-	},
-	suffixFontSize: {
-		type: "number",
-	},
-	suffixFontWeight: {
-		type: "string",
-	},
-	suffixTransform: {
-		type: "string",
-		default: "none",
-	},
-	suffixDecoration: {
-		type: "string",
-		default: "none",
-	},
-	suffixLetterSpacing: {
-		type: "number",
+		default: "#000000"
 	},
 	typeSpeed: {
 		type: "number",
@@ -146,36 +100,100 @@ const attributes = {
 		default: true,
 	},
 	marginTop: {
-		type: "number",
+		type: "string",
 	},
 	marginRight: {
-		type: "number",
+		type: "string",
 	},
 	marginBottom: {
-		type: "number",
+		type: "string",
 	},
 	marginLeft: {
-		type: "number",
+		type: "string",
 	},
 	marginUnit: {
 		type: "string",
 		default: "px",
 	},
 	paddingTop: {
-		type: "number",
+		type: "string",
 	},
 	paddingRight: {
-		type: "number",
+		type: "string",
 	},
 	paddingBottom: {
-		type: "number",
+		type: "string",
 	},
 	paddingLeft: {
-		type: "number",
+		type: "string",
 	},
 	paddingUnit: {
 		type: "string",
 		default: "px",
+	},
+	TABmarginUnit: {
+		type: "string",
+		default: "px",
+	},
+	TABmarginTop: {
+		type: "string",
+	},
+	TABmarginRight: {
+		type: "string",
+	},
+	TABmarginBottom: {
+		type: "string",
+	},
+	TABmarginLeft: {
+		type: "string",
+	},
+	TABpaddingUnit: {
+		type: "string",
+		default: "px",
+	},
+	TABpaddingTop: {
+		type: "string",
+	},
+	TABpaddingRight: {
+		type: "string",
+	},
+	TABpaddingBottom: {
+		type: "string",
+	},
+	TABpaddingLeft: {
+		type: "string",
+	},
+	MOBmarginUnit: {
+		type: "string",
+		default: "px",
+	},
+	MOBmarginTop: {
+		type: "string",
+	},
+	MOBmarginRight: {
+		type: "string",
+	},
+	MOBmarginBottom: {
+		type: "string",
+	},
+	MOBmarginLeft: {
+		type: "string",
+	},
+	MOBpaddingUnit: {
+		type: "string",
+		default: "px",
+	},
+	MOBpaddingTop: {
+		type: "string",
+	},
+	MOBpaddingRight: {
+		type: "string",
+	},
+	MOBpaddingBottom: {
+		type: "string",
+	},
+	MOBpaddingLeft: {
+		type: "string",
 	},
 	shadowColor: {
 		type: "string",

@@ -1,4 +1,5 @@
 {
+	"apiVersion": 2,
 	"name": "typing-text/typing-text-block",
 	"title": "Typing Text",
 	"category": "widgets",
