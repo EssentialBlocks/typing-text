@@ -39,5 +39,3 @@ export const FONT_WEIGHTS = [
   { label: __("Bolder"), value: "bolder" }
 ];
 
-export const typoPrefix_prefix_text = "prefix_text";
-export const typoPrefix_suffix_text = "suffix_text";

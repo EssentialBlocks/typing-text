@@ -14950,7 +14950,7 @@ function ResPanelBody(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! .//typographyPrefixConstants */ "./src/typographyPrefixConstants.js");
+/* harmony import */ var _typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typographyPrefixConstants */ "./src/typographyPrefixConstants.js");
 /* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "./src/helpers.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -15193,7 +15193,7 @@ var attributes = _objectSpread(_objectSpread({
 /*!**************************!*\
   !*** ./src/constants.js ***!
   \**************************/
-/*! exports provided: UNIT_TYPES, BORDER_STYLES, TEXT_DECORATION, TEXT_TRANSFORM, FONT_WEIGHTS, typoPrefix_prefix_text, typoPrefix_suffix_text */
+/*! exports provided: UNIT_TYPES, BORDER_STYLES, TEXT_DECORATION, TEXT_TRANSFORM, FONT_WEIGHTS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15203,8 +15203,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXT_DECORATION", function() { return TEXT_DECORATION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXT_TRANSFORM", function() { return TEXT_TRANSFORM; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FONT_WEIGHTS", function() { return FONT_WEIGHTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "typoPrefix_prefix_text", function() { return typoPrefix_prefix_text; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "typoPrefix_suffix_text", function() { return typoPrefix_suffix_text; });
 var __ = wp.i18n.__;
 var UNIT_TYPES = [{
   label: "px",
@@ -15283,8 +15281,6 @@ var FONT_WEIGHTS = [{
   label: __("Bolder"),
   value: "bolder"
 }];
-var typoPrefix_prefix_text = "prefix_text";
-var typoPrefix_suffix_text = "suffix_text";
 
 /***/ }),
 
@@ -15309,11 +15305,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var typed_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! typed.js */ "./node_modules/typed.js/lib/typed.js");
 /* harmony import */ var typed_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(typed_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./inspector */ "./src/inspector.js");
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /**
  * WordPress dependencies
@@ -15321,6 +15325,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+
+/**
+ * Editor CSS
+ */
 
 
 /**
@@ -15338,59 +15346,20 @@ function Edit(props) {
       setAttributes = props.setAttributes,
       clientId = props.clientId,
       isSelected = props.isSelected;
-  var block = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
-  var typed;
-
-  var generateOptions = function generateOptions() {
-    // Generate options for Typed instance
-    var typedText = attributes.typedText,
-        typeSpeed = attributes.typeSpeed,
-        startDelay = attributes.startDelay,
-        smartBackspace = attributes.smartBackspace,
-        backSpeed = attributes.backSpeed,
-        backDelay = attributes.backDelay,
-        fadeOut = attributes.fadeOut,
-        fadeOutDelay = attributes.fadeOutDelay,
-        loop = attributes.loop,
-        showCursor = attributes.showCursor;
-    var strings = getStrings(typedText);
-    return {
-      strings: strings,
-      typeSpeed: typeSpeed,
-      startDelay: startDelay,
-      smartBackspace: smartBackspace,
-      backSpeed: backSpeed,
-      backDelay: backDelay,
-      fadeOut: fadeOut,
-      fadeOutDelay: fadeOutDelay,
-      loop: loop,
-      showCursor: showCursor
-    };
-  };
-
-  var getStrings = function getStrings(typedText) {
-    var strings = [];
-    typedText.map(function (item) {
-      return strings.push(item.text);
-    });
-    return strings;
-  };
-
-  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    var options = generateOptions();
-    typed = new typed_js__WEBPACK_IMPORTED_MODULE_5___default.a(block.current, options);
-  }, []);
-  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    return function () {
-      // Destroy Typed instance
-      typed.destroy();
-    };
-  }, []);
   var blockId = attributes.blockId,
       blockMeta = attributes.blockMeta,
       resOption = attributes.resOption,
       prefix = attributes.prefix,
       typedText = attributes.typedText,
+      typeSpeed = attributes.typeSpeed,
+      startDelay = attributes.startDelay,
+      smartBackspace = attributes.smartBackspace,
+      backSpeed = attributes.backSpeed,
+      backDelay = attributes.backDelay,
+      fadeOut = attributes.fadeOut,
+      fadeOutDelay = attributes.fadeOutDelay,
+      loop = attributes.loop,
+      showCursor = attributes.showCursor,
       suffix = attributes.suffix,
       prefixColor = attributes.prefixColor,
       typedTextColor = attributes.typedTextColor,
@@ -15434,7 +15403,81 @@ function Edit(props) {
       borderColor = attributes.borderColor,
       borderStyle = attributes.borderStyle,
       backgroundColor = attributes.backgroundColor,
-      textAlign = attributes.textAlign; // this useEffect is for creating an unique id for each block's unique className by a random unique number
+      textAlign = attributes.textAlign;
+  var block = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+
+  var _useState = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useState"])(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      typed = _useState2[0],
+      setTyped = _useState2[1];
+
+  var generateOptions = function generateOptions() {
+    // Generate options for Typed instance
+    var typedText = attributes.typedText,
+        typeSpeed = attributes.typeSpeed,
+        startDelay = attributes.startDelay,
+        smartBackspace = attributes.smartBackspace,
+        backSpeed = attributes.backSpeed,
+        backDelay = attributes.backDelay,
+        fadeOut = attributes.fadeOut,
+        fadeOutDelay = attributes.fadeOutDelay,
+        loop = attributes.loop,
+        showCursor = attributes.showCursor;
+    var strings = getStrings(typedText);
+    return {
+      strings: strings,
+      typeSpeed: typeSpeed,
+      startDelay: startDelay,
+      smartBackspace: smartBackspace,
+      backSpeed: backSpeed,
+      backDelay: backDelay,
+      fadeOut: fadeOut,
+      fadeOutDelay: fadeOutDelay,
+      loop: loop,
+      showCursor: showCursor
+    };
+  };
+
+  var getStrings = function getStrings(typedText) {
+    var strings = [];
+    typedText.map(function (item) {
+      return strings.push(item.text);
+    });
+    return strings;
+  }; // let typed = new Typed(block.current, generateOptions());
+
+
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    var options = generateOptions();
+    var typed = new typed_js__WEBPACK_IMPORTED_MODULE_5___default.a(block.current, options);
+    return function () {
+      // Destroy Typed instance
+      typed.destroy();
+    };
+  }, []);
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    console.log('hello');
+    setTyped(null);
+    var options = generateOptions();
+    var typed = new typed_js__WEBPACK_IMPORTED_MODULE_5___default.a(block.current, options);
+    setTyped(typed);
+  }, [typedText, typeSpeed, startDelay, smartBackspace, backSpeed, backDelay, fadeOut, fadeOutDelay, loop, showCursor]); // this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
+
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    var bodyClasses = document.body.className;
+
+    if (!/eb\-res\-option\-/i.test(bodyClasses)) {
+      document.body.classList.add("eb-res-option-desktop");
+      setAttributes({
+        resOption: "desktop"
+      });
+    } else {
+      var _resOption = bodyClasses.match(/eb-res-option-[^\s]+/g)[0].split("-")[3];
+      setAttributes({
+        resOption: _resOption
+      });
+    }
+  }, []); // this useEffect is for creating an unique id for each block's unique className by a random unique number
 
   Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var BLOCK_PREFIX = "eb-typing-text";
@@ -15497,7 +15540,7 @@ function Edit(props) {
 
   if (!typedText) return /*#__PURE__*/React.createElement("div", null); // wrapper styles css in strings ⬇
 
-  var wrapperStylesDesktop = "\n\t.".concat(blockId, "{\n\t\t").concat(marginTop ? "margin-top: ".concat(parseFloat(marginTop)).concat(marginUnit, ";") : " ", "\n\t\t").concat(marginRight ? "margin-right: ".concat(parseFloat(marginRight)).concat(marginUnit, ";") : " ", "\n\t\t").concat(marginLeft ? "margin-left: ".concat(parseFloat(marginLeft)).concat(marginUnit, ";") : " ", "\n\t\t").concat(marginBottom ? "margin-bottom: ".concat(parseFloat(marginBottom)).concat(marginUnit, ";") : " ", "\n\t\tpadding: \n\t\t\t").concat(paddingTop || 0).concat(paddingUnit, " \n\t\t\t").concat(paddingRight || 0).concat(paddingUnit, " \n\t\t\t").concat(paddingBottom || 0).concat(paddingUnit, " \n\t\t\t").concat(paddingLeft || 0).concat(paddingUnit, ";\n\n\t\tborder: ").concat(borderWidth || 0, "px ").concat(borderStyle, " ").concat(borderColor || "gray", ";\n\t\tboxShadow: ").concat(hOffset || 0, "px ").concat(vOffset || 0, "px ").concat(blur || 0, "px ").concat(spread || 0, "px ").concat(shadowColor || "gray", ";\n\t\tbackground-color: ").concat(backgroundColor || "transparent", ";\n\t\ttext-align: ").concat(textAlign, ";\n\t}\n\t");
+  var wrapperStylesDesktop = "\n\t.".concat(blockId, "{\n\t\t").concat(marginTop ? "margin-top: ".concat(parseFloat(marginTop)).concat(marginUnit, ";") : " ", "\n\t\t").concat(marginRight ? "margin-right: ".concat(parseFloat(marginRight)).concat(marginUnit, ";") : " ", "\n\t\t").concat(marginLeft ? "margin-left: ".concat(parseFloat(marginLeft)).concat(marginUnit, ";") : " ", "\n\t\t").concat(marginBottom ? "margin-bottom: ".concat(parseFloat(marginBottom)).concat(marginUnit, ";") : " ", "\n\t\tpadding: \n\t\t\t").concat(paddingTop || 0).concat(paddingUnit, " \n\t\t\t").concat(paddingRight || 0).concat(paddingUnit, " \n\t\t\t").concat(paddingBottom || 0).concat(paddingUnit, " \n\t\t\t").concat(paddingLeft || 0).concat(paddingUnit, ";\n\n\t\tborder: ").concat(borderWidth || 0, "px ").concat(borderStyle, " ").concat(borderColor || "gray", ";\n\t\tbox-shadow: ").concat(hOffset || 0, "px ").concat(vOffset || 0, "px ").concat(blur || 0, "px ").concat(spread || 0, "px ").concat(shadowColor || "gray", ";\n\t\tbackground-color: ").concat(backgroundColor || "transparent", ";\n\t\ttext-align: ").concat(textAlign, ";\n\t}\n\t");
   var wrapperStylesTab = "\n\t.".concat(blockId, "{\n\t\t").concat(TABmarginTop ? "margin-top: ".concat(parseFloat(TABmarginTop)).concat(TABmarginUnit, ";") : " ", "\n\t\t").concat(TABmarginRight ? "margin-right: ".concat(parseFloat(TABmarginRight)).concat(TABmarginUnit, ";") : " ", "\n\t\t").concat(TABmarginLeft ? "margin-left: ".concat(parseFloat(TABmarginLeft)).concat(TABmarginUnit, ";") : " ", "\n\t\t").concat(TABmarginBottom ? "margin-bottom: ".concat(parseFloat(TABmarginBottom)).concat(TABmarginUnit, ";") : " ", "\n\t\t").concat(TABpaddingTop ? "padding-top: ".concat(parseFloat(TABpaddingTop)).concat(TABpaddingUnit, ";") : " ", "\n\t\t").concat(TABpaddingRight ? "padding-right: ".concat(parseFloat(TABpaddingRight)).concat(TABpaddingUnit, ";") : " ", "\n\t\t").concat(TABpaddingLeft ? "padding-left: ".concat(parseFloat(TABpaddingLeft)).concat(TABpaddingUnit, ";") : " ", "\n\t\t").concat(TABpaddingBottom ? "padding-bottom: ".concat(parseFloat(TABpaddingBottom)).concat(TABpaddingUnit, ";") : " ", "\n\t}\n\t");
   var wrapperStylesMobile = "\n\t.".concat(blockId, "{\n\t\t").concat(MOBmarginTop ? "margin-top: ".concat(parseFloat(MOBmarginTop)).concat(MOBmarginUnit, ";") : " ", "\n\t\t").concat(MOBmarginRight ? "margin-right: ".concat(parseFloat(MOBmarginRight)).concat(MOBmarginUnit, ";") : " ", "\n\t\t").concat(MOBmarginLeft ? "margin-left: ".concat(parseFloat(MOBmarginLeft)).concat(MOBmarginUnit, ";") : " ", "\n\t\t").concat(MOBmarginBottom ? "margin-bottom: ".concat(parseFloat(MOBmarginBottom)).concat(MOBmarginUnit, ";") : " ", "\n\t\t").concat(MOBpaddingTop ? "padding-top: ".concat(parseFloat(MOBpaddingTop)).concat(MOBpaddingUnit, ";") : " ", "\n\t\t").concat(MOBpaddingRight ? "padding-right: ".concat(parseFloat(MOBpaddingRight)).concat(MOBpaddingUnit, ";") : " ", "\n\t\t").concat(MOBpaddingLeft ? "padding-left: ".concat(parseFloat(MOBpaddingLeft)).concat(MOBpaddingUnit, ";") : " ", "\n\t\t").concat(MOBpaddingBottom ? "padding-bottom: ".concat(parseFloat(MOBpaddingBottom)).concat(MOBpaddingUnit, ";") : " ", "\t\n\t}\n\t");
 
@@ -15536,9 +15579,9 @@ function Edit(props) {
       typedTextTypoStylesMobile = _generateTypographySt3.typoStylesMobile; // typed text styles css in strings ⬇
 
 
-  var typedTypoStylesDesktop = "\n\t.".concat(blockId, " .eb-typed-typed{\n\t\t").concat(typedTextTypoStylesDesktop, "\t\t\n\t\tcolor: ").concat(typedTextColor || "#fff", ";\n\t}\n\t");
-  var typedTypoStylesTab = "\n\t.".concat(blockId, " .eb-typed-typed{\n\t\t").concat(typedTextTypoStylesTab, "\n\t}\n\t");
-  var typedTypoStylesMobile = "\n\t.".concat(blockId, " .eb-typed-typed{\n\t\t").concat(typedTextTypoStylesMobile, "\n\t}\n\t"); // all css styles for large screen width (desktop/laptop) in strings ⬇
+  var typedTypoStylesDesktop = "\n\t.".concat(blockId, " .eb-typed-text{\n\t\t").concat(typedTextTypoStylesDesktop, "\t\t\n\t\tcolor: ").concat(typedTextColor || "#fff", ";\n\t}\n\t");
+  var typedTypoStylesTab = "\n\t.".concat(blockId, " .eb-typed-text{\n\t\t").concat(typedTextTypoStylesTab, "\n\t}\n\t");
+  var typedTypoStylesMobile = "\n\t.".concat(blockId, " .eb-typed-text{\n\t\t").concat(typedTextTypoStylesMobile, "\n\t}\n\t"); // all css styles for large screen width (desktop/laptop) in strings ⬇
 
   var desktopAllStyles = Object(_helpers__WEBPACK_IMPORTED_MODULE_3__["softMinifyCssStrings"])("\n\t\t".concat(Object(_helpers__WEBPACK_IMPORTED_MODULE_3__["isCssExists"])(wrapperStylesDesktop) ? wrapperStylesDesktop : " ", "\n\t\t").concat(Object(_helpers__WEBPACK_IMPORTED_MODULE_3__["isCssExists"])(prefixTypoStylesDesktop) ? prefixTypoStylesDesktop : " ", "\n\t\t").concat(Object(_helpers__WEBPACK_IMPORTED_MODULE_3__["isCssExists"])(suffixTypoStylesDesktop) ? suffixTypoStylesDesktop : " ", "\n\t\t").concat(Object(_helpers__WEBPACK_IMPORTED_MODULE_3__["isCssExists"])(typedTypoStylesDesktop) ? typedTypoStylesDesktop : " ", "\n\t")); // all css styles for Tab in strings ⬇
 
@@ -15559,12 +15602,11 @@ function Edit(props) {
       });
     }
   }, [attributes]); // Destroy previous Typed instance & Update
-
-  if (typed) {
-    typed.destroy();
-    var options = generateOptions();
-    typed = new typed_js__WEBPACK_IMPORTED_MODULE_5___default.a(block.current, options);
-  }
+  // if (typed) {
+  // 	typed.destroy();
+  // 	let options = generateOptions();
+  // 	// typed = new Typed(block.current, options);
+  // }
 
   return [/*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["BlockControls"], null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["AlignmentToolbar"], {
     value: textAlign,

@@ -1,4 +1,4 @@
-import * as prefixObjs from ".//typographyPrefixConstants";
+import * as prefixObjs from "./typographyPrefixConstants";
 import { generateTypographyAttributes } from "./helpers";
 
 const attributes = {

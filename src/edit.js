@@ -1,22 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useRef } from "@wordpress/element";
-import {
-	BlockControls,
-	AlignmentToolbar,
-	useBlockProps,
-} from "@wordpress/block-editor";
-import {
-	typoPrefix_prefixText,
-	typoPrefix_suffixText,
-	typoPrefix_typedText,
-} from "./typographyPrefixConstants";
-import {
-	softMinifyCssStrings,
-	isCssExists,
-	generateTypographyStyles,
-} from "./helpers";
+import { useEffect, useRef, useState} from "@wordpress/element";
+import { BlockControls, AlignmentToolbar, useBlockProps, } from "@wordpress/block-editor";
+import { typoPrefix_prefixText, typoPrefix_suffixText, typoPrefix_typedText, } from "./typographyPrefixConstants";
+import { softMinifyCssStrings, isCssExists, generateTypographyStyles, } from "./helpers";
+/**
+ * Editor CSS
+ */
 import "./editor.scss";
 /**
  * External dependencies
@@ -30,57 +21,6 @@ import Inspector from "./inspector";
 
 export default function Edit(props) {
 	const { attributes, setAttributes, clientId, isSelected } = props;
-	const block = useRef(null);
-	let typed;
-
-	const generateOptions = () => {
-		// Generate options for Typed instance
-		const {
-			typedText,
-			typeSpeed,
-			startDelay,
-			smartBackspace,
-			backSpeed,
-			backDelay,
-			fadeOut,
-			fadeOutDelay,
-			loop,
-			showCursor,
-		} = attributes;
-		let strings = getStrings(typedText);
-
-		return {
-			strings,
-			typeSpeed,
-			startDelay,
-			smartBackspace,
-			backSpeed,
-			backDelay,
-			fadeOut,
-			fadeOutDelay,
-			loop,
-			showCursor,
-		};
-	};
-
-	const getStrings = (typedText) => {
-		let strings = [];
-		typedText.map((item) => strings.push(item.text));
-		return strings;
-	};
-
-	useEffect(() => {
-		const options = generateOptions();
-		typed = new Typed(block.current, options);
-	}, []);
-
-	useEffect(() => {
-		return () => {
-			// Destroy Typed instance
-			typed.destroy();
-		};
-	}, []);
-
 	const {
 		blockId,
 		blockMeta,
@@ -88,6 +28,15 @@ export default function Edit(props) {
 		resOption,
 		prefix,
 		typedText,
+		typeSpeed,
+		startDelay,
+		smartBackspace,
+		backSpeed,
+		backDelay,
+		fadeOut,
+		fadeOutDelay,
+		loop,
+		showCursor,
 		suffix,
 		prefixColor,
 		typedTextColor,
@@ -133,6 +82,89 @@ export default function Edit(props) {
 		backgroundColor,
 		textAlign,
 	} = attributes;
+	const block = useRef(null);
+	const [typed, setTyped] = useState(null);
+	
+
+	const generateOptions = () => {
+		// Generate options for Typed instance
+		const {
+			typedText,
+			typeSpeed,
+			startDelay,
+			smartBackspace,
+			backSpeed,
+			backDelay,
+			fadeOut,
+			fadeOutDelay,
+			loop,
+			showCursor,
+		} = attributes;
+		let strings = getStrings(typedText);
+
+		return {
+			strings,
+			typeSpeed,
+			startDelay,
+			smartBackspace,
+			backSpeed,
+			backDelay,
+			fadeOut,
+			fadeOutDelay,
+			loop,
+			showCursor,
+		};
+	};
+
+	const getStrings = (typedText) => {
+		let strings = [];
+		typedText.map((item) => strings.push(item.text));
+		return strings;
+	};
+	// let typed = new Typed(block.current, generateOptions());
+
+	useEffect(() => {
+		const options = generateOptions();
+		const typed = new Typed(block.current, options);
+		return () => {
+			// Destroy Typed instance
+			typed.destroy();
+		};
+	}, []);
+
+	useEffect(() => {
+		console.log('hello');
+		setTyped(null);
+		const options = generateOptions();
+		const typed = new Typed(block.current, options);
+		setTyped(typed);
+	}, [typedText,
+		typeSpeed,
+		startDelay,
+		smartBackspace,
+		backSpeed,
+		backDelay,
+		fadeOut,
+		fadeOutDelay,
+		loop,
+		showCursor]);
+
+	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
+	useEffect(() => {
+		const bodyClasses = document.body.className;
+
+		if (!/eb\-res\-option\-/i.test(bodyClasses)) {
+			document.body.classList.add("eb-res-option-desktop");
+			setAttributes({
+				resOption: "desktop",
+			});
+		} else {
+			const resOption = bodyClasses
+				.match(/eb-res-option-[^\s]+/g)[0]
+				.split("-")[3];
+			setAttributes({ resOption });
+		}
+	}, []);
 
 	// this useEffect is for creating an unique id for each block's unique className by a random unique number
 	useEffect(() => {
@@ -199,7 +231,7 @@ export default function Edit(props) {
 			${paddingLeft || 0}${paddingUnit};
 
 		border: ${borderWidth || 0}px ${borderStyle} ${borderColor || "gray"};
-		boxShadow: ${hOffset || 0}px ${vOffset || 0}px ${blur || 0}px ${
+		box-shadow: ${hOffset || 0}px ${vOffset || 0}px ${blur || 0}px ${
 		spread || 0
 	}px ${shadowColor || "gray"};
 		background-color: ${backgroundColor || "transparent"};
@@ -366,20 +398,20 @@ export default function Edit(props) {
 
 	// typed text styles css in strings ⬇
 	const typedTypoStylesDesktop = `
-	.${blockId} .eb-typed-typed{
+	.${blockId} .eb-typed-text{
 		${typedTextTypoStylesDesktop}		
 		color: ${typedTextColor || "#fff"};
 	}
 	`;
 
 	const typedTypoStylesTab = `
-	.${blockId} .eb-typed-typed{
+	.${blockId} .eb-typed-text{
 		${typedTextTypoStylesTab}
 	}
 	`;
 
 	const typedTypoStylesMobile = `
-	.${blockId} .eb-typed-typed{
+	.${blockId} .eb-typed-text{
 		${typedTextTypoStylesMobile}
 	}
 	`;
@@ -420,11 +452,11 @@ export default function Edit(props) {
 	}, [attributes]);
 
 	// Destroy previous Typed instance & Update
-	if (typed) {
-		typed.destroy();
-		let options = generateOptions();
-		typed = new Typed(block.current, options);
-	}
+	// if (typed) {
+	// 	typed.destroy();
+	// 	let options = generateOptions();
+	// 	// typed = new Typed(block.current, options);
+	// }
 
 	return [
 		<BlockControls>
