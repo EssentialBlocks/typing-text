@@ -1,22 +1,4 @@
-/**
- * The following styles get applied inside the editor only.
-
- */
-
- .wp-block-create-block-notice {
-	border: 1px dotted #f00;
-}
-
-/* 
-//
-//
-//
-// copied from common.css of EB
-// starts
-//
-//
-//
-// */
+//The following styles get applied inside the editor only.
 
 /* Common styles for all blocks */
 
@@ -70,8 +52,6 @@
 }
 
 .eb-panel-control button.components-panel__body-toggle:focus {
-	// box-shadow: inset 0 0 0 1.5px #6c40f7;
-	// box-shadow: inset 0 0 0 var(--wp-admin-border-width-focus) #6c40f7;
 	box-shadow: inset 0 0 0 2px #6c40f7;
 }
 
@@ -519,23 +499,9 @@
 	margin: 0 !important;
 }
 
-/* 
-//
-//
-//
-// copied from common.css of EB
-// ends
-//
-//
-//
-// */
-
-/* 
-//
-	dimensionControl's css (margin-padding panel) starts
-// 
+/*
+* dimensionControl's css (margin-padding panel) starts
 */
-
 .input-wrapper {
 	width: 20%;
 	display: flex;
@@ -553,7 +519,6 @@
 .dimention-container {
 	display: flex;
 	flex-direction: column;
-	// width: 250px; // ?
 	margin-bottom: 1em;
 }
 
@@ -607,10 +572,8 @@
 }
 
 /* 
-//
-	dimensionControl's css (margin-padding panel) ends
-// 
-*/
+ *imensionControl's css (margin-padding panel) ends
+ */
 
 .eb-resButtons {
 	display: flex;
@@ -680,7 +643,6 @@ body.eb-res-option-mobile .editor-styles-wrapper {
 	max-width: 480px;
 }
 
-//
 // typography component styles
 .typoResButton {
 	cursor: pointer;
@@ -695,6 +657,7 @@ body.eb-res-option-mobile .editor-styles-wrapper {
 
 .resIcons {
 	position: absolute;
+	padding-left: 8px;
 }
 
 .eb-typography-component-panel .wrap_res.forFontSize .resIcons {

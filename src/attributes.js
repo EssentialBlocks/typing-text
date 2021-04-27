@@ -40,10 +40,10 @@ const attributes = {
 		},
 		default: [
 			{
-				text: "First Done",
+				text: "First Typed text",
 			},
 			{
-				text: "Second on the way",
+				text: "Second Typed text",
 			},
 		],
 	},
@@ -58,6 +58,7 @@ const attributes = {
 	},
 	typedTextColor: {
 		type: "string",
+		default: "#000000"
 	},
 	suffixTextColor: {
 		type: "string",

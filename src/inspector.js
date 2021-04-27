@@ -28,11 +28,7 @@ import SortableText from "./sortable-text";
 import TypographyDropdown from "../util/typography-control";
 import ColorControl from "../util/color-control";
 import ResPanelBody from "./ResPanelBody";
-import {
-	typoPrefix_prefixText,
-	typoPrefix_suffixText,
-	typoPrefix_typedText,
-} from "./typographyPrefixConstants";
+import { typoPrefix_prefixText, typoPrefix_suffixText, typoPrefix_typedText } from "./typographyPrefixConstants";
 
 const Inspector = ({ attributes, setAttributes }) => {
 	const {

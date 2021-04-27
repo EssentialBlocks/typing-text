@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useRef, useState} from "@wordpress/element";
+import { useEffect, useRef, useState } from "@wordpress/element";
 import { BlockControls, AlignmentToolbar, useBlockProps, } from "@wordpress/block-editor";
 import { typoPrefix_prefixText, typoPrefix_suffixText, typoPrefix_typedText, } from "./typographyPrefixConstants";
 import { softMinifyCssStrings, isCssExists, generateTypographyStyles, } from "./helpers";
@@ -13,7 +13,6 @@ import "./editor.scss";
  * External dependencies
  */
 import Typed from "typed.js";
-
 /**
  * Internal dependencies
  */
@@ -84,7 +83,6 @@ export default function Edit(props) {
 	} = attributes;
 	const block = useRef(null);
 	const [typed, setTyped] = useState(null);
-	
 
 	const generateOptions = () => {
 		// Generate options for Typed instance
@@ -121,11 +119,11 @@ export default function Edit(props) {
 		typedText.map((item) => strings.push(item.text));
 		return strings;
 	};
-	// let typed = new Typed(block.current, generateOptions());
 
 	useEffect(() => {
 		const options = generateOptions();
 		const typed = new Typed(block.current, options);
+		setTyped(typed);
 		return () => {
 			// Destroy Typed instance
 			typed.destroy();
@@ -133,11 +131,10 @@ export default function Edit(props) {
 	}, []);
 
 	useEffect(() => {
-		console.log('hello');
-		setTyped(null);
-		const options = generateOptions();
-		const typed = new Typed(block.current, options);
-		setTyped(typed);
+		if (typed) {
+			typed.destroy();
+			setTyped(new Typed(block.current, generateOptions()));
+		}
 	}, [typedText,
 		typeSpeed,
 		startDelay,
@@ -169,8 +166,7 @@ export default function Edit(props) {
 	// this useEffect is for creating an unique id for each block's unique className by a random unique number
 	useEffect(() => {
 		const BLOCK_PREFIX = "eb-typing-text";
-		const unique_id =
-			BLOCK_PREFIX + "-" + Math.random().toString(36).substr(2, 7);
+		const unique_id = BLOCK_PREFIX + "-" + Math.random().toString(36).substr(2, 7);
 
 		/**
 		 * Define and Generate Unique Block ID
@@ -208,11 +204,12 @@ export default function Edit(props) {
 	}, []);
 
 	const blockProps = useBlockProps({
-		className: `eb-guten-block-main-parent-wrapper`,
+		className: `eb-guten-block-main-parent-wrapper`
 	});
 
 	// Return if there is no typed text
 	if (!typedText) return <div />;
+
 	// wrapper styles css in strings ⬇
 	const wrapperStylesDesktop = `
 	.${blockId}{
@@ -398,20 +395,20 @@ export default function Edit(props) {
 
 	// typed text styles css in strings ⬇
 	const typedTypoStylesDesktop = `
-	.${blockId} .eb-typed-text{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
 		${typedTextTypoStylesDesktop}		
 		color: ${typedTextColor || "#fff"};
 	}
 	`;
 
 	const typedTypoStylesTab = `
-	.${blockId} .eb-typed-text{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
 		${typedTextTypoStylesTab}
 	}
 	`;
 
 	const typedTypoStylesMobile = `
-	.${blockId} .eb-typed-text{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
 		${typedTextTypoStylesMobile}
 	}
 	`;
@@ -450,13 +447,6 @@ export default function Edit(props) {
 			setAttributes({ blockMeta: styleObject });
 		}
 	}, [attributes]);
-
-	// Destroy previous Typed instance & Update
-	// if (typed) {
-	// 	typed.destroy();
-	// 	let options = generateOptions();
-	// 	// typed = new Typed(block.current, options);
-	// }
 
 	return [
 		<BlockControls>
