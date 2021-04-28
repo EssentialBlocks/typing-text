@@ -1,14 +1,14 @@
 jQuery(document).ready(function ($) {
 	$(".eb-typed-wrapper").each(function () {
-		let typeSpeed = $(this).data("type-speed"),
-			startDelay = $(this).data("start-delay"),
-			smartBackspace = $(this).data("smart-backspace"),
-			backSpeed = $(this).data("back-speed"),
-			backDelay = $(this).data("back-delay"),
-			fade = $(this).data("fade"),
-			fadeDelay = $(this).data("fade-delay"),
-			loop = $(this).data("loop"),
-			showCursor = $(this).data("cursor");
+		let typeSpeed = $(this).find('.eb-typed-content').data("type-speed"),
+			startDelay = $(this).find('.eb-typed-content').data("start-delay"),
+			smartBackspace = $(this).find('.eb-typed-content').data("smart-backspace"),
+			backSpeed = $(this).find('.eb-typed-content').data("back-speed"),
+			backDelay = $(this).find('.eb-typed-content').data("back-delay"),
+			fade = $(this).find('.eb-typed-content').data("fade"),
+			fadeDelay = $(this).find('.eb-typed-content').data("fade-delay"),
+			loop = $(this).find('.eb-typed-content').data("loop"),
+			showCursor = $(this).find('.eb-typed-content').data("cursor");
 
 		// Generate array of strings for TypedJs
 		let strings = [];
