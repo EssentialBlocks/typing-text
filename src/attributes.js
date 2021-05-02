@@ -1,5 +1,12 @@
 import * as prefixObjs from "./typographyPrefixConstants";
-import { generateTypographyAttributes } from "./helpers";
+import {
+	dimensionsMargin,
+	dimensionsPadding,
+} from "./dimensionsNames";
+import {
+	generateTypographyAttributes,
+	generateDimensionsAttributes,
+} from "./helpers";
 
 const attributes = {
 	// responsive control attributes ⬇
@@ -23,6 +30,14 @@ const attributes = {
 	},
 	// typography attributes ⬇
 	...generateTypographyAttributes(Object.values(prefixObjs)),
+	// margin padding attributes ⬇
+	...generateDimensionsAttributes(dimensionsMargin),
+	...generateDimensionsAttributes(dimensionsPadding, {
+		top: 65,
+		bottom: 65,
+		right: 60,
+		left: 60,
+	}),
 	prefix: {
 		type: "string",
 		source: "text",
@@ -99,102 +114,6 @@ const attributes = {
 	showCursor: {
 		type: "boolean",
 		default: true,
-	},
-	marginTop: {
-		type: "string",
-	},
-	marginRight: {
-		type: "string",
-	},
-	marginBottom: {
-		type: "string",
-	},
-	marginLeft: {
-		type: "string",
-	},
-	marginUnit: {
-		type: "string",
-		default: "px",
-	},
-	paddingTop: {
-		type: "string",
-	},
-	paddingRight: {
-		type: "string",
-	},
-	paddingBottom: {
-		type: "string",
-	},
-	paddingLeft: {
-		type: "string",
-	},
-	paddingUnit: {
-		type: "string",
-		default: "px",
-	},
-	TABmarginUnit: {
-		type: "string",
-		default: "px",
-	},
-	TABmarginTop: {
-		type: "string",
-	},
-	TABmarginRight: {
-		type: "string",
-	},
-	TABmarginBottom: {
-		type: "string",
-	},
-	TABmarginLeft: {
-		type: "string",
-	},
-	TABpaddingUnit: {
-		type: "string",
-		default: "px",
-	},
-	TABpaddingTop: {
-		type: "string",
-	},
-	TABpaddingRight: {
-		type: "string",
-	},
-	TABpaddingBottom: {
-		type: "string",
-	},
-	TABpaddingLeft: {
-		type: "string",
-	},
-	MOBmarginUnit: {
-		type: "string",
-		default: "px",
-	},
-	MOBmarginTop: {
-		type: "string",
-	},
-	MOBmarginRight: {
-		type: "string",
-	},
-	MOBmarginBottom: {
-		type: "string",
-	},
-	MOBmarginLeft: {
-		type: "string",
-	},
-	MOBpaddingUnit: {
-		type: "string",
-		default: "px",
-	},
-	MOBpaddingTop: {
-		type: "string",
-	},
-	MOBpaddingRight: {
-		type: "string",
-	},
-	MOBpaddingBottom: {
-		type: "string",
-	},
-	MOBpaddingLeft: {
-		type: "string",
 	},
 	shadowColor: {
 		type: "string",

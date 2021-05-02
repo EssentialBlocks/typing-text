@@ -3,8 +3,9 @@
  */
 import { useEffect, useRef, useState } from "@wordpress/element";
 import { BlockControls, AlignmentToolbar, useBlockProps, } from "@wordpress/block-editor";
+import { dimensionsMargin, dimensionsPadding } from "./dimensionsNames";
 import { typoPrefix_prefixText, typoPrefix_suffixText, typoPrefix_typedText, } from "./typographyPrefixConstants";
-import { softMinifyCssStrings, isCssExists, generateTypographyStyles, } from "./helpers";
+import { softMinifyCssStrings, isCssExists, generateTypographyStyles, generateDimensionsControlStyles } from "./helpers";
 /**
  * Editor CSS
  */
@@ -40,36 +41,6 @@ export default function Edit(props) {
 		prefixColor,
 		typedTextColor,
 		suffixTextColor,
-		marginTop,
-		marginRight,
-		marginBottom,
-		marginLeft,
-		marginUnit,
-		paddingTop,
-		paddingRight,
-		paddingBottom,
-		paddingLeft,
-		paddingUnit,
-		TABmarginUnit,
-		TABmarginTop,
-		TABmarginRight,
-		TABmarginBottom,
-		TABmarginLeft,
-		TABpaddingUnit,
-		TABpaddingTop,
-		TABpaddingRight,
-		TABpaddingBottom,
-		TABpaddingLeft,
-		MOBmarginUnit,
-		MOBmarginTop,
-		MOBmarginRight,
-		MOBmarginBottom,
-		MOBmarginLeft,
-		MOBpaddingUnit,
-		MOBpaddingTop,
-		MOBpaddingRight,
-		MOBpaddingBottom,
-		MOBpaddingLeft,
 		shadowColor,
 		hOffset,
 		vOffset,
@@ -210,22 +181,31 @@ export default function Edit(props) {
 	// Return if there is no typed text
 	if (!typedText) return <div />;
 
+	const {
+		dimensionStylesDesktop: wrapperMarginStylesDesktop,
+		dimensionStylesTab: wrapperMarginStylesTab,
+		dimensionStylesMobile: wrapperMarginStylesMobile,
+	} = generateDimensionsControlStyles({
+		controlName: dimensionsMargin,
+		isStyleForMargin: true,
+		attributes,
+	});
+
+	const {
+		dimensionStylesDesktop: wrapperPaddingStylesDesktop,
+		dimensionStylesTab: wrapperPaddingStylesTab,
+		dimensionStylesMobile: wrapperPaddingStylesMobile,
+	} = generateDimensionsControlStyles({
+		controlName: dimensionsPadding,
+		isStyleForMargin: false,
+		attributes,
+	});
+
 	// wrapper styles css in strings ⬇
 	const wrapperStylesDesktop = `
 	.${blockId}{
-		${marginTop ? `margin-top: ${parseFloat(marginTop)}${marginUnit};` : " "}
-		${marginRight ? `margin-right: ${parseFloat(marginRight)}${marginUnit};` : " "}
-		${marginLeft ? `margin-left: ${parseFloat(marginLeft)}${marginUnit};` : " "}
-		${
-			marginBottom
-				? `margin-bottom: ${parseFloat(marginBottom)}${marginUnit};`
-				: " "
-		}
-		padding: 
-			${paddingTop || 0}${paddingUnit} 
-			${paddingRight || 0}${paddingUnit} 
-			${paddingBottom || 0}${paddingUnit} 
-			${paddingLeft || 0}${paddingUnit};
+		${wrapperMarginStylesDesktop}
+		${wrapperPaddingStylesDesktop}
 
 		border: ${borderWidth || 0}px ${borderStyle} ${borderColor || "gray"};
 		box-shadow: ${hOffset || 0}px ${vOffset || 0}px ${blur || 0}px ${
@@ -238,91 +218,15 @@ export default function Edit(props) {
 
 	const wrapperStylesTab = `
 	.${blockId}{
-		${
-			TABmarginTop
-				? `margin-top: ${parseFloat(TABmarginTop)}${TABmarginUnit};`
-				: " "
-		}
-		${
-			TABmarginRight
-				? `margin-right: ${parseFloat(TABmarginRight)}${TABmarginUnit};`
-				: " "
-		}
-		${
-			TABmarginLeft
-				? `margin-left: ${parseFloat(TABmarginLeft)}${TABmarginUnit};`
-				: " "
-		}
-		${
-			TABmarginBottom
-				? `margin-bottom: ${parseFloat(TABmarginBottom)}${TABmarginUnit};`
-				: " "
-		}
-		${
-			TABpaddingTop
-				? `padding-top: ${parseFloat(TABpaddingTop)}${TABpaddingUnit};`
-				: " "
-		}
-		${
-			TABpaddingRight
-				? `padding-right: ${parseFloat(TABpaddingRight)}${TABpaddingUnit};`
-				: " "
-		}
-		${
-			TABpaddingLeft
-				? `padding-left: ${parseFloat(TABpaddingLeft)}${TABpaddingUnit};`
-				: " "
-		}
-		${
-			TABpaddingBottom
-				? `padding-bottom: ${parseFloat(TABpaddingBottom)}${TABpaddingUnit};`
-				: " "
-		}
+		${wrapperMarginStylesTab}
+		${wrapperPaddingStylesTab}
 	}
 	`;
 
 	const wrapperStylesMobile = `
 	.${blockId}{
-		${
-			MOBmarginTop
-				? `margin-top: ${parseFloat(MOBmarginTop)}${MOBmarginUnit};`
-				: " "
-		}
-		${
-			MOBmarginRight
-				? `margin-right: ${parseFloat(MOBmarginRight)}${MOBmarginUnit};`
-				: " "
-		}
-		${
-			MOBmarginLeft
-				? `margin-left: ${parseFloat(MOBmarginLeft)}${MOBmarginUnit};`
-				: " "
-		}
-		${
-			MOBmarginBottom
-				? `margin-bottom: ${parseFloat(MOBmarginBottom)}${MOBmarginUnit};`
-				: " "
-		}
-		${
-			MOBpaddingTop
-				? `padding-top: ${parseFloat(MOBpaddingTop)}${MOBpaddingUnit};`
-				: " "
-		}
-		${
-			MOBpaddingRight
-				? `padding-right: ${parseFloat(MOBpaddingRight)}${MOBpaddingUnit};`
-				: " "
-		}
-		${
-			MOBpaddingLeft
-				? `padding-left: ${parseFloat(MOBpaddingLeft)}${MOBpaddingUnit};`
-				: " "
-		}
-		${
-			MOBpaddingBottom
-				? `padding-bottom: ${parseFloat(MOBpaddingBottom)}${MOBpaddingUnit};`
-				: " "
-		}	
+		${wrapperMarginStylesMobile}
+		${wrapperPaddingStylesMobile}
 	}
 	`;
 
