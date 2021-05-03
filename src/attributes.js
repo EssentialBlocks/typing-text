@@ -32,12 +32,7 @@ const attributes = {
 	...generateTypographyAttributes(Object.values(prefixObjs)),
 	// margin padding attributes ⬇
 	...generateDimensionsAttributes(dimensionsMargin),
-	...generateDimensionsAttributes(dimensionsPadding, {
-		top: 65,
-		bottom: 65,
-		right: 60,
-		left: 60,
-	}),
+	...generateDimensionsAttributes(dimensionsPadding),
 	prefix: {
 		type: "string",
 		source: "text",

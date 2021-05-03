@@ -18,16 +18,11 @@ import { useEffect } from "@wordpress/element";
 /**
  * Internal dependencies
  */
-import {
-	UNIT_TYPES,
-	BORDER_STYLES,
-} from "./constants";
+import { BORDER_STYLES } from "./constants";
 import ResponsiveDimensionsControl from "../util/dimensions-control-v2";
-import UnitControl from "../util/unit-control";
 import SortableText from "./sortable-text";
 import TypographyDropdown from "../util/typography-control-v2";
 import ColorControl from "../util/color-control";
-import ResPanelBody from "./ResPanelBody";
 import { dimensionsMargin, dimensionsPadding } from "./dimensionsNames";
 import { typoPrefix_prefixText, typoPrefix_suffixText, typoPrefix_typedText } from "./typographyPrefixConstants";
 
@@ -50,36 +45,6 @@ const Inspector = ({ attributes, setAttributes }) => {
 		fadeOutDelay,
 		loop,
 		showCursor,
-		marginTop,
-		marginRight,
-		marginBottom,
-		marginLeft,
-		marginUnit,
-		paddingTop,
-		paddingRight,
-		paddingBottom,
-		paddingLeft,
-		paddingUnit,
-		TABmarginUnit,
-		TABmarginTop,
-		TABmarginRight,
-		TABmarginBottom,
-		TABmarginLeft,
-		TABpaddingUnit,
-		TABpaddingTop,
-		TABpaddingRight,
-		TABpaddingBottom,
-		TABpaddingLeft,
-		MOBmarginUnit,
-		MOBmarginTop,
-		MOBmarginRight,
-		MOBmarginBottom,
-		MOBmarginLeft,
-		MOBpaddingUnit,
-		MOBpaddingTop,
-		MOBpaddingRight,
-		MOBpaddingBottom,
-		MOBpaddingLeft,
 		shadowColor,
 		hOffset,
 		vOffset,
