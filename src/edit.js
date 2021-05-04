@@ -93,8 +93,8 @@ export default function Edit(props) {
 
 	useEffect(() => {
 		const options = generateOptions();
-		const typed = new Typed(block.current, options);
-		setTyped(typed);
+		const new_typed = new Typed(block.current, options);
+		setTyped(new_typed);
 		return () => {
 			// Destroy Typed instance
 			typed.destroy();
