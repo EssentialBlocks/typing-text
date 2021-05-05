@@ -180,14 +180,13 @@ export default function Edit(props) {
 
 	// Return if there is no typed text
 	if (!typedText) return <div />;
-
 	const {
 		dimensionStylesDesktop: wrapperMarginStylesDesktop,
 		dimensionStylesTab: wrapperMarginStylesTab,
 		dimensionStylesMobile: wrapperMarginStylesMobile,
 	} = generateDimensionsControlStyles({
 		controlName: dimensionsMargin,
-		isStyleForMargin: true,
+		styleFor: "margin",
 		attributes,
 	});
 
@@ -197,7 +196,7 @@ export default function Edit(props) {
 		dimensionStylesMobile: wrapperPaddingStylesMobile,
 	} = generateDimensionsControlStyles({
 		controlName: dimensionsPadding,
-		isStyleForMargin: false,
+		styleFor: "padding",
 		attributes,
 	});
 
