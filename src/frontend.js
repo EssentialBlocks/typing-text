@@ -22,16 +22,16 @@ jQuery(document).ready(function ($) {
 			.find(".eb-typed-view")
 			.each(function () {
 				new Typed(this, {
-					strings,
-					typeSpeed,
-					startDelay,
-					smartBackspace,
-					backSpeed,
-					backDelay,
-					fade,
-					fadeDelay,
-					loop,
-					showCursor,
+					strings: strings,
+					typeSpeed: typeSpeed,
+					startDelay: startDelay,
+					smartBackspace: smartBackspace,
+					backSpeed: backSpeed,
+					backDelay: backDelay,
+					fadeOut: fade,
+					fadeOutDelay: fadeDelay,
+					loop: loop,
+					showCursor: showCursor,
 				});
 			});
 	});
