@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
- * Version:         1.1.0
+ * Version:         1.1.1
  * Author:          WPDeveloper
  * Author URI:      https://wpdeveloper.net
  * License:         GPL-3.0-or-later
@@ -58,19 +58,11 @@ function create_block_typing_text_block_init()
 		filemtime("$dir/$style_css")
 	);
 
-	$typed_js = 'src/js/typed.min.js';
+	$typed_js = 'assets/js/typed.min.js';
 	wp_register_script(
 		'essential-blocks-typedjs',
 		plugins_url($typed_js, __FILE__),
 		array("jquery"),
-		true
-	);
-
-	$frontend_js = 'src/frontend.js';
-	wp_register_script(
-		'essential-blocks-typing-text-frontend',
-		plugins_url($frontend_js, __FILE__),
-		array("jquery", "essential-blocks-typedjs"),
 		true
 	);
 
@@ -79,7 +71,7 @@ function create_block_typing_text_block_init()
 	wp_register_script(
 		'essential-blocks-typing-text-frontend',
 		plugins_url($frontend_js, __FILE__),
-		array_merge( array("wp-editor"), $frontend_js_path['dependencies'] ),
+		array_merge( array("essential-blocks-typedjs", "jquery"), $frontend_js_path['dependencies'] ),
 		$frontend_js_path['version'],
 		true
 	);

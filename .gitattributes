@@ -50,4 +50,4 @@ dist/**/*.* export-ignore
 src export-ignore
 util	export-ignore
 .wordpress-org	export-ignore
-changes.txt export-ignore
+.idea export-ignore
