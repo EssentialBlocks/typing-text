@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
- * Version:         1.0.3
+ * Version:         1.1.0
  * Author:          WPDeveloper
  * Author URI:      https://wpdeveloper.net
  * License:         GPL-3.0-or-later
@@ -23,20 +23,21 @@ require_once __DIR__ . '/includes/font-loader.php';
 require_once __DIR__ . '/includes/post-meta.php';
 require_once __DIR__ . '/lib/style-handler/style-handler.php';
 
-function create_block_typing_text_block_init() {
-	$dir = dirname( __FILE__ );
+function create_block_typing_text_block_init()
+{
+	$dir = dirname(__FILE__);
 
 	$script_asset_path = "$dir/build/index.asset.php";
-	if ( ! file_exists( $script_asset_path ) ) {
+	if (!file_exists($script_asset_path)) {
 		throw new Error(
 			'You need to run `npm start` or `npm run build` for the "typing-text/typing-text-block" block first.'
 		);
 	}
-	$index_js     = 'build/index.js';
-	$script_asset = require( $script_asset_path );
+	$index_js = 'build/index.js';
+	$script_asset = require($script_asset_path);
 	wp_register_script(
 		'create-block-typing-text-block-editor',
-		plugins_url( $index_js, __FILE__ ),
+		plugins_url($index_js, __FILE__),
 		$script_asset['dependencies'],
 		$script_asset['version']
 	);
@@ -52,35 +53,46 @@ function create_block_typing_text_block_init() {
 	$style_css = 'build/style-index.css';
 	wp_register_style(
 		'create-block-typing-text-block',
-		plugins_url( $style_css, __FILE__ ),
+		plugins_url($style_css, __FILE__),
 		array(),
-		filemtime( "$dir/$style_css" )
+		filemtime("$dir/$style_css")
 	);
 
-  $typed_js = 'src/js/typed.min.js';
-  wp_register_script(
-    'essential-blocks-typedjs',
-    plugins_url($typed_js, __FILE__),
-    array( "jquery"),
-    true
-  );
+	$typed_js = 'src/js/typed.min.js';
+	wp_register_script(
+		'essential-blocks-typedjs',
+		plugins_url($typed_js, __FILE__),
+		array("jquery"),
+		true
+	);
 
-  $frontend_js = 'src/frontend.js';
-  wp_register_script(
-    'essential-blocks-typing-text-frontend',
-    plugins_url($frontend_js, __FILE__),
-    array( "jquery","essential-blocks-typedjs"),
-    true
-  );
-    
+	$frontend_js = 'src/frontend.js';
+	wp_register_script(
+		'essential-blocks-typing-text-frontend',
+		plugins_url($frontend_js, __FILE__),
+		array("jquery", "essential-blocks-typedjs"),
+		true
+	);
 
-	if( ! WP_Block_Type_Registry::get_instance()->is_registered( 'essential-blocks/typing-text' ) ) {
-    register_block_type( 'typing-text/typing-text-block', array(
-	  'editor_script' => 'create-block-typing-text-block-editor',
-	  'editor_style'  => 'create-block-typing-text-block-editor',
-      'style'         => 'create-block-typing-text-block',
-      'script'       => 'essential-blocks-typing-text-frontend'
-    ) );
-  }
+	$frontend_js_path = include_once dirname(__FILE__)."/build/frontend.asset.php";
+	$frontend_js = "build/frontend.js";
+	wp_register_script(
+		'essential-blocks-typing-text-frontend',
+		plugins_url($frontend_js, __FILE__),
+		array_merge( array("wp-editor"), $frontend_js_path['dependencies'] ),
+		$frontend_js_path['version'],
+		true
+	);
+
+
+	if (!WP_Block_Type_Registry::get_instance()->is_registered('essential-blocks/typing-text')) {
+		register_block_type('typing-text/typing-text-block', array(
+			'editor_script' => 'create-block-typing-text-block-editor',
+			'editor_style' => 'create-block-typing-text-block-editor',
+			'style' => 'create-block-typing-text-block',
+			'script' => 'essential-blocks-typing-text-frontend'
+		));
+	}
 }
-add_action( 'init', 'create_block_typing_text_block_init' );
+
+add_action('init', 'create_block_typing_text_block_init');
