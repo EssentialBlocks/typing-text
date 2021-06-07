@@ -8102,7 +8102,8 @@ var generateTypographyAttributes = function generateTypographyAttributes(prefixA
       type: "number"
     }), _result);
     return _objectSpread(_objectSpread({}, total), result);
-  }, {}); // console.log({ typoAttrs });
+  }, {}); //
+  // console.log({ typoAttrs });
 
   return typoAttrs;
 }; // Important: the following "generateBorderShadowAttributes" function must be declared below the "generateDimensionsAttributes" function declaration
