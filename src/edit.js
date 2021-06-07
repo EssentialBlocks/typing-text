@@ -2,10 +2,30 @@
  * WordPress dependencies
  */
 import { useEffect, useRef, useState } from "@wordpress/element";
-import { BlockControls, AlignmentToolbar, useBlockProps, } from "@wordpress/block-editor";
-import { dimensionsMargin, dimensionsPadding } from "./dimensionsNames";
-import { typoPrefix_prefixText, typoPrefix_suffixText, typoPrefix_typedText, } from "./typographyPrefixConstants";
-import { softMinifyCssStrings, isCssExists, generateTypographyStyles, generateDimensionsControlStyles } from "./helpers";
+import {
+	BlockControls,
+	AlignmentToolbar,
+	useBlockProps,
+} from "@wordpress/block-editor";
+import {
+	dimensionsMargin,
+	dimensionsPadding,
+} from "./constants/dimensionsNames";
+import {
+	typoPrefix_prefixText,
+	typoPrefix_suffixText,
+	typoPrefix_typedText,
+} from "./constants/typographyPrefixConstants";
+import { WrpBdShadow } from "./constants/borderShadowConstants";
+import { backgroundWrapper } from "./constants/backgroundsConstants";
+import {
+	softMinifyCssStrings,
+	isCssExists,
+	generateTypographyStyles,
+	generateDimensionsControlStyles,
+	generateBorderShadowStyles,
+	generateBackgroundControlStyles,
+} from "../util/helpers";
 /**
  * Editor CSS
  */
@@ -41,14 +61,6 @@ export default function Edit(props) {
 		prefixColor,
 		typedTextColor,
 		suffixTextColor,
-		shadowColor,
-		hOffset,
-		vOffset,
-		blur,
-		spread,
-		borderWidth,
-		borderColor,
-		borderStyle,
 		backgroundColor,
 		textAlign,
 	} = attributes;
@@ -106,7 +118,8 @@ export default function Edit(props) {
 			typed.destroy();
 			setTyped(new Typed(block.current, generateOptions()));
 		}
-	}, [typedText,
+	}, [
+		typedText,
 		typeSpeed,
 		startDelay,
 		smartBackspace,
@@ -115,7 +128,8 @@ export default function Edit(props) {
 		fadeOut,
 		fadeOutDelay,
 		loop,
-		showCursor]);
+		showCursor,
+	]);
 
 	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
 	useEffect(() => {
@@ -137,7 +151,8 @@ export default function Edit(props) {
 	// this useEffect is for creating an unique id for each block's unique className by a random unique number
 	useEffect(() => {
 		const BLOCK_PREFIX = "eb-typing-text";
-		const unique_id = BLOCK_PREFIX + "-" + Math.random().toString(36).substr(2, 7);
+		const unique_id =
+			BLOCK_PREFIX + "-" + Math.random().toString(36).substr(2, 7);
 
 		/**
 		 * Define and Generate Unique Block ID
@@ -175,7 +190,7 @@ export default function Edit(props) {
 	}, []);
 
 	const blockProps = useBlockProps({
-		className: `eb-guten-block-main-parent-wrapper`
+		className: `eb-guten-block-main-parent-wrapper`,
 	});
 
 	// Return if there is no typed text
@@ -200,35 +215,7 @@ export default function Edit(props) {
 		attributes,
 	});
 
-	// wrapper styles css in strings ⬇
-	const wrapperStylesDesktop = `
-	.${blockId}{
-		${wrapperMarginStylesDesktop}
-		${wrapperPaddingStylesDesktop}
-
-		border: ${borderWidth || 0}px ${borderStyle} ${borderColor || "gray"};
-		box-shadow: ${hOffset || 0}px ${vOffset || 0}px ${blur || 0}px ${
-		spread || 0
-	}px ${shadowColor || "gray"};
-		background-color: ${backgroundColor || "transparent"};
-		text-align: ${textAlign};
-	}
-	`;
-
-	const wrapperStylesTab = `
-	.${blockId}{
-		${wrapperMarginStylesTab}
-		${wrapperPaddingStylesTab}
-	}
-	`;
-
-	const wrapperStylesMobile = `
-	.${blockId}{
-		${wrapperMarginStylesMobile}
-		${wrapperPaddingStylesMobile}
-	}
-	`;
-
+	// Prefix typography
 	const {
 		typoStylesDesktop: prefixTextTypoStylesDesktop,
 		typoStylesTab: prefixTextTypoStylesTab,
@@ -237,6 +224,95 @@ export default function Edit(props) {
 		attributes,
 		prefixConstant: typoPrefix_prefixText,
 	});
+
+	// suffix typoghraphy
+	const {
+		typoStylesDesktop: suffixTextTypoStylesDesktop,
+		typoStylesTab: suffixTextTypoStylesTab,
+		typoStylesMobile: suffixTextTypoStylesMobile,
+	} = generateTypographyStyles({
+		attributes,
+		prefixConstant: typoPrefix_suffixText,
+	});
+
+	// typed text typoghrapy
+	const {
+		typoStylesDesktop: typedTextTypoStylesDesktop,
+		typoStylesTab: typedTextTypoStylesTab,
+		typoStylesMobile: typedTextTypoStylesMobile,
+	} = generateTypographyStyles({
+		attributes,
+		prefixConstant: typoPrefix_typedText,
+	});
+
+	// wrapper border & shadow settings
+	const {
+		styesDesktop: bdShadowStyesDesktop,
+		styesTab: bdShadowStyesTab,
+		styesMobile: bdShadowStyesMobile,
+		stylesHoverDesktop: bdShadowStylesHoverDesktop,
+		stylesHoverTab: bdShadowStylesHoverTab,
+		stylesHoverMobile: bdShadowStylesHoverMobile,
+	} = generateBorderShadowStyles({
+		controlName: WrpBdShadow,
+		attributes,
+	});
+
+	// wrapper background controller
+	const {
+		backgroundStylesDesktop: wrpBackgroundStylesDesktop,
+		backgroundStylesTab: wrpBackgroundStylesTab,
+		backgroundStylesMobile: wrpBackgroundStylesMobile,
+		overlyStyles: wrpOverlayStyles,
+	} = generateBackgroundControlStyles({
+		attributes,
+		controlName: backgroundWrapper,
+	});
+
+	// wrapper styles css in strings ⬇
+	const wrapperStylesDesktop = `
+	.eb-typed-wrapper.${blockId}:before {
+		${wrpOverlayStyles}
+	}
+
+	.eb-typed-wrapper.${blockId} {
+		${wrapperMarginStylesDesktop}
+		${wrapperPaddingStylesDesktop}
+		${bdShadowStyesDesktop}
+		${wrpBackgroundStylesDesktop}
+		text-align: ${textAlign};
+	}
+
+	.eb-typed-wrapper.${blockId}:hover {
+		${bdShadowStylesHoverDesktop}
+	}
+	`;
+
+	const wrapperStylesTab = `
+	.eb-typed-wrapper.${blockId}{
+		${wrapperMarginStylesTab}
+		${wrapperPaddingStylesTab}
+		${bdShadowStyesTab}
+		${wrpBackgroundStylesTab}
+	}
+
+	.eb-typed-wrapper.${blockId}:hover {
+		${bdShadowStylesHoverTab}
+	}
+	`;
+
+	const wrapperStylesMobile = `
+	.eb-typed-wrapper.${blockId}{
+		${wrapperMarginStylesMobile}
+		${wrapperPaddingStylesMobile}
+		${bdShadowStyesMobile}
+		${wrpBackgroundStylesMobile}
+	}
+
+	.eb-typed-wrapper.${blockId}:hover {
+		${bdShadowStylesHoverMobile}
+	}
+	`;
 
 	// prefix text styles css in strings ⬇
 	const prefixTypoStylesDesktop = `
@@ -258,15 +334,6 @@ export default function Edit(props) {
 	}
 	`;
 
-	const {
-		typoStylesDesktop: suffixTextTypoStylesDesktop,
-		typoStylesTab: suffixTextTypoStylesTab,
-		typoStylesMobile: suffixTextTypoStylesMobile,
-	} = generateTypographyStyles({
-		attributes,
-		prefixConstant: typoPrefix_suffixText,
-	});
-
 	// suffix text styles css in strings ⬇
 	const suffixTypoStylesDesktop = `
 	.${blockId} .eb-typed-suffix{
@@ -286,15 +353,6 @@ export default function Edit(props) {
 		${suffixTextTypoStylesMobile}
 	}
 	`;
-
-	const {
-		typoStylesDesktop: typedTextTypoStylesDesktop,
-		typoStylesTab: typedTextTypoStylesTab,
-		typoStylesMobile: typedTextTypoStylesMobile,
-	} = generateTypographyStyles({
-		attributes,
-		prefixConstant: typoPrefix_typedText,
-	});
 
 	// typed text styles css in strings ⬇
 	const typedTypoStylesDesktop = `

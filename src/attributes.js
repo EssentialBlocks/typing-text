@@ -1,12 +1,16 @@
-import * as prefixObjs from "./typographyPrefixConstants";
+import * as prefixObjs from "./constants/typographyPrefixConstants";
 import {
 	dimensionsMargin,
 	dimensionsPadding,
-} from "./dimensionsNames";
+} from "./constants/dimensionsNames";
+import { WrpBdShadow } from "./constants/borderShadowConstants";
+import { backgroundWrapper } from "./constants/backgroundsConstants";
 import {
 	generateTypographyAttributes,
 	generateDimensionsAttributes,
-} from "./helpers";
+	generateBackgroundAttributes,
+	generateBorderShadowAttributes,
+} from "../util/helpers";
 
 const attributes = {
 	// responsive control attributes ⬇
@@ -28,11 +32,6 @@ const attributes = {
 	blockMeta: {
 		type: "object",
 	},
-	// typography attributes ⬇
-	...generateTypographyAttributes(Object.values(prefixObjs)),
-	// margin padding attributes ⬇
-	...generateDimensionsAttributes(dimensionsMargin),
-	...generateDimensionsAttributes(dimensionsPadding),
 	prefix: {
 		type: "string",
 		source: "text",
@@ -50,10 +49,10 @@ const attributes = {
 		},
 		default: [
 			{
-				text: "First Typed text",
+				text: "First Typed Text",
 			},
 			{
-				text: "Second Typed text",
+				text: "Second Typed Text",
 			},
 		],
 	},
@@ -64,15 +63,15 @@ const attributes = {
 	},
 	prefixColor: {
 		type: "string",
-		default: "#000000"
+		default: "#000000",
 	},
 	typedTextColor: {
 		type: "string",
-		default: "#000000"
+		default: "#000000",
 	},
 	suffixTextColor: {
 		type: "string",
-		default: "#000000"
+		default: "#000000",
 	},
 	typeSpeed: {
 		type: "number",
@@ -110,31 +109,6 @@ const attributes = {
 		type: "boolean",
 		default: true,
 	},
-	shadowColor: {
-		type: "string",
-	},
-	hOffset: {
-		type: "number",
-	},
-	vOffset: {
-		type: "number",
-	},
-	blur: {
-		type: "number",
-	},
-	spread: {
-		type: "number",
-	},
-	borderWidth: {
-		type: "number",
-	},
-	borderColor: {
-		type: "string",
-	},
-	borderStyle: {
-		type: "string",
-		default: "solid",
-	},
 	backgroundColor: {
 		type: "string",
 	},
@@ -142,6 +116,18 @@ const attributes = {
 		type: "string",
 		default: "left",
 	},
+	// typography attributes ⬇
+	...generateTypographyAttributes(Object.values(prefixObjs)),
+	// border shadow controller
+	...generateBorderShadowAttributes(WrpBdShadow),
+	// margin padding attributes ⬇
+	...generateDimensionsAttributes(dimensionsMargin),
+	...generateDimensionsAttributes(dimensionsPadding),
+	// background Attributes
+	...generateBackgroundAttributes(backgroundWrapper, {
+		// defaultFillColor: "#7967ff",
+		// defaultBgGradient: "linear-gradient(45deg,#3347CA,#8593F2)",
+	}),
 };
 
 export default attributes;
