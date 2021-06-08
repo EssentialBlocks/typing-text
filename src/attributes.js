@@ -109,9 +109,6 @@ const attributes = {
 		type: "boolean",
 		default: true,
 	},
-	backgroundColor: {
-		type: "string",
-	},
 	textAlign: {
 		type: "string",
 		default: "left",
@@ -124,10 +121,7 @@ const attributes = {
 	...generateDimensionsAttributes(dimensionsMargin),
 	...generateDimensionsAttributes(dimensionsPadding),
 	// background Attributes
-	...generateBackgroundAttributes(backgroundWrapper, {
-		// defaultFillColor: "#7967ff",
-		// defaultBgGradient: "linear-gradient(45deg,#3347CA,#8593F2)",
-	}),
+	...generateBackgroundAttributes(backgroundWrapper),
 };
 
 export default attributes;

@@ -56,7 +56,6 @@ const Inspector = ({ attributes, setAttributes }) => {
 		fadeOutDelay,
 		loop,
 		showCursor,
-		backgroundColor,
 	} = attributes;
 
 	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class only the first time once
