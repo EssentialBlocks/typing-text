@@ -7,6 +7,7 @@ import {
 	AlignmentToolbar,
 	useBlockProps,
 } from "@wordpress/block-editor";
+
 import {
 	dimensionsMargin,
 	dimensionsPadding,
@@ -61,7 +62,6 @@ export default function Edit(props) {
 		prefixColor,
 		typedTextColor,
 		suffixTextColor,
-		backgroundColor,
 		textAlign,
 	} = attributes;
 	const block = useRef(null);
