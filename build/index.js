@@ -5233,13 +5233,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sortable_text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sortable-text */ "./src/sortable-text.js");
 /* harmony import */ var _util_typography_control_v2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../util/typography-control-v2 */ "./util/typography-control-v2/index.js");
 /* harmony import */ var _util_color_control__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../util/color-control */ "./util/color-control/index.js");
-/* harmony import */ var _util_reset_control__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../util/reset-control */ "./util/reset-control/index.js");
-/* harmony import */ var _util_border_shadow_control__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../util/border-shadow-control */ "./util/border-shadow-control/index.js");
-/* harmony import */ var _util_background_control__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../util/background-control */ "./util/background-control/index.js");
-/* harmony import */ var _constants_dimensionsNames__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./constants/dimensionsNames */ "./src/constants/dimensionsNames.js");
-/* harmony import */ var _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./constants/typographyPrefixConstants */ "./src/constants/typographyPrefixConstants.js");
-/* harmony import */ var _constants_borderShadowConstants__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./constants/borderShadowConstants */ "./src/constants/borderShadowConstants.js");
-/* harmony import */ var _constants_backgroundsConstants__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./constants/backgroundsConstants */ "./src/constants/backgroundsConstants.js");
+/* harmony import */ var _util_border_shadow_control__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../util/border-shadow-control */ "./util/border-shadow-control/index.js");
+/* harmony import */ var _util_background_control__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../util/background-control */ "./util/background-control/index.js");
+/* harmony import */ var _constants_dimensionsNames__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./constants/dimensionsNames */ "./src/constants/dimensionsNames.js");
+/* harmony import */ var _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./constants/typographyPrefixConstants */ "./src/constants/typographyPrefixConstants.js");
+/* harmony import */ var _constants_borderShadowConstants__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./constants/borderShadowConstants */ "./src/constants/borderShadowConstants.js");
+/* harmony import */ var _constants_backgroundsConstants__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./constants/backgroundsConstants */ "./src/constants/backgroundsConstants.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5274,11 +5273,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-
 var Inspector = function Inspector(_ref) {
   var attributes = _ref.attributes,
       setAttributes = _ref.setAttributes;
-  console.log(attributes);
   var resOption = attributes.resOption,
       prefix = attributes.prefix,
       typedText = attributes.typedText,
@@ -5345,32 +5342,7 @@ var Inspector = function Inspector(_ref) {
   }, /*#__PURE__*/React.createElement("span", {
     className: "eb-panel-control"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
-    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("General Settings")
-  }, /*#__PURE__*/React.createElement(_util_dimensions_control_v2__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    resRequiredProps: resRequiredProps,
-    className: "forWrapperMargin",
-    controlName: _constants_dimensionsNames__WEBPACK_IMPORTED_MODULE_11__["dimensionsMargin"],
-    baseLabel: "Margin"
-  }), /*#__PURE__*/React.createElement(_util_dimensions_control_v2__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    resRequiredProps: resRequiredProps,
-    className: "forWrapperPadding",
-    controlName: _constants_dimensionsNames__WEBPACK_IMPORTED_MODULE_11__["dimensionsPadding"],
-    baseLabel: "Padding"
-  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
-    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Border & Shadow"),
-    initialOpen: false
-  }, /*#__PURE__*/React.createElement(_util_border_shadow_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    controlName: _constants_borderShadowConstants__WEBPACK_IMPORTED_MODULE_13__["WrpBdShadow"],
-    resRequiredProps: resRequiredProps
-  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
-    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Background"),
-    initialOpen: false
-  }, /*#__PURE__*/React.createElement(_util_background_control__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    controlName: _constants_backgroundsConstants__WEBPACK_IMPORTED_MODULE_14__["backgroundWrapper"],
-    resRequiredProps: resRequiredProps
-  }))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
-    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Content Settings"),
-    initialOpen: false
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Content Settings")
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["TextControl"], {
     label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Prefix Text"),
     placeholder: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Add prefix text"),
@@ -5490,7 +5462,32 @@ var Inspector = function Inspector(_ref) {
     },
     min: 0,
     max: 5000
-  })), prefix && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
+  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("General Style"),
+    initialOpen: false
+  }, /*#__PURE__*/React.createElement(_util_dimensions_control_v2__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    resRequiredProps: resRequiredProps,
+    className: "forWrapperMargin",
+    controlName: _constants_dimensionsNames__WEBPACK_IMPORTED_MODULE_10__["dimensionsMargin"],
+    baseLabel: "Margin"
+  }), /*#__PURE__*/React.createElement(_util_dimensions_control_v2__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    resRequiredProps: resRequiredProps,
+    className: "forWrapperPadding",
+    controlName: _constants_dimensionsNames__WEBPACK_IMPORTED_MODULE_10__["dimensionsPadding"],
+    baseLabel: "Padding"
+  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Border & Shadow"),
+    initialOpen: false
+  }, /*#__PURE__*/React.createElement(_util_border_shadow_control__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    controlName: _constants_borderShadowConstants__WEBPACK_IMPORTED_MODULE_12__["WrpBdShadow"],
+    resRequiredProps: resRequiredProps
+  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
+    title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Background"),
+    initialOpen: false
+  }, /*#__PURE__*/React.createElement(_util_background_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    controlName: _constants_backgroundsConstants__WEBPACK_IMPORTED_MODULE_13__["backgroundWrapper"],
+    resRequiredProps: resRequiredProps
+  }))), prefix && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
     title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Prefix Style"),
     initialOpen: false
   }, /*#__PURE__*/React.createElement(_util_color_control__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -5503,7 +5500,7 @@ var Inspector = function Inspector(_ref) {
     }
   }), /*#__PURE__*/React.createElement(_util_typography_control_v2__WEBPACK_IMPORTED_MODULE_6__["default"], {
     baseLabel: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Typography", "typing-text"),
-    typographyPrefixConstant: _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_12__["typoPrefix_prefixText"],
+    typographyPrefixConstant: _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_11__["typoPrefix_prefixText"],
     resRequiredProps: resRequiredProps
   })), typedText.length && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
     title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Typed Text Style"),
@@ -5518,7 +5515,7 @@ var Inspector = function Inspector(_ref) {
     }
   }), /*#__PURE__*/React.createElement(_util_typography_control_v2__WEBPACK_IMPORTED_MODULE_6__["default"], {
     baseLabel: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Typography", "typing-text"),
-    typographyPrefixConstant: _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_12__["typoPrefix_typedText"],
+    typographyPrefixConstant: _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_11__["typoPrefix_typedText"],
     resRequiredProps: resRequiredProps
   })), suffix && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__["PanelBody"], {
     title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Suffix Style"),
@@ -5533,7 +5530,7 @@ var Inspector = function Inspector(_ref) {
     }
   }), /*#__PURE__*/React.createElement(_util_typography_control_v2__WEBPACK_IMPORTED_MODULE_6__["default"], {
     baseLabel: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])("Typography", "typing-text"),
-    typographyPrefixConstant: _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_12__["typoPrefix_suffixText"],
+    typographyPrefixConstant: _constants_typographyPrefixConstants__WEBPACK_IMPORTED_MODULE_11__["typoPrefix_suffixText"],
     resRequiredProps: resRequiredProps
   }))));
 };

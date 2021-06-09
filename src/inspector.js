@@ -21,7 +21,6 @@ import ResponsiveDimensionsControl from "../util/dimensions-control-v2";
 import SortableText from "./sortable-text";
 import TypographyDropdown from "../util/typography-control-v2";
 import ColorControl from "../util/color-control";
-import ResetControl from "../util/reset-control";
 import BorderShadowControl from "../util/border-shadow-control";
 import BackgroundControl from "../util/background-control";
 import {
@@ -37,7 +36,6 @@ import { WrpBdShadow } from "./constants/borderShadowConstants";
 import { backgroundWrapper } from "./constants/backgroundsConstants";
 
 const Inspector = ({ attributes, setAttributes }) => {
-	console.log(attributes);
 	const {
 		// responsive control attributes ⬇
 		resOption,
@@ -121,33 +119,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 	return (
 		<InspectorControls key="controls">
 			<span className="eb-panel-control">
-				<PanelBody title={__("General Settings")}>
-					<ResponsiveDimensionsControl
-						resRequiredProps={resRequiredProps}
-						className="forWrapperMargin"
-						controlName={dimensionsMargin}
-						baseLabel="Margin"
-					/>
-					<ResponsiveDimensionsControl
-						resRequiredProps={resRequiredProps}
-						className="forWrapperPadding"
-						controlName={dimensionsPadding}
-						baseLabel="Padding"
-					/>
-					<PanelBody title={__("Border & Shadow")} initialOpen={false}>
-						<BorderShadowControl
-							controlName={WrpBdShadow}
-							resRequiredProps={resRequiredProps}
-						/>
-					</PanelBody>
-					<PanelBody title={__("Background")} initialOpen={false}>
-						<BackgroundControl
-							controlName={backgroundWrapper}
-							resRequiredProps={resRequiredProps}
-						/>
-					</PanelBody>
-				</PanelBody>
-				<PanelBody title={__("Content Settings")} initialOpen={false}>
+				<PanelBody title={__("Content Settings")}>
 					<TextControl
 						label={__("Prefix Text")}
 						placeholder={__("Add prefix text")}
@@ -261,6 +233,33 @@ const Inspector = ({ attributes, setAttributes }) => {
 							max={5000}
 						/>
 					)}
+				</PanelBody>
+
+				<PanelBody title={__("General Style")} initialOpen={false}>
+					<ResponsiveDimensionsControl
+						resRequiredProps={resRequiredProps}
+						className="forWrapperMargin"
+						controlName={dimensionsMargin}
+						baseLabel="Margin"
+					/>
+					<ResponsiveDimensionsControl
+						resRequiredProps={resRequiredProps}
+						className="forWrapperPadding"
+						controlName={dimensionsPadding}
+						baseLabel="Padding"
+					/>
+					<PanelBody title={__("Border & Shadow")} initialOpen={false}>
+						<BorderShadowControl
+							controlName={WrpBdShadow}
+							resRequiredProps={resRequiredProps}
+						/>
+					</PanelBody>
+					<PanelBody title={__("Background")} initialOpen={false}>
+						<BackgroundControl
+							controlName={backgroundWrapper}
+							resRequiredProps={resRequiredProps}
+						/>
+					</PanelBody>
 				</PanelBody>
 
 				{prefix && (
