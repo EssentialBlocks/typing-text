@@ -8,6 +8,10 @@ import {
 	useBlockProps,
 } from "@wordpress/block-editor";
 
+const { select } = wp.data;
+
+import "./editor.scss";
+
 import {
 	dimensionsMargin,
 	dimensionsPadding,
@@ -26,11 +30,10 @@ import {
 	generateDimensionsControlStyles,
 	generateBorderShadowStyles,
 	generateBackgroundControlStyles,
+	mimmikCssForPreviewBtnClick,
+	duplicateBlockIdFix,
 } from "../util/helpers";
-/**
- * Editor CSS
- */
-import "./editor.scss";
+
 /**
  * External dependencies
  */
@@ -133,60 +136,29 @@ export default function Edit(props) {
 
 	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
 	useEffect(() => {
-		const bodyClasses = document.body.className;
-
-		if (!/eb\-res\-option\-/i.test(bodyClasses)) {
-			document.body.classList.add("eb-res-option-desktop");
-			setAttributes({
-				resOption: "desktop",
-			});
-		} else {
-			const resOption = bodyClasses
-				.match(/eb-res-option-[^\s]+/g)[0]
-				.split("-")[3];
-			setAttributes({ resOption });
-		}
+		setAttributes({
+			resOption: select("core/edit-post").__experimentalGetPreviewDeviceType(),
+		});
 	}, []);
 
 	// this useEffect is for creating an unique id for each block's unique className by a random unique number
 	useEffect(() => {
 		const BLOCK_PREFIX = "eb-typing-text";
-		const unique_id =
-			BLOCK_PREFIX + "-" + Math.random().toString(36).substr(2, 7);
+		duplicateBlockIdFix({
+			BLOCK_PREFIX,
+			blockId,
+			setAttributes,
+			select,
+			clientId,
+		});
+	}, []);
 
-		/**
-		 * Define and Generate Unique Block ID
-		 */
-		if (!blockId) {
-			setAttributes({ blockId: unique_id });
-		}
-
-		/**
-		 * Assign New Unique ID when duplicate BlockId found
-		 * Mostly happens when User Duplicate a Block
-		 */
-		const all_blocks = wp.data.select("core/block-editor").getBlocks();
-
-		let duplicateFound = false;
-		const fixDuplicateBlockId = (blocks) => {
-			if (duplicateFound) return;
-			for (const item of blocks) {
-				const { innerBlocks } = item;
-				if (item.attributes.blockId === blockId) {
-					if (item.clientId !== clientId) {
-						setAttributes({ blockId: unique_id });
-						duplicateFound = true;
-						return;
-					} else if (innerBlocks.length > 0) {
-						fixDuplicateBlockId(innerBlocks);
-					}
-				} else if (innerBlocks.length > 0) {
-					fixDuplicateBlockId(innerBlocks);
-				}
-			}
-		};
-
-		fixDuplicateBlockId(all_blocks);
+	// this useEffect is for mimmiking css when responsive options clicked from wordpress's 'preview' button
+	useEffect(() => {
+		mimmikCssForPreviewBtnClick({
+			domObj: document,
+			select,
+		});
 	}, []);
 
 	const blockProps = useBlockProps({
@@ -426,8 +398,8 @@ export default function Edit(props) {
 
 				/* mimmikcssStart */
 
-				${resOption === "tab" ? tabAllStyles : " "}
-				${resOption === "mobile" ? tabAllStyles + mobileAllStyles : " "}
+				${resOption === "Tablet" ? tabAllStyles : " "}
+				${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
 
 				/* mimmikcssEnd */
 
