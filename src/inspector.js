@@ -1,17 +1,18 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
-import {
+const { __ } = wp.i18n;
+const {
 	PanelBody,
 	Button,
 	BaseControl,
 	ToggleControl,
 	RangeControl,
 	TextControl,
-} from "@wordpress/components";
-import { InspectorControls, PanelColorSettings } from "@wordpress/block-editor";
-import { useEffect } from "@wordpress/element";
+	TabPanel,
+} = wp.components;
+const { InspectorControls } = wp.blockEditor;
+const { useEffect } = wp.element;
 const { select } = wp.data;
 /**
  * Internal dependencies
@@ -95,198 +96,247 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 	return (
 		<InspectorControls key="controls">
-			<span className="eb-panel-control">
-				<PanelBody title={__("Content Settings")}>
-					<TextControl
-						label={__("Prefix Text")}
-						placeholder={__("Add prefix text")}
-						value={prefix}
-						onChange={(prefix) => setAttributes({ prefix })}
-					/>
+			<div className="eb-panel-control">
+				<TabPanel
+					className="eb-parent-tab-panel"
+					activeClass="active-tab"
+					// onSelect={onSelect}
+					tabs={[
+						{
+							name: "general",
+							title: "General",
+							className: "eb-tab general",
+						},
+						{
+							name: "styles",
+							title: "Styles",
+							className: "eb-tab styles",
+						},
+					]}
+				>
+					{(tab) => (
+						<div className={"eb-tab-controls" + tab.name}>
+							{tab.name === "general" && (
+								<>
+									<PanelBody title={__("Content Settings")}>
+										<TextControl
+											label={__("Prefix Text")}
+											placeholder={__("Add prefix text")}
+											value={prefix}
+											onChange={(prefix) => setAttributes({ prefix })}
+										/>
 
-					<BaseControl label={__("Typed Text")}>
-						{typedText.length !== 0 && (
-							<SortableText
-								typedText={typedText}
-								setAttributes={setAttributes}
-							/>
-						)}
-						<Button
-							className="is-default eb-typed-add-wrapper"
-							label={__("Add Typed Item")}
-							icon="plus-alt"
-							onClick={() => {
-								let updatedText = [
-									...typedText,
-									{
-										text: `Typed text ${typedText.length + 1}`,
-									},
-								];
+										<BaseControl label={__("Typed Text")}>
+											{typedText.length !== 0 && (
+												<SortableText
+													typedText={typedText}
+													setAttributes={setAttributes}
+												/>
+											)}
+											<Button
+												className="is-default eb-typed-add-wrapper"
+												label={__("Add Typed Item")}
+												icon="plus-alt"
+												onClick={() => {
+													let updatedText = [
+														...typedText,
+														{
+															text: `Typed text ${typedText.length + 1}`,
+														},
+													];
 
-								setAttributes({ typedText: updatedText });
-							}}
-						>
-							<span className="eb-typed-add-button">Add Typed Text</span>
-						</Button>
-					</BaseControl>
+													setAttributes({ typedText: updatedText });
+												}}
+											>
+												<span className="eb-typed-add-button">
+													Add Typed Text
+												</span>
+											</Button>
+										</BaseControl>
 
-					<TextControl
-						label={__("Suffix Text")}
-						placeholder={__("Add suffix text")}
-						value={suffix}
-						onChange={(suffix) => setAttributes({ suffix })}
-					/>
+										<TextControl
+											label={__("Suffix Text")}
+											placeholder={__("Add suffix text")}
+											value={suffix}
+											onChange={(suffix) => setAttributes({ suffix })}
+										/>
 
-					<ToggleControl
-						label={__("Loop")}
-						checked={loop}
-						onChange={() => setAttributes({ loop: !loop })}
-					/>
+										<ToggleControl
+											label={__("Loop")}
+											checked={loop}
+											onChange={() => setAttributes({ loop: !loop })}
+										/>
 
-					{!fadeOut && (
-						<ToggleControl
-							label={__("Smart Backspace")}
-							checked={smartBackspace}
-							onChange={() =>
-								setAttributes({ smartBackspace: !smartBackspace })
-							}
-						/>
+										{!fadeOut && (
+											<ToggleControl
+												label={__("Smart Backspace")}
+												checked={smartBackspace}
+												onChange={() =>
+													setAttributes({ smartBackspace: !smartBackspace })
+												}
+											/>
+										)}
+
+										<ToggleControl
+											label={__("Show Cursor")}
+											checked={showCursor}
+											onChange={() =>
+												setAttributes({ showCursor: !showCursor })
+											}
+										/>
+
+										<ToggleControl
+											label={__("Fade Out")}
+											checked={fadeOut}
+											onChange={() => setAttributes({ fadeOut: !fadeOut })}
+										/>
+
+										<RangeControl
+											label={__("Type Speed")}
+											value={typeSpeed}
+											onChange={(typeSpeed) => setAttributes({ typeSpeed })}
+											min={0}
+											max={5000}
+										/>
+
+										<RangeControl
+											label={__("Start Delay")}
+											value={startDelay}
+											onChange={(startDelay) => setAttributes({ startDelay })}
+											min={0}
+											max={1000}
+										/>
+
+										{!fadeOut && (
+											<RangeControl
+												label={__("Back Speed")}
+												value={backSpeed}
+												onChange={(backSpeed) => setAttributes({ backSpeed })}
+												min={0}
+												max={5000}
+											/>
+										)}
+
+										{!fadeOut && (
+											<RangeControl
+												label={__("Back Delay")}
+												value={backDelay}
+												onChange={(backDelay) => setAttributes({ backDelay })}
+												min={0}
+												max={10000}
+											/>
+										)}
+
+										{fadeOut && (
+											<RangeControl
+												label={__("Fade Delay")}
+												value={fadeOutDelay}
+												onChange={(fadeOutDelay) =>
+													setAttributes({ fadeOutDelay })
+												}
+												min={0}
+												max={5000}
+											/>
+										)}
+									</PanelBody>
+								</>
+							)}
+							{tab.name === "styles" && (
+								<>
+									<PanelBody title={__("Typing Text Box","typing-text")} initialOpen={false}>
+										<ResponsiveDimensionsControl
+											resRequiredProps={resRequiredProps}
+											className="forWrapperMargin"
+											controlName={dimensionsMargin}
+											baseLabel="Margin"
+										/>
+										<ResponsiveDimensionsControl
+											resRequiredProps={resRequiredProps}
+											className="forWrapperPadding"
+											controlName={dimensionsPadding}
+											baseLabel="Padding"
+										/>
+										<BaseControl>
+											<h3 className="eb-control-title">
+												{__("Border & Shadow", "typing-text")}
+											</h3>
+										</BaseControl>
+										<BorderShadowControl
+											controlName={WrpBdShadow}
+											resRequiredProps={resRequiredProps}
+										/>
+										<BaseControl>
+											<h3 className="eb-control-title">
+												{__("Background", "typing-text")}
+											</h3>
+										</BaseControl>
+										<BackgroundControl
+											controlName={backgroundWrapper}
+											resRequiredProps={resRequiredProps}
+										/>
+									</PanelBody>
+									{prefix && (
+										<PanelBody title={__("Prefix")} initialOpen={false}>
+											<ColorControl
+												label={__("Prefix Color")}
+												color={prefixColor}
+												onChange={(prefixColor) =>
+													setAttributes({ prefixColor })
+												}
+											/>
+
+											<TypographyDropdown
+												baseLabel={__("Typography", "typing-text")}
+												typographyPrefixConstant={typoPrefix_prefixText}
+												resRequiredProps={resRequiredProps}
+											/>
+										</PanelBody>
+									)}
+
+									{typedText.length && (
+										<PanelBody
+											title={__("Typed Text","typing-text")}
+											initialOpen={false}
+										>
+											<ColorControl
+												label={__("Typed Text Color","typing-text")}
+												color={typedTextColor}
+												onChange={(typedTextColor) =>
+													setAttributes({ typedTextColor })
+												}
+											/>
+
+											<TypographyDropdown
+												baseLabel={__("Typography", "typing-text")}
+												typographyPrefixConstant={typoPrefix_typedText}
+												resRequiredProps={resRequiredProps}
+											/>
+										</PanelBody>
+									)}
+
+									{suffix && (
+										<PanelBody title={__("Suffix","typing-text")} initialOpen={false}>
+											<ColorControl
+												label={__("Suffix Color","typing-text")}
+												color={suffixTextColor}
+												onChange={(suffixTextColor) =>
+													setAttributes({ suffixTextColor })
+												}
+											/>
+
+											<TypographyDropdown
+												baseLabel={__("Typography", "typing-text")}
+												typographyPrefixConstant={typoPrefix_suffixText}
+												resRequiredProps={resRequiredProps}
+											/>
+										</PanelBody>
+									)}
+								</>
+							)}
+						</div>
 					)}
-
-					<ToggleControl
-						label={__("Show Cursor")}
-						checked={showCursor}
-						onChange={() => setAttributes({ showCursor: !showCursor })}
-					/>
-
-					<ToggleControl
-						label={__("Fade Out")}
-						checked={fadeOut}
-						onChange={() => setAttributes({ fadeOut: !fadeOut })}
-					/>
-
-					<RangeControl
-						label={__("Type Speed")}
-						value={typeSpeed}
-						onChange={(typeSpeed) => setAttributes({ typeSpeed })}
-						min={0}
-						max={5000}
-					/>
-
-					<RangeControl
-						label={__("Start Delay")}
-						value={startDelay}
-						onChange={(startDelay) => setAttributes({ startDelay })}
-						min={0}
-						max={1000}
-					/>
-
-					{!fadeOut && (
-						<RangeControl
-							label={__("Back Speed")}
-							value={backSpeed}
-							onChange={(backSpeed) => setAttributes({ backSpeed })}
-							min={0}
-							max={5000}
-						/>
-					)}
-
-					{!fadeOut && (
-						<RangeControl
-							label={__("Back Delay")}
-							value={backDelay}
-							onChange={(backDelay) => setAttributes({ backDelay })}
-							min={0}
-							max={10000}
-						/>
-					)}
-
-					{fadeOut && (
-						<RangeControl
-							label={__("Fade Delay")}
-							value={fadeOutDelay}
-							onChange={(fadeOutDelay) => setAttributes({ fadeOutDelay })}
-							min={0}
-							max={5000}
-						/>
-					)}
-				</PanelBody>
-
-				<PanelBody title={__("General Style")} initialOpen={false}>
-					<ResponsiveDimensionsControl
-						resRequiredProps={resRequiredProps}
-						className="forWrapperMargin"
-						controlName={dimensionsMargin}
-						baseLabel="Margin"
-					/>
-					<ResponsiveDimensionsControl
-						resRequiredProps={resRequiredProps}
-						className="forWrapperPadding"
-						controlName={dimensionsPadding}
-						baseLabel="Padding"
-					/>
-					<PanelBody title={__("Border & Shadow")} initialOpen={false}>
-						<BorderShadowControl
-							controlName={WrpBdShadow}
-							resRequiredProps={resRequiredProps}
-						/>
-					</PanelBody>
-					<PanelBody title={__("Background")} initialOpen={false}>
-						<BackgroundControl
-							controlName={backgroundWrapper}
-							resRequiredProps={resRequiredProps}
-						/>
-					</PanelBody>
-				</PanelBody>
-
-				{prefix && (
-					<PanelBody title={__("Prefix Style")} initialOpen={false}>
-						<ColorControl
-							label={__("Prefix Color")}
-							color={prefixColor}
-							onChange={(prefixColor) => setAttributes({ prefixColor })}
-						/>
-
-						<TypographyDropdown
-							baseLabel={__("Typography", "typing-text")}
-							typographyPrefixConstant={typoPrefix_prefixText}
-							resRequiredProps={resRequiredProps}
-						/>
-					</PanelBody>
-				)}
-
-				{typedText.length && (
-					<PanelBody title={__("Typed Text Style")} initialOpen={false}>
-						<ColorControl
-							label={__("Typed Text Color")}
-							color={typedTextColor}
-							onChange={(typedTextColor) => setAttributes({ typedTextColor })}
-						/>
-
-						<TypographyDropdown
-							baseLabel={__("Typography", "typing-text")}
-							typographyPrefixConstant={typoPrefix_typedText}
-							resRequiredProps={resRequiredProps}
-						/>
-					</PanelBody>
-				)}
-
-				{suffix && (
-					<PanelBody title={__("Suffix Style")} initialOpen={false}>
-						<ColorControl
-							label={__("Suffix Color")}
-							color={suffixTextColor}
-							onChange={(suffixTextColor) => setAttributes({ suffixTextColor })}
-						/>
-
-						<TypographyDropdown
-							baseLabel={__("Typography", "typing-text")}
-							typographyPrefixConstant={typoPrefix_suffixText}
-							resRequiredProps={resRequiredProps}
-						/>
-					</PanelBody>
-				)}
-			</span>
+				</TabPanel>
+			</div>
 		</InspectorControls>
 	);
 };
