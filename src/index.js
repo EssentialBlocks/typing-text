@@ -1,5 +1,5 @@
-import { registerBlockType } from "@wordpress/blocks";
-import { __ } from "@wordpress/i18n";
+const { registerBlockType } = wp.blocks;
+const { __ } = wp.i18n;
 import "./style.scss";
 import Edit from "./edit";
 import save from "./save";
@@ -7,7 +7,6 @@ import icon from "./icon";
 import attributes from "./attributes";
 
 registerBlockType("typing-text/typing-text-block", {
-	apiVersion: 2,
 	title: __("Typing Text", "typing-text"),
 	description: __(
 		"Make Your Website Interactive With Typing Text Animation",

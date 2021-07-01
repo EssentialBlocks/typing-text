@@ -2,11 +2,7 @@
  * WordPress dependencies
  */
 const { useEffect, useRef, useState } = wp.element;
-const {
-	BlockControls,
-	AlignmentToolbar,
-	useBlockProps,
-} = wp.blockEditor;
+const { BlockControls, AlignmentToolbar, useBlockProps } = wp.blockEditor;
 
 const { select } = wp.data;
 

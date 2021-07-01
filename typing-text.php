@@ -34,12 +34,16 @@ function create_block_typing_text_block_init()
 		);
 	}
 	$index_js = 'build/index.js';
-	$script_asset = require($script_asset_path);
 	wp_register_script(
 		'create-block-typing-text-block-editor',
 		plugins_url($index_js, __FILE__),
-		$script_asset['dependencies'],
-		$script_asset['version']
+		array(
+			'wp-blocks',
+			'wp-i18n',
+			'wp-element',
+			'wp-block-editor',
+		),
+		filemtime("$dir/$index_js")
 	);
 
 	$editor_css = 'build/index.css';
