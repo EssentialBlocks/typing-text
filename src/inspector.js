@@ -273,6 +273,8 @@ const Inspector = ({ attributes, setAttributes }) => {
 										<BackgroundControl
 											controlName={backgroundWrapper}
 											resRequiredProps={resRequiredProps}
+											noOverlay={true}
+											noMainBgi={true}
 										/>
 									</PanelBody>
 									{prefix && (

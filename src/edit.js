@@ -221,6 +221,7 @@ export default function Edit(props) {
 		stylesHoverDesktop: bdShadowStylesHoverDesktop,
 		stylesHoverTab: bdShadowStylesHoverTab,
 		stylesHoverMobile: bdShadowStylesHoverMobile,
+		transitionStyle: bdShadowTransitionStyle,
 	} = generateBorderShadowStyles({
 		controlName: WrpBdShadow,
 		attributes,
@@ -230,19 +231,12 @@ export default function Edit(props) {
 	const {
 		backgroundStylesDesktop: wrpBackgroundStylesDesktop,
 		hoverBackgroundStylesDesktop: wrpHoverBackgroundStylesDesktop,
-		backgroundStylesTab: wrpBackgroundStylesTab,
-		hoverBackgroundStylesTab: wrpHoverBackgroundStylesTab,
-		backgroundStylesMobile: wrpBackgroundStylesMobile,
-		hoverBackgroundStylesMobile: wrpHoverBackgroundStylesMobile,
-		overlayStylesDesktop: wrpOverlayStylesDesktop,
-		hoverOverlayStylesDesktop: wrpHoverOverlayStylesDesktop,
-		overlayStylesTab: wrpOverlayStylesTab,
-		hoverOverlayStylesTab: wrpHoverOverlayStylesTab,
-		overlayStylesMobile: wrpOverlayStylesMobile,
-		hoverOverlayStylesMobile: wrpHoverOverlayStylesMobile,
+		bgTransitionStyle: wrpBgTransitionStyle,
 	} = generateBackgroundControlStyles({
 		attributes,
 		controlName: backgroundWrapper,
+		noOverlay: true,
+		noMainBgi: true,
 	});
 
 	// wrapper styles css in strings ⬇
@@ -254,6 +248,7 @@ export default function Edit(props) {
 		${bdShadowStyesDesktop}
 		${wrpBackgroundStylesDesktop}
 		text-align: ${textAlign};
+		transition: ${wrpBgTransitionStyle}, ${bdShadowTransitionStyle};
 	}
 
 	.eb-typed-wrapper.${blockId}:hover {
@@ -262,15 +257,7 @@ export default function Edit(props) {
 	}
 
 	.eb-typed-wrapper.${blockId}:before {
-		${wrpOverlayStylesDesktop}
-	}
-
-	.eb-typed-wrapper.${blockId}:before {
 		z-index: -11;
-	}
-	
-	.eb-typed-wrapper.${blockId}:hover:before {
-		${wrpHoverOverlayStylesDesktop}
 	}
 	`;
 
@@ -279,20 +266,10 @@ export default function Edit(props) {
 		${wrapperMarginStylesTab}
 		${wrapperPaddingStylesTab}
 		${bdShadowStyesTab}
-		${wrpBackgroundStylesTab}
 	}
 
 	.eb-typed-wrapper.${blockId}:hover {
-		${wrpHoverBackgroundStylesTab}
 		${bdShadowStylesHoverTab}
-	}
-
-	.eb-typed-wrapper.${blockId}:before {
-		${wrpOverlayStylesTab}
-	}
-	
-	.eb-typed-wrapper.${blockId}:hover:before {
-		${wrpHoverOverlayStylesTab}
 	}
 	`;
 
@@ -301,20 +278,10 @@ export default function Edit(props) {
 		${wrapperMarginStylesMobile}
 		${wrapperPaddingStylesMobile}
 		${bdShadowStyesMobile}
-		${wrpBackgroundStylesMobile}
 	}
 
 	.eb-typed-wrapper.${blockId}:hover {
-		${wrpHoverBackgroundStylesMobile}
 		${bdShadowStylesHoverMobile}
-	}
-
-	.eb-typed-wrapper.${blockId}:before {
-		${wrpOverlayStylesMobile}
-	}
-	
-	.eb-typed-wrapper.${blockId}:hover:before {
-		${wrpHoverOverlayStylesMobile}
 	}
 	`;
 

@@ -121,7 +121,10 @@ const attributes = {
 	...generateDimensionsAttributes(dimensionsMargin),
 	...generateDimensionsAttributes(dimensionsPadding),
 	// background Attributes
-	...generateBackgroundAttributes(backgroundWrapper),
+	...generateBackgroundAttributes(backgroundWrapper, {
+		noOverlay: true,
+		noMainBgi: true,
+	}),
 };
 
 export default attributes;
