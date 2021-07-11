@@ -1,9 +1,9 @@
 === Typing Text ===
-Contributors: wpdevteam, re_enter_rupok, Asif2BD, alam789
+Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir
 Tags: block, blocks, typing text, animated text, type text, typewriter, animated, gutenberg, gutenberg blocks
 Requires at least: 5.0
-Tested up to: 5.5
-Stable tag: 1.0.3
+Tested up to: 5.7
+Stable tag: 1.1.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -11,7 +11,7 @@ Engage your potential audience with an exciting promo.
 
 == Description ==
 
-Want to make your website more interactive? Using this Typing Text plugin for block editor, you can create eye-catching animated typing text in WordPress website. 
+Want to make your website more interactive? Using this Typing Text plugin for block editor, you can create eye-catching animated typing text in WordPress website.
 
 Easily use this typing text effects inside blog posts or pages & impress your visitors.
 
@@ -22,7 +22,7 @@ Easily use this typing text effects inside blog posts or pages & impress your vi
 🧑‍💻 **Dedicated Support:** We’ve an extraordinary support team ready to help you. Ask your questions in the support forum, we’ll get back to you immediately
 
 
-## 🚀 BACKED BY A TRUSTED TEAM ## 
+## 🚀 BACKED BY A TRUSTED TEAM ##
 
 This Block is brought to you by [WPDeveloper](https://wpdeveloper.net), the team behind the most popular elements library [Essential Addons for Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/) (used by almost 700,000 happy users from 180+ countries).
 
@@ -63,7 +63,7 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 = Modern Way: =
 1. Go to the WordPress Block/Gutenberg Editor
-2. Search For "Typing Text". 
+2. Search For "Typing Text".
 3. Install in 1-click
 
 = Old Way: =
@@ -82,8 +82,21 @@ Yes, it will work with any standard WordPress theme.
 
 
 == Changelog ==
+
+= 1.1.2 - 11/07/2021
+* Improved: Inspector Panel Design & controls
+* Improved: Responsive Device Preview improved. Now the preview options synced with the wordpress's default preview button.
+
+= 1.1.1 - 19/05/2021 =
+* Hotfix: minor compatibility issue
+
+= 1.1.0 - 19/05/2021 =
+* Added: Dynamic asset generation for inline styles
+* Added: Responsive control
+* Improved: Controls and structure
+
 = 1.0.3 - 22/11/2020 =
-* Fixed prefix space issue 
+* Fixed prefix space issue
 
 = 1.0.2 - 09/09/2020 =
 * Fixed missing js file
