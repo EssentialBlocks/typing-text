@@ -3,7 +3,7 @@ Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir
 Tags: block, blocks, typing text, animated text, type text, typewriter, animated, gutenberg, gutenberg blocks
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,7 +83,7 @@ Yes, it will work with any standard WordPress theme.
 
 == Changelog ==
 
-= 1.1.2 - (dev)
+= 1.1.2 - 11/07/2021
 * Improved: Inspector Panel Design & controls
 * Improved: Responsive Device Preview improved. Now the preview options synced with the wordpress's default preview button.
 
