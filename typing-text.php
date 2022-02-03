@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
@@ -21,73 +22,75 @@
 
 require_once __DIR__ . '/includes/font-loader.php';
 require_once __DIR__ . '/includes/post-meta.php';
+require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/lib/style-handler/style-handler.php';
 
 function create_block_typing_text_block_init()
 {
-	$dir = dirname(__FILE__);
 
-	$script_asset_path = "$dir/build/index.asset.php";
+	define('TYPING_TEXT_BLOCKS_VERSION', "1.1.3");
+	define('TYPING_TEXT_BLOCKS_ADMIN_URL', plugin_dir_url(__FILE__));
+	define('TYPING_TEXT_BLOCKS_ADMIN_PATH', dirname(__FILE__));
+
+	$script_asset_path = TYPING_TEXT_BLOCKS_ADMIN_PATH . "/dist/index.asset.php";
 	if (!file_exists($script_asset_path)) {
 		throw new Error(
 			'You need to run `npm start` or `npm run build` for the "typing-text/typing-text-block" block first.'
 		);
 	}
-	$index_js = 'build/index.js';
+	$index_js = TYPING_TEXT_BLOCKS_ADMIN_URL . 'dist/index.js';
+	$script_asset = require($script_asset_path);
+	$all_dependencies = array_merge($script_asset['dependencies'], array(
+		'wp-blocks',
+		'wp-i18n',
+		'wp-element',
+		'wp-block-editor',
+		'typing-text-blocks-controls-util'
+	));
+
 	wp_register_script(
-		'create-block-typing-text-block-editor',
-		plugins_url($index_js, __FILE__),
-		array(
-			'wp-blocks',
-			'wp-i18n',
-			'wp-element',
-			'wp-block-editor',
-		),
-		filemtime("$dir/$index_js")
+		'typing-text-block-editor-js',
+		$index_js,
+		$all_dependencies,
+		$script_asset['version']
 	);
 
-	$editor_css = 'build/index.css';
+	$style_css = TYPING_TEXT_BLOCKS_ADMIN_URL . 'dist/style.css';
 	wp_register_style(
-		'create-block-typing-text-block-editor',
-		plugins_url($editor_css, __FILE__),
+		'typing-text-block-frontend-style',
+		$style_css,
 		array(),
-		filemtime("$dir/$editor_css")
+		filemtime(TYPING_TEXT_BLOCKS_ADMIN_PATH . '/dist/style.css')
 	);
 
-	$style_css = 'build/style-index.css';
-	wp_register_style(
-		'create-block-typing-text-block',
-		plugins_url($style_css, __FILE__),
-		array(),
-		filemtime("$dir/$style_css")
-	);
-
-	$typed_js = 'assets/js/typed.min.js';
+	$typed_js = TYPING_TEXT_BLOCKS_ADMIN_URL . 'assets/js/typed.min.js';
 	wp_register_script(
-		'essential-blocks-typedjs',
-		plugins_url($typed_js, __FILE__),
+		'typig-text-blocks-typedjs',
+		$typed_js,
 		array("jquery"),
 		true
 	);
 
-	$frontend_js_path = include_once dirname(__FILE__)."/build/frontend.asset.php";
-	$frontend_js = "build/frontend.js";
+	$frontend_js_path = include_once dirname(__FILE__) . "/dist/frontend/index.asset.php";
+	$frontend_js = "dist/frontend/index.js";
 	wp_register_script(
-		'essential-blocks-typing-text-frontend',
+		'eb-typing-text-frontend',
 		plugins_url($frontend_js, __FILE__),
-		array_merge( array("essential-blocks-typedjs", "jquery"), $frontend_js_path['dependencies'] ),
+		array_merge(array("typig-text-blocks-typedjs", "jquery"), $frontend_js_path['dependencies']),
 		$frontend_js_path['version'],
 		true
 	);
 
 
 	if (!WP_Block_Type_Registry::get_instance()->is_registered('essential-blocks/typing-text')) {
-		register_block_type('typing-text/typing-text-block', array(
-			'editor_script' => 'create-block-typing-text-block-editor',
-			'editor_style' => 'create-block-typing-text-block-editor',
-			'style' => 'create-block-typing-text-block',
-			'script' => 'essential-blocks-typing-text-frontend'
-		));
+		register_block_type(
+			Typing_Text_Helper::get_block_register_path('typing-text/typing-text-block', TYPING_TEXT_BLOCKS_ADMIN_PATH),
+			array(
+				'editor_script' => 'typing-text-block-editor-js',
+				'style' => 'typing-text-block-frontend-style',
+				'script' => 'eb-typing-text-frontend'
+			)
+		);
 	}
 }
 

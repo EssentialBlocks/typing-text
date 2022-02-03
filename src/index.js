@@ -1,25 +1,29 @@
-const { registerBlockType } = wp.blocks;
-const { __ } = wp.i18n;
-import "./style.scss";
-import Edit from "./edit";
-import save from "./save";
-import icon from "./icon";
-import attributes from "./attributes";
+/**
+ * WordPress dependencies
+ */
+import { __ } from "@wordpress/i18n";
 
-registerBlockType("typing-text/typing-text-block", {
-	title: __("Typing Text", "typing-text"),
-	description: __(
-		"Make Your Website Interactive With Typing Text Animation",
-		"typing-text"
-	),
-	category: "widgets",
+/**
+ * Internal dependencies
+ */
+import Edit from "./edit";
+import Save from "./save";
+import { TypingTextIcon } from "./icon";
+import example from "./example";
+import metadata from "../block.json";
+import attributes from "./attributes";
+import "./style.scss";
+const { ebConditionalRegisterBlockType } = EBTypingTextControls;
+
+ebConditionalRegisterBlockType(metadata, {
+	icon: TypingTextIcon,
 	keywords: [
-		__("EB typing text", "essential-blocks"),
-		__("typing", "essential-blocks"),
-		__("typing text", "essential-blocks"),
+		__("Typing Text", "essential-blocks"),
+		__("animated Text", "essential-blocks"),
+		__("eb typing", "essential-blocks"),
 	],
-	icon,
 	attributes,
 	edit: Edit,
-	save,
+	save: Save,
+	example,
 });

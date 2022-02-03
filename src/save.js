@@ -1,4 +1,5 @@
-const { useBlockProps } = wp.blockEditor;
+import { useBlockProps } from "@wordpress/block-editor";
+
 const Save = ({ attributes }) => {
 	const {
 		blockId,

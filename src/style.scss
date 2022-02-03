@@ -24,7 +24,6 @@
 	text-overflow: ellipsis;
 	width: 200px;
 	white-space: nowrap;
-	align-self: center;
 }
 
 .eb-typed-input-wrapper {
@@ -38,6 +37,7 @@
 .eb-typed-sortable-trash {
 	font-size: 16px;
 	border-left: 1px solid gray;
+	line-height: 2.5em;
 	flex: 1;
 	text-align: center;
 	padding: 8px;
@@ -62,24 +62,7 @@
 	fill: url(#SVGID_3_TYPED);
 }
 
-// Typography style
-.eb-typography-base div {
-	display: flex;
-	justify-content: space-between;
-}
-
-.drag-handle {
-	flex: 1;
-	background: darkgrey;
-	border-right: 1px solid;
-	cursor: move;
-	color: #ffffff;
-	align-items: center;
-	display: flex !important;
-	justify-content: center;
-}
-
-.drag-helper {
-  z-index: 100;
-  list-style: none;
+// for background overlay
+.eb-typed-wrapper > * {
+	position: relative;
 }
