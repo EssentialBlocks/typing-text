@@ -165,8 +165,6 @@ export default function Edit(props) {
 		setAttributes({ suffix: "of the sentence." });
 	}, []);
 
-	console.log("attributes", { attributes });
-
 	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
 	useEffect(() => {
 		setAttributes({
@@ -280,8 +278,6 @@ export default function Edit(props) {
 		noOverlay: true,
 		noMainBgi: true,
 	});
-
-	console.log("Attributes", { attributes });
 
 	// wrapper styles css in strings ⬇
 	const wrapperStylesDesktop = `
