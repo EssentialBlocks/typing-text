@@ -2,7 +2,11 @@
  * WordPress dependencies
  */
 import { useEffect, useRef, useState } from "@wordpress/element";
-import { BlockControls, AlignmentToolbar, useBlockProps } from "@wordpress/block-editor";
+import {
+	BlockControls,
+	AlignmentToolbar,
+	useBlockProps,
+} from "@wordpress/block-editor";
 import { select } from "@wordpress/data";
 
 import {
@@ -26,7 +30,6 @@ import { backgroundWrapper } from "./constants/backgroundsConstants";
 // 	duplicateBlockIdFix,
 // } from "../../../util/helpers";
 
-
 const {
 	softMinifyCssStrings,
 	generateTypographyStyles,
@@ -42,8 +45,6 @@ const editorStoreForGettingPreivew =
 		? "core/edit-site"
 		: "core/edit-post";
 
-
-
 /**
  * External dependencies
  */
@@ -52,7 +53,7 @@ import Typed from "typed.js";
 /**
  * Internal dependencies
  */
- import classnames from "classnames";
+import classnames from "classnames";
 
 import Inspector from "./inspector";
 
@@ -152,20 +153,26 @@ export default function Edit(props) {
 
 		const defaultTypedText = [
 			{
-				text: "First Typed Text",
+				text: "first string",
 			},
 			{
-				text: "Second Typed Text",
+				text: "second string",
 			},
 		];
 
 		setAttributes({ typedText: defaultTypedText });
+		setAttributes({ prefix: "This is the " });
+		setAttributes({ suffix: "of the sentence." });
 	}, []);
+
+	console.log("attributes", { attributes });
 
 	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
 	useEffect(() => {
 		setAttributes({
-			resOption: select(editorStoreForGettingPreivew).__experimentalGetPreviewDeviceType(),
+			resOption: select(
+				editorStoreForGettingPreivew
+			).__experimentalGetPreviewDeviceType(),
 		});
 	}, []);
 
@@ -222,6 +229,7 @@ export default function Edit(props) {
 		typoStylesMobile: prefixTextTypoStylesMobile,
 	} = generateTypographyStyles({
 		attributes,
+		defaultFontSize: 22,
 		prefixConstant: typoPrefix_prefixText,
 	});
 
@@ -232,6 +240,7 @@ export default function Edit(props) {
 		typoStylesMobile: suffixTextTypoStylesMobile,
 	} = generateTypographyStyles({
 		attributes,
+		defaultFontSize: 22,
 		prefixConstant: typoPrefix_suffixText,
 	});
 
@@ -242,6 +251,7 @@ export default function Edit(props) {
 		typoStylesMobile: typedTextTypoStylesMobile,
 	} = generateTypographyStyles({
 		attributes,
+		defaultFontSize: 22,
 		prefixConstant: typoPrefix_typedText,
 	});
 
@@ -270,6 +280,8 @@ export default function Edit(props) {
 		noOverlay: true,
 		noMainBgi: true,
 	});
+
+	console.log("Attributes", { attributes });
 
 	// wrapper styles css in strings ⬇
 	const wrapperStylesDesktop = `
@@ -359,20 +371,20 @@ export default function Edit(props) {
 
 	// typed text styles css in strings ⬇
 	const typedTypoStylesDesktop = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view,.${blockId} .typed-cursor{
 		${typedTextTypoStylesDesktop}		
 		color: ${typedTextColor || "#fff"};
 	}
 	`;
 
 	const typedTypoStylesTab = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
 		${typedTextTypoStylesTab}
 	}
 	`;
 
 	const typedTypoStylesMobile = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
 		${typedTextTypoStylesMobile}
 	}
 	`;
@@ -412,50 +424,52 @@ export default function Edit(props) {
 		}
 	}, [attributes]);
 
-	return [
-		<BlockControls>
-			<AlignmentToolbar
-				value={textAlign}
-				onChange={(textAlign) => setAttributes({ textAlign })}
-			/>
-		</BlockControls>,
-		isSelected && (
-			<Inspector attributes={attributes} setAttributes={setAttributes} />
-		),
-		<div {...blockProps}>
-			<style>
-				{`
-				${desktopAllStyles}
+	return (
+		<>
+			<BlockControls>
+				<AlignmentToolbar
+					value={textAlign}
+					onChange={(textAlign) => setAttributes({ textAlign })}
+				/>
+			</BlockControls>
+			{isSelected && (
+				<Inspector attributes={attributes} setAttributes={setAttributes} />
+			)}
+			<div {...blockProps}>
+				<style>
+					{`
+			${desktopAllStyles}
 
-				/* mimmikcssStart */
+			/* mimmikcssStart */
 
-				${resOption === "Tablet" ? tabAllStyles : " "}
-				${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
+			${resOption === "Tablet" ? tabAllStyles : " "}
+			${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
 
-				/* mimmikcssEnd */
+			/* mimmikcssEnd */
 
-				@media all and (max-width: 1024px) {	
+			@media all and (max-width: 1024px) {	
 
-					/* tabcssStart */			
-					${softMinifyCssStrings(tabAllStyles)}
-					/* tabcssEnd */			
+				/* tabcssStart */			
+				${softMinifyCssStrings(tabAllStyles)}
+				/* tabcssEnd */			
+			
+			}
+			
+			@media all and (max-width: 767px) {
 				
-				}
-				
-				@media all and (max-width: 767px) {
-					
-					/* mobcssStart */			
-					${softMinifyCssStrings(mobileAllStyles)}
-					/* mobcssEnd */			
-				
-				}
-				`}
-			</style>
-			<div className={`eb-typed-wrapper ${blockId}`} data-id={blockId}>
-				<span className="eb-typed-prefix">{prefix}</span>
-				<span className="eb-typed-text" ref={block} />
-				<span className="eb-typed-suffix">{suffix}</span>
+				/* mobcssStart */			
+				${softMinifyCssStrings(mobileAllStyles)}
+				/* mobcssEnd */			
+			
+			}
+			`}
+				</style>
+				<div className={`eb-typed-wrapper ${blockId}`} data-id={blockId}>
+					<span className="eb-typed-prefix">{prefix}</span>
+					<span className="eb-typed-text" ref={block} />
+					<span className="eb-typed-suffix">{suffix}</span>
+				</div>
 			</div>
-		</div>,
-	];
+		</>
+	);
 }

@@ -125,6 +125,18 @@ const attributes = {
 		noOverlay: true,
 		noMainBgi: true,
 	}),
+	typedTextFontWeight: {
+		type: "string",
+		default: 600,
+	},
+	prefixTextFontWeight: {
+		type: "string",
+		default: 600,
+	},
+	suffixTextFontWeight: {
+		type: "string",
+		default: 600,
+	},
 };
 
 export default attributes;

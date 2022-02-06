@@ -119,6 +119,11 @@ const Inspector = ({ attributes, setAttributes }) => {
 							title: __("Style", "essential-blocks"),
 							className: "eb-tab styles",
 						},
+						{
+							name: "advanced",
+							title: __("Advanced", "essential-blocks"),
+							className: "eb-tab styles",
+						},
 					]}
 				>
 					{(tab) => (
@@ -250,43 +255,6 @@ const Inspector = ({ attributes, setAttributes }) => {
 							)}
 							{tab.name === "styles" && (
 								<>
-									<PanelBody
-										title={__("Typing Text Box", "essential-blocks")}
-										initialOpen={false}
-									>
-										<ResponsiveDimensionsControl
-											resRequiredProps={resRequiredProps}
-											className="forWrapperMargin"
-											controlName={dimensionsMargin}
-											baseLabel="Margin"
-										/>
-										<ResponsiveDimensionsControl
-											resRequiredProps={resRequiredProps}
-											className="forWrapperPadding"
-											controlName={dimensionsPadding}
-											baseLabel="Padding"
-										/>
-										<BaseControl>
-											<h3 className="eb-control-title">
-												{__("Border & Shadow", "typing-text")}
-											</h3>
-										</BaseControl>
-										<BorderShadowControl
-											controlName={WrpBdShadow}
-											resRequiredProps={resRequiredProps}
-										/>
-										<BaseControl>
-											<h3 className="eb-control-title">
-												{__("Background", "essential-blocks")}
-											</h3>
-										</BaseControl>
-										<BackgroundControl
-											controlName={backgroundWrapper}
-											resRequiredProps={resRequiredProps}
-											noOverlay={true}
-											noMainBgi={true}
-										/>
-									</PanelBody>
 									{prefix && (
 										<PanelBody
 											title={__("Prefix", "essential-blocks")}
@@ -349,6 +317,44 @@ const Inspector = ({ attributes, setAttributes }) => {
 											/>
 										</PanelBody>
 									)}
+								</>
+							)}
+							{tab.name === "advanced" && (
+								<>
+									<PanelBody>
+										<ResponsiveDimensionsControl
+											resRequiredProps={resRequiredProps}
+											className="forWrapperMargin"
+											controlName={dimensionsMargin}
+											baseLabel="Margin"
+										/>
+										<ResponsiveDimensionsControl
+											resRequiredProps={resRequiredProps}
+											className="forWrapperPadding"
+											controlName={dimensionsPadding}
+											baseLabel="Padding"
+										/>
+										<BaseControl>
+											<h3 className="eb-control-title">
+												{__("Border & Shadow", "typing-text")}
+											</h3>
+										</BaseControl>
+										<BorderShadowControl
+											controlName={WrpBdShadow}
+											resRequiredProps={resRequiredProps}
+										/>
+										<BaseControl>
+											<h3 className="eb-control-title">
+												{__("Background", "essential-blocks")}
+											</h3>
+										</BaseControl>
+										<BackgroundControl
+											controlName={backgroundWrapper}
+											resRequiredProps={resRequiredProps}
+											noOverlay={true}
+											noMainBgi={true}
+										/>
+									</PanelBody>
 								</>
 							)}
 						</div>
