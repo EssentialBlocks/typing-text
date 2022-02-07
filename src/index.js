@@ -18,9 +18,9 @@ const { ebConditionalRegisterBlockType } = EBTypingTextControls;
 ebConditionalRegisterBlockType(metadata, {
 	icon: TypingTextIcon,
 	keywords: [
-		__("Typing Text", "essential-blocks"),
-		__("animated Text", "essential-blocks"),
-		__("eb typing", "essential-blocks"),
+		__("Typing Text", "typing-text"),
+		__("animated Text", "typing-text"),
+		__("eb typing", "typing-text"),
 	],
 	attributes,
 	edit: Edit,
