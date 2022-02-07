@@ -82,6 +82,12 @@ Yes, it will work with any standard WordPress theme.
 
 
 == Changelog ==
+= monir-dev =
+* Improved: Controls and structure
+* Added: Added WP 5.9 Version
+* Added: Advanced Tab In Inspector Panel
+* Update: Default View 
+
 = 1.1.3 - 19/08/2021 =
 * Improved: Security for asset generation
 
