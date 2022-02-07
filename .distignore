@@ -57,4 +57,5 @@ lib/style-handler/style-handler.js
 lib/style-handler/gitignore
 lib/style-handler/dist/index.js.map
 lib/style-handler/README.md
+dist/*.*.map
 
