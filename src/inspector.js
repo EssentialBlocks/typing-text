@@ -1,8 +1,10 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const {
+import { __ } from "@wordpress/i18n";
+import { useEffect } from "@wordpress/element";
+import { InspectorControls } from "@wordpress/block-editor";
+import {
 	PanelBody,
 	Button,
 	BaseControl,
@@ -10,20 +12,27 @@ const {
 	RangeControl,
 	TextControl,
 	TabPanel,
-} = wp.components;
-const { InspectorControls } = wp.blockEditor;
-const { useEffect } = wp.element;
-const { select } = wp.data;
+} from "@wordpress/components";
+import { select } from "@wordpress/data";
 /**
  * Internal dependencies
  */
-
-import ResponsiveDimensionsControl from "../util/dimensions-control-v2";
 import SortableText from "./sortable-text";
-import TypographyDropdown from "../util/typography-control-v2";
-import ColorControl from "../util/color-control";
-import BorderShadowControl from "../util/border-shadow-control";
-import BackgroundControl from "../util/background-control";
+import objAttributes from "./attributes";
+
+const {
+	ResponsiveDimensionsControl,
+	TypographyDropdown,
+	ColorControl,
+	BorderShadowControl,
+	BackgroundControl,
+} = window.EBTypingTextControls;
+
+const editorStoreForGettingPreivew =
+	eb_style_handler.editor_type === "edit-site"
+		? "core/edit-site"
+		: "core/edit-post";
+
 import {
 	dimensionsMargin,
 	dimensionsPadding,
@@ -35,10 +44,6 @@ import {
 } from "./constants/typographyPrefixConstants";
 import { WrpBdShadow } from "./constants/borderShadowConstants";
 import { backgroundWrapper } from "./constants/backgroundsConstants";
-import {
-	mimmikCssForResBtns,
-	mimmikCssOnPreviewBtnClickWhileBlockSelected,
-} from "../util/helpers";
 
 const Inspector = ({ attributes, setAttributes }) => {
 	const {
@@ -64,34 +69,37 @@ const Inspector = ({ attributes, setAttributes }) => {
 	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class only the first time once
 	useEffect(() => {
 		setAttributes({
-			resOption: select("core/edit-post").__experimentalGetPreviewDeviceType(),
+			resOption: select(
+				editorStoreForGettingPreivew
+			).__experimentalGetPreviewDeviceType(),
 		});
 	}, []);
 
-	// this useEffect is for mimmiking css for all the eb blocks on resOption changing
-	useEffect(() => {
-		mimmikCssForResBtns({
-			domObj: document,
-			resOption,
-		});
-	}, [resOption]);
+	// // this useEffect is for mimmiking css for all the eb blocks on resOption changing
+	// useEffect(() => {
+	// 	mimmikCssForResBtns({
+	// 		domObj: document,
+	// 		resOption,
+	// 	});
+	// }, [resOption]);
 
-	// this useEffect is to mimmik css for responsive preview in the editor page when clicking the buttons in the 'Preview button of wordpress' located beside the 'update' button while any block is selected and it's inspector panel is mounted in the DOM
-	useEffect(() => {
-		const cleanUp = mimmikCssOnPreviewBtnClickWhileBlockSelected({
-			domObj: document,
-			select,
-			setAttributes,
-		});
-		return () => {
-			cleanUp();
-		};
-	}, []);
+	// // this useEffect is to mimmik css for responsive preview in the editor page when clicking the buttons in the 'Preview button of wordpress' located beside the 'update' button while any block is selected and it's inspector panel is mounted in the DOM
+	// useEffect(() => {
+	// 	const cleanUp = mimmikCssOnPreviewBtnClickWhileBlockSelected({
+	// 		domObj: document,
+	// 		select,
+	// 		setAttributes,
+	// 	});
+	// 	return () => {
+	// 		cleanUp();
+	// 	};
+	// }, []);
 
 	const resRequiredProps = {
 		setAttributes,
 		resOption,
 		attributes,
+		objAttributes,
 	};
 
 	return (
@@ -100,16 +108,20 @@ const Inspector = ({ attributes, setAttributes }) => {
 				<TabPanel
 					className="eb-parent-tab-panel"
 					activeClass="active-tab"
-					// onSelect={onSelect}
 					tabs={[
 						{
 							name: "general",
-							title: "General",
+							title: __("General", "typing-text"),
 							className: "eb-tab general",
 						},
 						{
 							name: "styles",
-							title: "Styles",
+							title: __("Style", "typing-text"),
+							className: "eb-tab styles",
+						},
+						{
+							name: "advanced",
+							title: __("Advanced", "typing-text"),
 							className: "eb-tab styles",
 						},
 					]}
@@ -118,15 +130,15 @@ const Inspector = ({ attributes, setAttributes }) => {
 						<div className={"eb-tab-controls" + tab.name}>
 							{tab.name === "general" && (
 								<>
-									<PanelBody title={__("Content Settings")}>
+									<PanelBody title={__("Content Settings", "typing-text")}>
 										<TextControl
-											label={__("Prefix Text")}
-											placeholder={__("Add prefix text")}
+											label={__("Prefix Text", "typing-text")}
+											placeholder={__("Add prefix text", "typing-text")}
 											value={prefix}
 											onChange={(prefix) => setAttributes({ prefix })}
 										/>
 
-										<BaseControl label={__("Typed Text")}>
+										<BaseControl label={__("Typed Text", "typing-text")}>
 											{typedText.length !== 0 && (
 												<SortableText
 													typedText={typedText}
@@ -135,7 +147,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 											)}
 											<Button
 												className="is-default eb-typed-add-wrapper"
-												label={__("Add Typed Item")}
+												label={__("Add Typed Item", "typing-text")}
 												icon="plus-alt"
 												onClick={() => {
 													let updatedText = [
@@ -155,21 +167,21 @@ const Inspector = ({ attributes, setAttributes }) => {
 										</BaseControl>
 
 										<TextControl
-											label={__("Suffix Text")}
-											placeholder={__("Add suffix text")}
+											label={__("Suffix Text", "typing-text")}
+											placeholder={__("Add suffix text", "typing-text")}
 											value={suffix}
 											onChange={(suffix) => setAttributes({ suffix })}
 										/>
 
 										<ToggleControl
-											label={__("Loop")}
+											label={__("Loop", "typing-text")}
 											checked={loop}
 											onChange={() => setAttributes({ loop: !loop })}
 										/>
 
 										{!fadeOut && (
 											<ToggleControl
-												label={__("Smart Backspace")}
+												label={__("Smart Backspace", "typing-text")}
 												checked={smartBackspace}
 												onChange={() =>
 													setAttributes({ smartBackspace: !smartBackspace })
@@ -178,7 +190,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 										)}
 
 										<ToggleControl
-											label={__("Show Cursor")}
+											label={__("Show Cursor", "typing-text")}
 											checked={showCursor}
 											onChange={() =>
 												setAttributes({ showCursor: !showCursor })
@@ -186,13 +198,13 @@ const Inspector = ({ attributes, setAttributes }) => {
 										/>
 
 										<ToggleControl
-											label={__("Fade Out")}
+											label={__("Fade Out", "typing-text")}
 											checked={fadeOut}
 											onChange={() => setAttributes({ fadeOut: !fadeOut })}
 										/>
 
 										<RangeControl
-											label={__("Type Speed")}
+											label={__("Type Speed", "typing-text")}
 											value={typeSpeed}
 											onChange={(typeSpeed) => setAttributes({ typeSpeed })}
 											min={0}
@@ -200,7 +212,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 										/>
 
 										<RangeControl
-											label={__("Start Delay")}
+											label={__("Start Delay", "typing-text")}
 											value={startDelay}
 											onChange={(startDelay) => setAttributes({ startDelay })}
 											min={0}
@@ -209,7 +221,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 										{!fadeOut && (
 											<RangeControl
-												label={__("Back Speed")}
+												label={__("Back Speed", "typing-text")}
 												value={backSpeed}
 												onChange={(backSpeed) => setAttributes({ backSpeed })}
 												min={0}
@@ -219,7 +231,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 										{!fadeOut && (
 											<RangeControl
-												label={__("Back Delay")}
+												label={__("Back Delay", "typing-text")}
 												value={backDelay}
 												onChange={(backDelay) => setAttributes({ backDelay })}
 												min={0}
@@ -229,7 +241,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 										{fadeOut && (
 											<RangeControl
-												label={__("Fade Delay")}
+												label={__("Fade Delay", "typing-text")}
 												value={fadeOutDelay}
 												onChange={(fadeOutDelay) =>
 													setAttributes({ fadeOutDelay })
@@ -243,7 +255,73 @@ const Inspector = ({ attributes, setAttributes }) => {
 							)}
 							{tab.name === "styles" && (
 								<>
-									<PanelBody title={__("Typing Text Box","typing-text")} initialOpen={false}>
+									{prefix && (
+										<PanelBody
+											title={__("Prefix", "typing-text")}
+											initialOpen={false}
+										>
+											<ColorControl
+												label={__("Prefix Color", "typing-text")}
+												color={prefixColor}
+												onChange={(prefixColor) =>
+													setAttributes({ prefixColor })
+												}
+											/>
+
+											<TypographyDropdown
+												baseLabel={__("Typography", "typing-text")}
+												typographyPrefixConstant={typoPrefix_prefixText}
+												resRequiredProps={resRequiredProps}
+											/>
+										</PanelBody>
+									)}
+
+									{typedText.length && (
+										<PanelBody
+											title={__("Typed Text", "typing-text")}
+											initialOpen={false}
+										>
+											<ColorControl
+												label={__("Typed Text Color", "typing-text")}
+												color={typedTextColor}
+												onChange={(typedTextColor) =>
+													setAttributes({ typedTextColor })
+												}
+											/>
+
+											<TypographyDropdown
+												baseLabel={__("Typography", "typing-text")}
+												typographyPrefixConstant={typoPrefix_typedText}
+												resRequiredProps={resRequiredProps}
+											/>
+										</PanelBody>
+									)}
+
+									{suffix && (
+										<PanelBody
+											title={__("Suffix", "typing-text")}
+											initialOpen={false}
+										>
+											<ColorControl
+												label={__("Suffix Color", "typing-text")}
+												color={suffixTextColor}
+												onChange={(suffixTextColor) =>
+													setAttributes({ suffixTextColor })
+												}
+											/>
+
+											<TypographyDropdown
+												baseLabel={__("Typography", "typing-text")}
+												typographyPrefixConstant={typoPrefix_suffixText}
+												resRequiredProps={resRequiredProps}
+											/>
+										</PanelBody>
+									)}
+								</>
+							)}
+							{tab.name === "advanced" && (
+								<>
+									<PanelBody>
 										<ResponsiveDimensionsControl
 											resRequiredProps={resRequiredProps}
 											className="forWrapperMargin"
@@ -277,62 +355,6 @@ const Inspector = ({ attributes, setAttributes }) => {
 											noMainBgi={true}
 										/>
 									</PanelBody>
-									{prefix && (
-										<PanelBody title={__("Prefix")} initialOpen={false}>
-											<ColorControl
-												label={__("Prefix Color")}
-												color={prefixColor}
-												onChange={(prefixColor) =>
-													setAttributes({ prefixColor })
-												}
-											/>
-
-											<TypographyDropdown
-												baseLabel={__("Typography", "typing-text")}
-												typographyPrefixConstant={typoPrefix_prefixText}
-												resRequiredProps={resRequiredProps}
-											/>
-										</PanelBody>
-									)}
-
-									{typedText.length && (
-										<PanelBody
-											title={__("Typed Text","typing-text")}
-											initialOpen={false}
-										>
-											<ColorControl
-												label={__("Typed Text Color","typing-text")}
-												color={typedTextColor}
-												onChange={(typedTextColor) =>
-													setAttributes({ typedTextColor })
-												}
-											/>
-
-											<TypographyDropdown
-												baseLabel={__("Typography", "typing-text")}
-												typographyPrefixConstant={typoPrefix_typedText}
-												resRequiredProps={resRequiredProps}
-											/>
-										</PanelBody>
-									)}
-
-									{suffix && (
-										<PanelBody title={__("Suffix","typing-text")} initialOpen={false}>
-											<ColorControl
-												label={__("Suffix Color","typing-text")}
-												color={suffixTextColor}
-												onChange={(suffixTextColor) =>
-													setAttributes({ suffixTextColor })
-												}
-											/>
-
-											<TypographyDropdown
-												baseLabel={__("Typography", "typing-text")}
-												typographyPrefixConstant={typoPrefix_suffixText}
-												resRequiredProps={resRequiredProps}
-											/>
-										</PanelBody>
-									)}
 								</>
 							)}
 						</div>

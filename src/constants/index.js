@@ -1,4 +1,4 @@
-const { __ } = wp.i18n;
+import { __ } from "@wordpress/i18n";
 
 export const UNIT_TYPES = [
 	{ label: "px", value: "px" },
@@ -7,34 +7,34 @@ export const UNIT_TYPES = [
 ];
 
 export const BORDER_STYLES = [
-	{ label: __("Solid"), value: "solid" },
-	{ label: __("Dashed"), value: "dashed" },
-	{ label: __("Dotted"), value: "dotted" },
-	{ label: __("Double"), value: "double" },
-	{ label: __("Groove"), value: "groove" },
-	{ label: __("Inset"), value: "inset" },
-	{ label: __("Outset"), value: "outset" },
-	{ label: __("Ridge"), value: "ridge" },
+	{ label: __("Solid", "typing-text"), value: "solid" },
+	{ label: __("Dashed", "typing-text"), value: "dashed" },
+	{ label: __("Dotted", "typing-text"), value: "dotted" },
+	{ label: __("Double", "typing-text"), value: "double" },
+	{ label: __("Groove", "typing-text"), value: "groove" },
+	{ label: __("Inset", "typing-text"), value: "inset" },
+	{ label: __("Outset", "typing-text"), value: "outset" },
+	{ label: __("Ridge", "typing-text"), value: "ridge" },
 ];
 
 export const TEXT_DECORATION = [
-	{ label: __("Initial"), value: "initial" },
-	{ label: __("Overline"), value: "overline" },
-	{ label: __("Line Through"), value: "line-through" },
-	{ label: __("Underline"), value: "underline" },
-	{ label: __("Underline Oveline"), value: "underline overline" },
+	{ label: __("Initial", "typing-text"), value: "initial" },
+	{ label: __("Overline", "typing-text"), value: "overline" },
+	{ label: __("Line Through", "typing-text"), value: "line-through" },
+	{ label: __("Underline", "typing-text"), value: "underline" },
+	{ label: __("Underline Oveline", "typing-text"), value: "underline overline" },
 ];
 
 export const TEXT_TRANSFORM = [
-	{ label: __("None"), value: "none" },
-	{ label: __("Capitalize"), value: "capitalize" },
-	{ label: __("Uppercase"), value: "uppercase" },
-	{ label: __("Lowercase"), value: "lowercase" },
+	{ label: __("None", "typing-text"), value: "none" },
+	{ label: __("Capitalize", "typing-text"), value: "capitalize" },
+	{ label: __("Uppercase", "typing-text"), value: "uppercase" },
+	{ label: __("Lowercase", "typing-text"), value: "lowercase" },
 ];
 
 export const FONT_WEIGHTS = [
-	{ label: __("Normal"), value: "normal" },
-	{ label: __("Bold"), value: "bold" },
-	{ label: __("Lighter"), value: "lighter" },
-	{ label: __("Bolder"), value: "bolder" },
+	{ label: __("Normal", "typing-text"), value: "normal" },
+	{ label: __("Bold", "typing-text"), value: "bold" },
+	{ label: __("Lighter", "typing-text"), value: "lighter" },
+	{ label: __("Bolder", "typing-text"), value: "bolder" },
 ];
