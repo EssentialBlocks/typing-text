@@ -5,12 +5,19 @@ import {
 } from "./constants/dimensionsNames";
 import { WrpBdShadow } from "./constants/borderShadowConstants";
 import { backgroundWrapper } from "./constants/backgroundsConstants";
-import {
+// import {
+// 	generateTypographyAttributes,
+// 	generateDimensionsAttributes,
+// 	generateBackgroundAttributes,
+// 	generateBorderShadowAttributes,
+// } from "../../../util/helpers";
+
+const {
 	generateTypographyAttributes,
 	generateDimensionsAttributes,
 	generateBackgroundAttributes,
 	generateBorderShadowAttributes,
-} from "../util/helpers";
+} = window.EBTypingTextControls;
 
 const attributes = {
 	// responsive control attributes ⬇
@@ -47,14 +54,7 @@ const attributes = {
 				source: "text",
 			},
 		},
-		default: [
-			{
-				text: "First Typed Text",
-			},
-			{
-				text: "Second Typed Text",
-			},
-		],
+		default: [],
 	},
 	suffix: {
 		type: "string",
@@ -125,6 +125,18 @@ const attributes = {
 		noOverlay: true,
 		noMainBgi: true,
 	}),
+	typedTextFontWeight: {
+		type: "string",
+		default: 600,
+	},
+	prefixTextFontWeight: {
+		type: "string",
+		default: 600,
+	},
+	suffixTextFontWeight: {
+		type: "string",
+		default: 600,
+	},
 };
 
 export default attributes;

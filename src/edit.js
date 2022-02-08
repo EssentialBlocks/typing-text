@@ -1,12 +1,13 @@
 /**
  * WordPress dependencies
  */
-const { useEffect, useRef, useState } = wp.element;
-const { BlockControls, AlignmentToolbar, useBlockProps } = wp.blockEditor;
-
-const { select } = wp.data;
-
-import "./editor.scss";
+import { useEffect, useRef, useState } from "@wordpress/element";
+import {
+	BlockControls,
+	AlignmentToolbar,
+	useBlockProps,
+} from "@wordpress/block-editor";
+import { select } from "@wordpress/data";
 
 import {
 	dimensionsMargin,
@@ -19,28 +20,45 @@ import {
 } from "./constants/typographyPrefixConstants";
 import { WrpBdShadow } from "./constants/borderShadowConstants";
 import { backgroundWrapper } from "./constants/backgroundsConstants";
-import {
+// import {
+// 	softMinifyCssStrings,
+// 	generateTypographyStyles,
+// 	generateDimensionsControlStyles,
+// 	generateBorderShadowStyles,
+// 	generateBackgroundControlStyles,
+// 	mimmikCssForPreviewBtnClick,
+// 	duplicateBlockIdFix,
+// } from "../../../util/helpers";
+
+const {
 	softMinifyCssStrings,
-	isCssExists,
 	generateTypographyStyles,
 	generateDimensionsControlStyles,
 	generateBorderShadowStyles,
 	generateBackgroundControlStyles,
-	mimmikCssForPreviewBtnClick,
+	// mimmikCssForPreviewBtnClick,
 	duplicateBlockIdFix,
-} from "../util/helpers";
+} = window.EBTypingTextControls;
+
+const editorStoreForGettingPreivew =
+	eb_style_handler.editor_type === "edit-site"
+		? "core/edit-site"
+		: "core/edit-post";
 
 /**
  * External dependencies
  */
 import Typed from "typed.js";
+
 /**
  * Internal dependencies
  */
+import classnames from "classnames";
+
 import Inspector from "./inspector";
 
 export default function Edit(props) {
-	const { attributes, setAttributes, clientId, isSelected } = props;
+	const { attributes, setAttributes, className, clientId, isSelected } = props;
 	const {
 		blockId,
 		blockMeta,
@@ -130,10 +148,29 @@ export default function Edit(props) {
 		showCursor,
 	]);
 
+	useEffect(() => {
+		if (typedText.length > 0) return;
+
+		const defaultTypedText = [
+			{
+				text: "first string",
+			},
+			{
+				text: "second string",
+			},
+		];
+
+		setAttributes({ typedText: defaultTypedText });
+		setAttributes({ prefix: "This is the " });
+		setAttributes({ suffix: "of the sentence." });
+	}, []);
+
 	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
 	useEffect(() => {
 		setAttributes({
-			resOption: select("core/edit-post").__experimentalGetPreviewDeviceType(),
+			resOption: select(
+				editorStoreForGettingPreivew
+			).__experimentalGetPreviewDeviceType(),
 		});
 	}, []);
 
@@ -149,16 +186,16 @@ export default function Edit(props) {
 		});
 	}, []);
 
-	// this useEffect is for mimmiking css when responsive options clicked from wordpress's 'preview' button
-	useEffect(() => {
-		mimmikCssForPreviewBtnClick({
-			domObj: document,
-			select,
-		});
-	}, []);
+	// // this useEffect is for mimmiking css when responsive options clicked from wordpress's 'preview' button
+	// useEffect(() => {
+	// 	mimmikCssForPreviewBtnClick({
+	// 		domObj: document,
+	// 		select,
+	// 	});
+	// }, []);
 
 	const blockProps = useBlockProps({
-		className: `eb-guten-block-main-parent-wrapper`,
+		className: classnames(className, `eb-guten-block-main-parent-wrapper`),
 	});
 
 	// Return if there is no typed text
@@ -190,6 +227,7 @@ export default function Edit(props) {
 		typoStylesMobile: prefixTextTypoStylesMobile,
 	} = generateTypographyStyles({
 		attributes,
+		defaultFontSize: 22,
 		prefixConstant: typoPrefix_prefixText,
 	});
 
@@ -200,6 +238,7 @@ export default function Edit(props) {
 		typoStylesMobile: suffixTextTypoStylesMobile,
 	} = generateTypographyStyles({
 		attributes,
+		defaultFontSize: 22,
 		prefixConstant: typoPrefix_suffixText,
 	});
 
@@ -210,6 +249,7 @@ export default function Edit(props) {
 		typoStylesMobile: typedTextTypoStylesMobile,
 	} = generateTypographyStyles({
 		attributes,
+		defaultFontSize: 22,
 		prefixConstant: typoPrefix_typedText,
 	});
 
@@ -327,46 +367,46 @@ export default function Edit(props) {
 
 	// typed text styles css in strings ⬇
 	const typedTypoStylesDesktop = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view,.${blockId} .typed-cursor{
 		${typedTextTypoStylesDesktop}		
 		color: ${typedTextColor || "#fff"};
 	}
 	`;
 
 	const typedTypoStylesTab = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
 		${typedTextTypoStylesTab}
 	}
 	`;
 
 	const typedTypoStylesMobile = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view{
+	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
 		${typedTextTypoStylesMobile}
 	}
 	`;
 
 	// all css styles for large screen width (desktop/laptop) in strings ⬇
 	const desktopAllStyles = softMinifyCssStrings(`
-		${isCssExists(wrapperStylesDesktop) ? wrapperStylesDesktop : " "}
-		${isCssExists(prefixTypoStylesDesktop) ? prefixTypoStylesDesktop : " "}
-		${isCssExists(suffixTypoStylesDesktop) ? suffixTypoStylesDesktop : " "}
-		${isCssExists(typedTypoStylesDesktop) ? typedTypoStylesDesktop : " "}
+		${wrapperStylesDesktop}
+		${prefixTypoStylesDesktop}
+		${suffixTypoStylesDesktop}
+		${typedTypoStylesDesktop}
 	`);
 
 	// all css styles for Tab in strings ⬇
 	const tabAllStyles = softMinifyCssStrings(`
-		${isCssExists(wrapperStylesTab) ? wrapperStylesTab : " "}
-		${isCssExists(prefixTypoStylesTab) ? prefixTypoStylesTab : " "}
-		${isCssExists(suffixTypoStylesTab) ? suffixTypoStylesTab : " "}
-		${isCssExists(typedTypoStylesTab) ? typedTypoStylesTab : " "}
+		${wrapperStylesTab}
+		${prefixTypoStylesTab}
+		${suffixTypoStylesTab}
+		${typedTypoStylesTab}
 	`);
 
 	// all css styles for Mobile in strings ⬇
 	const mobileAllStyles = softMinifyCssStrings(`
-		${isCssExists(wrapperStylesMobile) ? wrapperStylesMobile : " "}
-		${isCssExists(prefixTypoStylesMobile) ? prefixTypoStylesMobile : " "}
-		${isCssExists(suffixTypoStylesMobile) ? suffixTypoStylesMobile : " "}
-		${isCssExists(typedTypoStylesMobile) ? typedTypoStylesMobile : " "}
+		${wrapperStylesMobile}
+		${prefixTypoStylesMobile}
+		${suffixTypoStylesMobile}
+		${typedTypoStylesMobile}
 	`);
 	// Set All Style in "blockMeta" Attribute
 	useEffect(() => {
@@ -380,50 +420,52 @@ export default function Edit(props) {
 		}
 	}, [attributes]);
 
-	return [
-		<BlockControls>
-			<AlignmentToolbar
-				value={textAlign}
-				onChange={(textAlign) => setAttributes({ textAlign })}
-			/>
-		</BlockControls>,
-		isSelected && (
-			<Inspector attributes={attributes} setAttributes={setAttributes} />
-		),
-		<div {...blockProps}>
-			<style>
-				{`
-				${desktopAllStyles}
+	return (
+		<>
+			<BlockControls>
+				<AlignmentToolbar
+					value={textAlign}
+					onChange={(textAlign) => setAttributes({ textAlign })}
+				/>
+			</BlockControls>
+			{isSelected && (
+				<Inspector attributes={attributes} setAttributes={setAttributes} />
+			)}
+			<div {...blockProps}>
+				<style>
+					{`
+			${desktopAllStyles}
 
-				/* mimmikcssStart */
+			/* mimmikcssStart */
 
-				${resOption === "Tablet" ? tabAllStyles : " "}
-				${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
+			${resOption === "Tablet" ? tabAllStyles : " "}
+			${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
 
-				/* mimmikcssEnd */
+			/* mimmikcssEnd */
 
-				@media all and (max-width: 1024px) {	
+			@media all and (max-width: 1024px) {	
 
-					/* tabcssStart */			
-					${softMinifyCssStrings(tabAllStyles)}
-					/* tabcssEnd */			
+				/* tabcssStart */			
+				${softMinifyCssStrings(tabAllStyles)}
+				/* tabcssEnd */			
+			
+			}
+			
+			@media all and (max-width: 767px) {
 				
-				}
-				
-				@media all and (max-width: 767px) {
-					
-					/* mobcssStart */			
-					${softMinifyCssStrings(mobileAllStyles)}
-					/* mobcssEnd */			
-				
-				}
-				`}
-			</style>
-			<div className={`eb-typed-wrapper ${blockId}`} data-id={blockId}>
-				<span className="eb-typed-prefix">{prefix}</span>
-				<span className="eb-typed-text" ref={block} />
-				<span className="eb-typed-suffix">{suffix}</span>
+				/* mobcssStart */			
+				${softMinifyCssStrings(mobileAllStyles)}
+				/* mobcssEnd */			
+			
+			}
+			`}
+				</style>
+				<div className={`eb-typed-wrapper ${blockId}`} data-id={blockId}>
+					<span className="eb-typed-prefix">{prefix}</span>
+					<span className="eb-typed-text" ref={block} />
+					<span className="eb-typed-suffix">{suffix}</span>
+				</div>
 			</div>
-		</div>,
-	];
+		</>
+	);
 }

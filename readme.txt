@@ -82,10 +82,14 @@ Yes, it will work with any standard WordPress theme.
 
 
 == Changelog ==
+= 1.2.0 - 08/02/2022 =
+* Improved: Controls and structure
+* Added: Added WP 5.9 Version
+* Added: Advanced Tab In Inspector Panel
+* Update: Default View
 
-= 1.1.3 - 23/08/2021 =
+= 1.1.3 - 19/08/2021 =
 * Improved: Security for asset generation
-* Fixed: Warning in controls
 
 = 1.1.2 - 11/07/2021 =
 * Improved: Inspector Panel Design & controls
@@ -112,4 +116,4 @@ Yes, it will work with any standard WordPress theme.
 * Initial Release
 
 == Upgrade Notice ==
-[Minor update] Bugfix and stability
+[Minor update] Security improvement
