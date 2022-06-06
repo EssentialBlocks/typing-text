@@ -20,15 +20,6 @@ import {
 } from "./constants/typographyPrefixConstants";
 import { WrpBdShadow } from "./constants/borderShadowConstants";
 import { backgroundWrapper } from "./constants/backgroundsConstants";
-// import {
-// 	softMinifyCssStrings,
-// 	generateTypographyStyles,
-// 	generateDimensionsControlStyles,
-// 	generateBorderShadowStyles,
-// 	generateBackgroundControlStyles,
-// 	mimmikCssForPreviewBtnClick,
-// 	duplicateBlockIdFix,
-// } from "../../../util/helpers";
 
 const {
 	softMinifyCssStrings,
@@ -41,7 +32,7 @@ const {
 } = window.EBTypingTextControls;
 
 const editorStoreForGettingPreivew =
-	eb_style_handler.editor_type === "edit-site"
+	eb_conditional_localize.editor_type === "edit-site"
 		? "core/edit-site"
 		: "core/edit-post";
 
@@ -80,6 +71,7 @@ export default function Edit(props) {
 		typedTextColor,
 		suffixTextColor,
 		textAlign,
+		classHook,
 	} = attributes;
 	const block = useRef(null);
 	const [typed, setTyped] = useState(null);
@@ -186,14 +178,6 @@ export default function Edit(props) {
 		});
 	}, []);
 
-	// // this useEffect is for mimmiking css when responsive options clicked from wordpress's 'preview' button
-	// useEffect(() => {
-	// 	mimmikCssForPreviewBtnClick({
-	// 		domObj: document,
-	// 		select,
-	// 	});
-	// }, []);
-
 	const blockProps = useBlockProps({
 		className: classnames(className, `eb-guten-block-main-parent-wrapper`),
 	});
@@ -281,133 +265,133 @@ export default function Edit(props) {
 
 	// wrapper styles css in strings ⬇
 	const wrapperStylesDesktop = `
-
-	.eb-typed-wrapper.${blockId} {
-		${wrapperMarginStylesDesktop}
-		${wrapperPaddingStylesDesktop}
-		${bdShadowStyesDesktop}
-		${wrpBackgroundStylesDesktop}
-		text-align: ${textAlign};
-		transition: ${wrpBgTransitionStyle}, ${bdShadowTransitionStyle};
-	}
-
-	.eb-typed-wrapper.${blockId}:hover {
-		${wrpHoverBackgroundStylesDesktop}
-		${bdShadowStylesHoverDesktop}
-	}
-
-	.eb-typed-wrapper.${blockId}:before {
-		z-index: -11;
-	}
-	`;
+ 
+	 .eb-typed-wrapper.${blockId} {
+		 ${wrapperMarginStylesDesktop}
+		 ${wrapperPaddingStylesDesktop}
+		 ${bdShadowStyesDesktop}
+		 ${wrpBackgroundStylesDesktop}
+		 text-align: ${textAlign};
+		 transition: ${wrpBgTransitionStyle}, ${bdShadowTransitionStyle};
+	 }
+ 
+	 .eb-typed-wrapper.${blockId}:hover {
+		 ${wrpHoverBackgroundStylesDesktop}
+		 ${bdShadowStylesHoverDesktop}
+	 }
+ 
+	 .eb-typed-wrapper.${blockId}:before {
+		 z-index: -11;
+	 }
+	 `;
 
 	const wrapperStylesTab = `
-	.eb-typed-wrapper.${blockId}{
-		${wrapperMarginStylesTab}
-		${wrapperPaddingStylesTab}
-		${bdShadowStyesTab}
-	}
-
-	.eb-typed-wrapper.${blockId}:hover {
-		${bdShadowStylesHoverTab}
-	}
-	`;
+	 .eb-typed-wrapper.${blockId}{
+		 ${wrapperMarginStylesTab}
+		 ${wrapperPaddingStylesTab}
+		 ${bdShadowStyesTab}
+	 }
+ 
+	 .eb-typed-wrapper.${blockId}:hover {
+		 ${bdShadowStylesHoverTab}
+	 }
+	 `;
 
 	const wrapperStylesMobile = `
-	.eb-typed-wrapper.${blockId}{
-		${wrapperMarginStylesMobile}
-		${wrapperPaddingStylesMobile}
-		${bdShadowStyesMobile}
-	}
-
-	.eb-typed-wrapper.${blockId}:hover {
-		${bdShadowStylesHoverMobile}
-	}
-	`;
+	 .eb-typed-wrapper.${blockId}{
+		 ${wrapperMarginStylesMobile}
+		 ${wrapperPaddingStylesMobile}
+		 ${bdShadowStyesMobile}
+	 }
+ 
+	 .eb-typed-wrapper.${blockId}:hover {
+		 ${bdShadowStylesHoverMobile}
+	 }
+	 `;
 
 	// prefix text styles css in strings ⬇
 	const prefixTypoStylesDesktop = `
-	.${blockId} .eb-typed-prefix{
-		${prefixTextTypoStylesDesktop}		
-		color: ${prefixColor || "#fff"};
-	}
-	`;
+	 .${blockId} .eb-typed-prefix{
+		 ${prefixTextTypoStylesDesktop}		
+		 color: ${prefixColor || "#fff"};
+	 }
+	 `;
 
 	const prefixTypoStylesTab = `
-	.${blockId} .eb-typed-prefix{
-		${prefixTextTypoStylesTab}
-	}
-	`;
+	 .${blockId} .eb-typed-prefix{
+		 ${prefixTextTypoStylesTab}
+	 }
+	 `;
 
 	const prefixTypoStylesMobile = `
-	.${blockId} .eb-typed-prefix{
-		${prefixTextTypoStylesMobile}
-	}
-	`;
+	 .${blockId} .eb-typed-prefix{
+		 ${prefixTextTypoStylesMobile}
+	 }
+	 `;
 
 	// suffix text styles css in strings ⬇
 	const suffixTypoStylesDesktop = `
-	.${blockId} .eb-typed-suffix{
-		${suffixTextTypoStylesDesktop}		
-		color: ${suffixTextColor || "#fff"};
-	}
-	`;
+	 .${blockId} .eb-typed-suffix{
+		 ${suffixTextTypoStylesDesktop}		
+		 color: ${suffixTextColor || "#fff"};
+	 }
+	 `;
 
 	const suffixTypoStylesTab = `
-	.${blockId} .eb-typed-suffix{
-		${suffixTextTypoStylesTab}
-	}
-	`;
+	 .${blockId} .eb-typed-suffix{
+		 ${suffixTextTypoStylesTab}
+	 }
+	 `;
 
 	const suffixTypoStylesMobile = `
-	.${blockId} .eb-typed-suffix{
-		${suffixTextTypoStylesMobile}
-	}
-	`;
+	 .${blockId} .eb-typed-suffix{
+		 ${suffixTextTypoStylesMobile}
+	 }
+	 `;
 
 	// typed text styles css in strings ⬇
 	const typedTypoStylesDesktop = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view,.${blockId} .typed-cursor{
-		${typedTextTypoStylesDesktop}		
-		color: ${typedTextColor || "#fff"};
-	}
-	`;
+	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view,.${blockId} .typed-cursor{
+		 ${typedTextTypoStylesDesktop}		
+		 color: ${typedTextColor || "#fff"};
+	 }
+	 `;
 
 	const typedTypoStylesTab = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
-		${typedTextTypoStylesTab}
-	}
-	`;
+	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
+		 ${typedTextTypoStylesTab}
+	 }
+	 `;
 
 	const typedTypoStylesMobile = `
-	.${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
-		${typedTextTypoStylesMobile}
-	}
-	`;
+	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
+		 ${typedTextTypoStylesMobile}
+	 }
+	 `;
 
 	// all css styles for large screen width (desktop/laptop) in strings ⬇
 	const desktopAllStyles = softMinifyCssStrings(`
-		${wrapperStylesDesktop}
-		${prefixTypoStylesDesktop}
-		${suffixTypoStylesDesktop}
-		${typedTypoStylesDesktop}
-	`);
+		 ${wrapperStylesDesktop}
+		 ${prefixTypoStylesDesktop}
+		 ${suffixTypoStylesDesktop}
+		 ${typedTypoStylesDesktop}
+	 `);
 
 	// all css styles for Tab in strings ⬇
 	const tabAllStyles = softMinifyCssStrings(`
-		${wrapperStylesTab}
-		${prefixTypoStylesTab}
-		${suffixTypoStylesTab}
-		${typedTypoStylesTab}
-	`);
+		 ${wrapperStylesTab}
+		 ${prefixTypoStylesTab}
+		 ${suffixTypoStylesTab}
+		 ${typedTypoStylesTab}
+	 `);
 
 	// all css styles for Mobile in strings ⬇
 	const mobileAllStyles = softMinifyCssStrings(`
-		${wrapperStylesMobile}
-		${prefixTypoStylesMobile}
-		${suffixTypoStylesMobile}
-		${typedTypoStylesMobile}
-	`);
+		 ${wrapperStylesMobile}
+		 ${prefixTypoStylesMobile}
+		 ${suffixTypoStylesMobile}
+		 ${typedTypoStylesMobile}
+	 `);
 	// Set All Style in "blockMeta" Attribute
 	useEffect(() => {
 		const styleObject = {
@@ -434,36 +418,38 @@ export default function Edit(props) {
 			<div {...blockProps}>
 				<style>
 					{`
-			${desktopAllStyles}
+				${desktopAllStyles}
 
-			/* mimmikcssStart */
+				/* mimmikcssStart */
 
-			${resOption === "Tablet" ? tabAllStyles : " "}
-			${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
+				${resOption === "Tablet" ? tabAllStyles : " "}
+				${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
 
-			/* mimmikcssEnd */
+				/* mimmikcssEnd */
 
-			@media all and (max-width: 1024px) {	
+				@media all and (max-width: 1024px) {	
 
-				/* tabcssStart */			
-				${softMinifyCssStrings(tabAllStyles)}
-				/* tabcssEnd */			
-			
-			}
-			
-			@media all and (max-width: 767px) {
+					/* tabcssStart */		
+					${softMinifyCssStrings(tabAllStyles)}
+					/* tabcssEnd */			
 				
-				/* mobcssStart */			
-				${softMinifyCssStrings(mobileAllStyles)}
-				/* mobcssEnd */			
-			
-			}
-			`}
+				}
+				
+				@media all and (max-width: 767px) {
+					
+					/* mobcssStart */			
+					${softMinifyCssStrings(mobileAllStyles)}
+					/* mobcssEnd */			
+				
+				}
+				`}
 				</style>
-				<div className={`eb-typed-wrapper ${blockId}`} data-id={blockId}>
-					<span className="eb-typed-prefix">{prefix}</span>
-					<span className="eb-typed-text" ref={block} />
-					<span className="eb-typed-suffix">{suffix}</span>
+				<div className={`eb-parent-wrapper eb-parent-${blockId} ${classHook}`}>
+					<div className={`eb-typed-wrapper ${blockId}`} data-id={blockId}>
+						<span className="eb-typed-prefix">{prefix}</span>
+						<span className="eb-typed-text" ref={block} />
+						<span className="eb-typed-suffix">{suffix}</span>
+					</div>
 				</div>
 			</div>
 		</>

@@ -2,8 +2,8 @@
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir
 Tags: block, blocks, typing text, animated text, type text, typewriter, animated, gutenberg, gutenberg blocks
 Requires at least: 5.0
-Tested up to: 5.9
-Stable tag: 1.2.1
+Tested up to: 6.0
+Stable tag: 1.2.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +82,11 @@ Yes, it will work with any standard WordPress theme.
 
 
 == Changelog ==
+
+= 1.2.2 - 06/06/2022 =
+* Added: Animation, Custom Css and Responsive options
+* Improved: Controls & structure
+
 = 1.2.1 - 08/02/2022 =
 * Improved: Controls and structure
 * Added: Added WP 5.9 Version

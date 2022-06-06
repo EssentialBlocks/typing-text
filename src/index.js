@@ -12,18 +12,20 @@ import { TypingTextIcon } from "./icon";
 import example from "./example";
 import metadata from "../block.json";
 import attributes from "./attributes";
+import deprecated from "./deprecated";
 import "./style.scss";
 const { ebConditionalRegisterBlockType } = EBTypingTextControls;
 
 ebConditionalRegisterBlockType(metadata, {
 	icon: TypingTextIcon,
 	keywords: [
-		__("Typing Text", "typing-text"),
-		__("animated Text", "typing-text"),
-		__("eb typing", "typing-text"),
+		__("Typing Text", "essential-blocks"),
+		__("animated Text", "essential-blocks"),
+		__("eb typing", "essential-blocks"),
 	],
 	attributes,
 	edit: Edit,
 	save: Save,
 	example,
+	deprecated,
 });

@@ -3,7 +3,7 @@
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
- * Version:         1.2.1
+ * Version:         1.2.2
  * Author:          WPDeveloper
  * Author URI:      https://wpdeveloper.net
  * License:         GPL-3.0-or-later
@@ -28,7 +28,7 @@ require_once __DIR__ . '/lib/style-handler/style-handler.php';
 function create_block_typing_text_block_init()
 {
 
-	define('TYPING_TEXT_BLOCKS_VERSION', "1.2.1");
+	define('TYPING_TEXT_BLOCKS_VERSION', "1.2.2");
 	define('TYPING_TEXT_BLOCKS_ADMIN_URL', plugin_dir_url(__FILE__));
 	define('TYPING_TEXT_BLOCKS_ADMIN_PATH', dirname(__FILE__));
 
@@ -55,11 +55,28 @@ function create_block_typing_text_block_init()
 		$script_asset['version']
 	);
 
+	$load_animation_js = TYPING_TEXT_BLOCKS_ADMIN_URL . 'assets/js/eb-animation-load.js';
+	wp_register_script(
+		'essential-blocks-eb-animation',
+		$load_animation_js,
+		array(),
+		TYPING_TEXT_BLOCKS_VERSION,
+		true
+	);
+
+	$animate_css = TYPING_TEXT_BLOCKS_ADMIN_URL . 'assets/css/animate.min.css';
+	wp_register_style(
+		'essential-blocks-animation',
+		$animate_css,
+		array(),
+		TYPING_TEXT_BLOCKS_VERSION
+	);
+
 	$style_css = TYPING_TEXT_BLOCKS_ADMIN_URL . 'dist/style.css';
 	wp_register_style(
 		'typing-text-block-frontend-style',
 		$style_css,
-		array(),
+		array("essential-blocks-animation"),
 		filemtime(TYPING_TEXT_BLOCKS_ADMIN_PATH . '/dist/style.css')
 	);
 
@@ -76,7 +93,7 @@ function create_block_typing_text_block_init()
 	wp_register_script(
 		'eb-typing-text-frontend',
 		plugins_url($frontend_js, __FILE__),
-		array_merge(array("typig-text-blocks-typedjs", "jquery"), $frontend_js_path['dependencies']),
+		array_merge(array("typig-text-blocks-typedjs", "jquery", "essential-blocks-eb-animation"), $frontend_js_path['dependencies']),
 		$frontend_js_path['version'],
 		true
 	);
@@ -86,12 +103,12 @@ function create_block_typing_text_block_init()
 		register_block_type(
 			Typing_Text_Helper::get_block_register_path('typing-text/typing-text-block', TYPING_TEXT_BLOCKS_ADMIN_PATH),
 			array(
-				'editor_script' => 'typing-text-block-editor-js',
-				'style' => 'typing-text-block-frontend-style',
-				'script' => 'eb-typing-text-frontend'
+				'editor_script'  => 'typing-text-block-editor-js',
+				'style' 		 => 'typing-text-block-frontend-style',
+				'script'		 => 'eb-typing-text-frontend',
 			)
 		);
 	}
 }
 
-add_action('init', 'create_block_typing_text_block_init');
+add_action('init', 'create_block_typing_text_block_init', 99);
