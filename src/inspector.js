@@ -26,10 +26,11 @@ const {
 	ColorControl,
 	BorderShadowControl,
 	BackgroundControl,
+	AdvancedControls,
 } = window.EBTypingTextControls;
 
 const editorStoreForGettingPreivew =
-	eb_style_handler.editor_type === "edit-site"
+	eb_conditional_localize.editor_type === "edit-site"
 		? "core/edit-site"
 		: "core/edit-post";
 
@@ -111,17 +112,17 @@ const Inspector = ({ attributes, setAttributes }) => {
 					tabs={[
 						{
 							name: "general",
-							title: __("General", "typing-text"),
+							title: __("General", "essential-blocks"),
 							className: "eb-tab general",
 						},
 						{
 							name: "styles",
-							title: __("Style", "typing-text"),
+							title: __("Style", "essential-blocks"),
 							className: "eb-tab styles",
 						},
 						{
 							name: "advanced",
-							title: __("Advanced", "typing-text"),
+							title: __("Advanced", "essential-blocks"),
 							className: "eb-tab styles",
 						},
 					]}
@@ -130,15 +131,15 @@ const Inspector = ({ attributes, setAttributes }) => {
 						<div className={"eb-tab-controls" + tab.name}>
 							{tab.name === "general" && (
 								<>
-									<PanelBody title={__("Content Settings", "typing-text")}>
+									<PanelBody title={__("Content Settings", "essential-blocks")}>
 										<TextControl
-											label={__("Prefix Text", "typing-text")}
-											placeholder={__("Add prefix text", "typing-text")}
+											label={__("Prefix Text", "essential-blocks")}
+											placeholder={__("Add prefix text", "essential-blocks")}
 											value={prefix}
 											onChange={(prefix) => setAttributes({ prefix })}
 										/>
 
-										<BaseControl label={__("Typed Text", "typing-text")}>
+										<BaseControl label={__("Typed Text", "essential-blocks")}>
 											{typedText.length !== 0 && (
 												<SortableText
 													typedText={typedText}
@@ -147,7 +148,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 											)}
 											<Button
 												className="is-default eb-typed-add-wrapper"
-												label={__("Add Typed Item", "typing-text")}
+												label={__("Add Typed Item", "essential-blocks")}
 												icon="plus-alt"
 												onClick={() => {
 													let updatedText = [
@@ -167,21 +168,21 @@ const Inspector = ({ attributes, setAttributes }) => {
 										</BaseControl>
 
 										<TextControl
-											label={__("Suffix Text", "typing-text")}
-											placeholder={__("Add suffix text", "typing-text")}
+											label={__("Suffix Text", "essential-blocks")}
+											placeholder={__("Add suffix text", "essential-blocks")}
 											value={suffix}
 											onChange={(suffix) => setAttributes({ suffix })}
 										/>
 
 										<ToggleControl
-											label={__("Loop", "typing-text")}
+											label={__("Loop", "essential-blocks")}
 											checked={loop}
 											onChange={() => setAttributes({ loop: !loop })}
 										/>
 
 										{!fadeOut && (
 											<ToggleControl
-												label={__("Smart Backspace", "typing-text")}
+												label={__("Smart Backspace", "essential-blocks")}
 												checked={smartBackspace}
 												onChange={() =>
 													setAttributes({ smartBackspace: !smartBackspace })
@@ -190,7 +191,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 										)}
 
 										<ToggleControl
-											label={__("Show Cursor", "typing-text")}
+											label={__("Show Cursor", "essential-blocks")}
 											checked={showCursor}
 											onChange={() =>
 												setAttributes({ showCursor: !showCursor })
@@ -198,13 +199,13 @@ const Inspector = ({ attributes, setAttributes }) => {
 										/>
 
 										<ToggleControl
-											label={__("Fade Out", "typing-text")}
+											label={__("Fade Out", "essential-blocks")}
 											checked={fadeOut}
 											onChange={() => setAttributes({ fadeOut: !fadeOut })}
 										/>
 
 										<RangeControl
-											label={__("Type Speed", "typing-text")}
+											label={__("Type Speed", "essential-blocks")}
 											value={typeSpeed}
 											onChange={(typeSpeed) => setAttributes({ typeSpeed })}
 											min={0}
@@ -212,7 +213,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 										/>
 
 										<RangeControl
-											label={__("Start Delay", "typing-text")}
+											label={__("Start Delay", "essential-blocks")}
 											value={startDelay}
 											onChange={(startDelay) => setAttributes({ startDelay })}
 											min={0}
@@ -221,7 +222,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 										{!fadeOut && (
 											<RangeControl
-												label={__("Back Speed", "typing-text")}
+												label={__("Back Speed", "essential-blocks")}
 												value={backSpeed}
 												onChange={(backSpeed) => setAttributes({ backSpeed })}
 												min={0}
@@ -231,7 +232,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 										{!fadeOut && (
 											<RangeControl
-												label={__("Back Delay", "typing-text")}
+												label={__("Back Delay", "essential-blocks")}
 												value={backDelay}
 												onChange={(backDelay) => setAttributes({ backDelay })}
 												min={0}
@@ -241,7 +242,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 										{fadeOut && (
 											<RangeControl
-												label={__("Fade Delay", "typing-text")}
+												label={__("Fade Delay", "essential-blocks")}
 												value={fadeOutDelay}
 												onChange={(fadeOutDelay) =>
 													setAttributes({ fadeOutDelay })
@@ -257,11 +258,11 @@ const Inspector = ({ attributes, setAttributes }) => {
 								<>
 									{prefix && (
 										<PanelBody
-											title={__("Prefix", "typing-text")}
+											title={__("Prefix", "essential-blocks")}
 											initialOpen={false}
 										>
 											<ColorControl
-												label={__("Prefix Color", "typing-text")}
+												label={__("Prefix Color", "essential-blocks")}
 												color={prefixColor}
 												onChange={(prefixColor) =>
 													setAttributes({ prefixColor })
@@ -269,7 +270,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 											/>
 
 											<TypographyDropdown
-												baseLabel={__("Typography", "typing-text")}
+												baseLabel={__("Typography", "essential-blocks")}
 												typographyPrefixConstant={typoPrefix_prefixText}
 												resRequiredProps={resRequiredProps}
 											/>
@@ -278,11 +279,11 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 									{typedText.length && (
 										<PanelBody
-											title={__("Typed Text", "typing-text")}
+											title={__("Typed Text", "essential-blocks")}
 											initialOpen={false}
 										>
 											<ColorControl
-												label={__("Typed Text Color", "typing-text")}
+												label={__("Typed Text Color", "essential-blocks")}
 												color={typedTextColor}
 												onChange={(typedTextColor) =>
 													setAttributes({ typedTextColor })
@@ -290,7 +291,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 											/>
 
 											<TypographyDropdown
-												baseLabel={__("Typography", "typing-text")}
+												baseLabel={__("Typography", "essential-blocks")}
 												typographyPrefixConstant={typoPrefix_typedText}
 												resRequiredProps={resRequiredProps}
 											/>
@@ -299,11 +300,11 @@ const Inspector = ({ attributes, setAttributes }) => {
 
 									{suffix && (
 										<PanelBody
-											title={__("Suffix", "typing-text")}
+											title={__("Suffix", "essential-blocks")}
 											initialOpen={false}
 										>
 											<ColorControl
-												label={__("Suffix Color", "typing-text")}
+												label={__("Suffix Color", "essential-blocks")}
 												color={suffixTextColor}
 												onChange={(suffixTextColor) =>
 													setAttributes({ suffixTextColor })
@@ -311,7 +312,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 											/>
 
 											<TypographyDropdown
-												baseLabel={__("Typography", "typing-text")}
+												baseLabel={__("Typography", "essential-blocks")}
 												typographyPrefixConstant={typoPrefix_suffixText}
 												resRequiredProps={resRequiredProps}
 											/>
@@ -345,7 +346,7 @@ const Inspector = ({ attributes, setAttributes }) => {
 										/>
 										<BaseControl>
 											<h3 className="eb-control-title">
-												{__("Background", "typing-text")}
+												{__("Background", "essential-blocks")}
 											</h3>
 										</BaseControl>
 										<BackgroundControl
@@ -355,6 +356,8 @@ const Inspector = ({ attributes, setAttributes }) => {
 											noMainBgi={true}
 										/>
 									</PanelBody>
+
+									<AdvancedControls attributes={attributes} setAttributes={setAttributes} />
 								</>
 							)}
 						</div>

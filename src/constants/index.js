@@ -7,34 +7,34 @@ export const UNIT_TYPES = [
 ];
 
 export const BORDER_STYLES = [
-	{ label: __("Solid", "typing-text"), value: "solid" },
-	{ label: __("Dashed", "typing-text"), value: "dashed" },
-	{ label: __("Dotted", "typing-text"), value: "dotted" },
-	{ label: __("Double", "typing-text"), value: "double" },
-	{ label: __("Groove", "typing-text"), value: "groove" },
-	{ label: __("Inset", "typing-text"), value: "inset" },
-	{ label: __("Outset", "typing-text"), value: "outset" },
-	{ label: __("Ridge", "typing-text"), value: "ridge" },
+	{ label: __("Solid", "essential-blocks"), value: "solid" },
+	{ label: __("Dashed", "essential-blocks"), value: "dashed" },
+	{ label: __("Dotted", "essential-blocks"), value: "dotted" },
+	{ label: __("Double", "essential-blocks"), value: "double" },
+	{ label: __("Groove", "essential-blocks"), value: "groove" },
+	{ label: __("Inset", "essential-blocks"), value: "inset" },
+	{ label: __("Outset", "essential-blocks"), value: "outset" },
+	{ label: __("Ridge", "essential-blocks"), value: "ridge" },
 ];
 
 export const TEXT_DECORATION = [
-	{ label: __("Initial", "typing-text"), value: "initial" },
-	{ label: __("Overline", "typing-text"), value: "overline" },
-	{ label: __("Line Through", "typing-text"), value: "line-through" },
-	{ label: __("Underline", "typing-text"), value: "underline" },
-	{ label: __("Underline Oveline", "typing-text"), value: "underline overline" },
+	{ label: __("Initial", "essential-blocks"), value: "initial" },
+	{ label: __("Overline", "essential-blocks"), value: "overline" },
+	{ label: __("Line Through", "essential-blocks"), value: "line-through" },
+	{ label: __("Underline", "essential-blocks"), value: "underline" },
+	{ label: __("Underline Oveline", "essential-blocks"), value: "underline overline" },
 ];
 
 export const TEXT_TRANSFORM = [
-	{ label: __("None", "typing-text"), value: "none" },
-	{ label: __("Capitalize", "typing-text"), value: "capitalize" },
-	{ label: __("Uppercase", "typing-text"), value: "uppercase" },
-	{ label: __("Lowercase", "typing-text"), value: "lowercase" },
+	{ label: __("None", "essential-blocks"), value: "none" },
+	{ label: __("Capitalize", "essential-blocks"), value: "capitalize" },
+	{ label: __("Uppercase", "essential-blocks"), value: "uppercase" },
+	{ label: __("Lowercase", "essential-blocks"), value: "lowercase" },
 ];
 
 export const FONT_WEIGHTS = [
-	{ label: __("Normal", "typing-text"), value: "normal" },
-	{ label: __("Bold", "typing-text"), value: "bold" },
-	{ label: __("Lighter", "typing-text"), value: "lighter" },
-	{ label: __("Bolder", "typing-text"), value: "bolder" },
+	{ label: __("Normal", "essential-blocks"), value: "normal" },
+	{ label: __("Bold", "essential-blocks"), value: "bold" },
+	{ label: __("Lighter", "essential-blocks"), value: "lighter" },
+	{ label: __("Bolder", "essential-blocks"), value: "bolder" },
 ];

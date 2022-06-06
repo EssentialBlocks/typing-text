@@ -8,6 +8,9 @@ export { default as ColorControl } from "../controls/src/controls/color-control"
 export { default as BorderShadowControl } from "../controls/src/controls/border-shadow-control";
 export { default as BackgroundControl } from "../controls/src/controls/background-control";
 
+import "../controls/src/group-controls";
+export { default as AdvancedControls } from "../controls/src/group-controls/components/advanced-controls";
+
 //Export Helper Functions
 export {
 	softMinifyCssStrings,
