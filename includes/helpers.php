@@ -46,13 +46,13 @@ class Typing_Text_Helper
          * Only for Admin Add/Edit Pages 
          */
         if ($pagenow == 'post-new.php' || $pagenow == 'post.php' || $pagenow == 'site-editor.php' || ($pagenow == 'themes.php' && !empty($_SERVER['QUERY_STRING']) && str_contains($_SERVER['QUERY_STRING'], 'gutenberg-edit-site'))) {
-            
+
             $controls_dependencies = include_once TYPING_TEXT_BLOCKS_ADMIN_PATH . '/dist/controls.asset.php';
 
             wp_register_script(
                 "typing-text-blocks-controls-util",
                 TYPING_TEXT_BLOCKS_ADMIN_URL . '/dist/controls.js',
-                array_merge($controls_dependencies['dependencies'], array("essential-blocks-edit-post")),
+                array_merge($controls_dependencies['dependencies']),
                 $controls_dependencies['version'],
                 true
             );
