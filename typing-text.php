@@ -45,7 +45,8 @@ function create_block_typing_text_block_init()
 		'wp-i18n',
 		'wp-element',
 		'wp-block-editor',
-		'typing-text-blocks-controls-util'
+		'typing-text-blocks-controls-util',
+		'essential-blocks-eb-animation'
 	));
 
 	wp_register_script(
