@@ -52,7 +52,7 @@ class Typing_Text_Helper
             wp_register_script(
                 "typing-text-blocks-controls-util",
                 TYPING_TEXT_BLOCKS_ADMIN_URL . '/dist/controls.js',
-                array_merge($controls_dependencies['dependencies']),
+                $controls_dependencies['dependencies'],
                 $controls_dependencies['version'],
                 true
             );
