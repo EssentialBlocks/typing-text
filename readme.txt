@@ -3,7 +3,7 @@ Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir
 Tags: block, blocks, typing text, animated text, type text, typewriter, animated, gutenberg, gutenberg blocks
 Requires at least: 5.0
 Tested up to: 6.0
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,7 +83,10 @@ Yes, it will work with any standard WordPress theme.
 
 == Changelog ==
 
-= 1.2.3 - 23/08/2022 =
+= 1.2.4 - dev =
+* Improved: Font loader and Controls
+
+= 1.2.4 - 23/08/2022 =
 * Added: Converted style-handler to php for working perfectly with Reusable blocks and FSE
 * Improved: Removed unused dependency
 
