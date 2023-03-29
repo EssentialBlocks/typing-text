@@ -31,11 +31,6 @@ const {
 	duplicateBlockIdFix,
 } = window.EBTypingTextControls;
 
-const editorStoreForGettingPreivew =
-	eb_conditional_localize.editor_type === "edit-site"
-		? "core/edit-site"
-		: "core/edit-post";
-
 /**
  * External dependencies
  */
@@ -118,7 +113,9 @@ export default function Edit(props) {
 		setTyped(new_typed);
 		return () => {
 			// Destroy Typed instance
-			typed.destroy();
+			if (typed) {
+				typed.destroy();
+			}
 		};
 	}, []);
 
@@ -155,15 +152,6 @@ export default function Edit(props) {
 		setAttributes({ typedText: defaultTypedText });
 		setAttributes({ prefix: "This is the " });
 		setAttributes({ suffix: "of the sentence." });
-	}, []);
-
-	// this useEffect is for setting the resOption attribute to desktop/tab/mobile depending on the added 'eb-res-option-' class
-	useEffect(() => {
-		setAttributes({
-			resOption: select(
-				editorStoreForGettingPreivew
-			).__experimentalGetPreviewDeviceType(),
-		});
 	}, []);
 
 	// this useEffect is for creating an unique id for each block's unique className by a random unique number
@@ -265,7 +253,7 @@ export default function Edit(props) {
 
 	// wrapper styles css in strings ⬇
 	const wrapperStylesDesktop = `
- 
+
 	 .eb-typed-wrapper.${blockId} {
 		 ${wrapperMarginStylesDesktop}
 		 ${wrapperPaddingStylesDesktop}
@@ -274,12 +262,12 @@ export default function Edit(props) {
 		 text-align: ${textAlign};
 		 transition: ${wrpBgTransitionStyle}, ${bdShadowTransitionStyle};
 	 }
- 
+
 	 .eb-typed-wrapper.${blockId}:hover {
 		 ${wrpHoverBackgroundStylesDesktop}
 		 ${bdShadowStylesHoverDesktop}
 	 }
- 
+
 	 .eb-typed-wrapper.${blockId}:before {
 		 z-index: -11;
 	 }
@@ -291,7 +279,7 @@ export default function Edit(props) {
 		 ${wrapperPaddingStylesTab}
 		 ${bdShadowStyesTab}
 	 }
- 
+
 	 .eb-typed-wrapper.${blockId}:hover {
 		 ${bdShadowStylesHoverTab}
 	 }
@@ -303,7 +291,7 @@ export default function Edit(props) {
 		 ${wrapperPaddingStylesMobile}
 		 ${bdShadowStyesMobile}
 	 }
- 
+
 	 .eb-typed-wrapper.${blockId}:hover {
 		 ${bdShadowStylesHoverMobile}
 	 }
@@ -312,7 +300,7 @@ export default function Edit(props) {
 	// prefix text styles css in strings ⬇
 	const prefixTypoStylesDesktop = `
 	 .${blockId} .eb-typed-prefix{
-		 ${prefixTextTypoStylesDesktop}		
+		 ${prefixTextTypoStylesDesktop}
 		 color: ${prefixColor || "#fff"};
 	 }
 	 `;
@@ -332,7 +320,7 @@ export default function Edit(props) {
 	// suffix text styles css in strings ⬇
 	const suffixTypoStylesDesktop = `
 	 .${blockId} .eb-typed-suffix{
-		 ${suffixTextTypoStylesDesktop}		
+		 ${suffixTextTypoStylesDesktop}
 		 color: ${suffixTextColor || "#fff"};
 	 }
 	 `;
@@ -352,7 +340,7 @@ export default function Edit(props) {
 	// typed text styles css in strings ⬇
 	const typedTypoStylesDesktop = `
 	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view,.${blockId} .typed-cursor{
-		 ${typedTextTypoStylesDesktop}		
+		 ${typedTextTypoStylesDesktop}
 		 color: ${typedTextColor || "#fff"};
 	 }
 	 `;
@@ -427,20 +415,20 @@ export default function Edit(props) {
 
 				/* mimmikcssEnd */
 
-				@media all and (max-width: 1024px) {	
+				@media all and (max-width: 1024px) {
 
-					/* tabcssStart */		
+					/* tabcssStart */
 					${softMinifyCssStrings(tabAllStyles)}
-					/* tabcssEnd */			
-				
+					/* tabcssEnd */
+
 				}
-				
+
 				@media all and (max-width: 767px) {
-					
-					/* mobcssStart */			
+
+					/* mobcssStart */
 					${softMinifyCssStrings(mobileAllStyles)}
-					/* mobcssEnd */			
-				
+					/* mobcssEnd */
+
 				}
 				`}
 				</style>
