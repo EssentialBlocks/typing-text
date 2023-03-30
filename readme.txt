@@ -2,8 +2,8 @@
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir
 Tags: block, blocks, typing text, animated text, type text, typewriter, animated, gutenberg, gutenberg blocks
 Requires at least: 5.0
-Tested up to: 6.0
-Stable tag: 1.2.3
+Tested up to: 6.1
+Stable tag: 1.2.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -24,14 +24,14 @@ Easily use this typing text effects inside blog posts or pages & impress your vi
 
 ## 🚀 BACKED BY A TRUSTED TEAM ##
 
-This Block is brought to you by [WPDeveloper](https://wpdeveloper.net), the team behind the most popular elements library [Essential Addons for Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/) (used by almost 700,000 happy users from 180+ countries).
+This Block is brought to you by [WPDeveloper](https://wpdeveloper.com), the team behind the most popular elements library [Essential Addons for Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/) (used by almost 1 million+ happy users from 180+ countries).
 
 ## 👨‍💻 DOCUMENTATION AND SUPPORT ##
 
 - For documentation and tutorials go to our [documentation](https://essential-blocks.com/docs/)
 - To report issue and contribution visit [Github](https://github.com/EssentialBlocks/typing-text/).
 - If you have any more questions, visit our support on the [Plugin's Forum](https://wordpress.org/support/plugin/typing-text/).
-- For more information about features, FAQs and documentation, check out our website at [WPDeveloper](https://wpdeveloper.net/).
+- For more information about features, FAQs and documentation, check out our website at [WPDeveloper](https://wpdeveloper.com/).
 
 ## 🙌 JOIN THE COMMUNITY ##
 
@@ -82,6 +82,9 @@ Yes, it will work with any standard WordPress theme.
 
 
 == Changelog ==
+
+= 1.2.4 - 29/03/2023 =
+* Improved: Font loader and Controls
 
 = 1.2.3 - 23/08/2022 =
 * Added: Converted style-handler to php for working perfectly with Reusable blocks and FSE
