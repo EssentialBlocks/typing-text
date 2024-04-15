@@ -1,5 +1,5 @@
 //Export All Controls
-import "../controls/src/backend-css";
+import "../controls/src/backend.scss";
 
 //Export All Controls
 export { default as ResponsiveDimensionsControl } from "../controls/src/controls/dimensions-control-v2";
@@ -24,4 +24,5 @@ export {
 	generateBackgroundAttributes,
 	generateBorderShadowAttributes,
 	ebConditionalRegisterBlockType,
+	StyleComponent
 } from "../controls/src/helpers";

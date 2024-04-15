@@ -1,8 +1,5 @@
 import * as prefixObjs from "./constants/typographyPrefixConstants";
-import {
-	dimensionsMargin,
-	dimensionsPadding,
-} from "./constants/dimensionsNames";
+import { dimensionsMargin, dimensionsPadding } from "./constants/dimensionsNames";
 import { WrpBdShadow } from "./constants/borderShadowConstants";
 import { backgroundWrapper } from "./constants/backgroundsConstants";
 // import {
