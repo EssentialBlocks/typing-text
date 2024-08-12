@@ -10,6 +10,7 @@ export { default as BackgroundControl } from "../controls/src/controls/backgroun
 
 import "../controls/src/group-controls";
 export { default as AdvancedControls } from "../controls/src/group-controls/components/advanced-controls";
+export { BlockProps } from "../controls/src/components/BlockComponents/EBBlockProps";
 
 //Export Helper Functions
 export {

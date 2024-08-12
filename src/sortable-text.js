@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { Component } from "@wordpress/element";
-
+import { escapeHTML } from "@wordpress/escape-html";
 /**
  * External dependencies
  */
@@ -89,12 +89,13 @@ const SortableItem = SortableElement(
 					<DragHandle />
 					<TrashIcon position={position} onDeleteItem={onDeleteItem} />
 				</span>
+				
 				{clickedIndex === position && (
 					<div className="eb-typed-input-wrapper">
 						<input
 							type="text"
 							value={text}
-							onChange={() => onTextChange(event, position)}
+							onChange={(event) => onTextChange(event, position)}
 							placeholder="Add text"
 						/>
 					</div>
@@ -145,7 +146,7 @@ class SortableText extends Component {
 	// Typed text change callback
 	onTextChange = (event, position) => {
 		let typedText = [...this.props.typedText];
-		typedText[position].text = event.target.value;
+		typedText[position].text = escapeHTML(event.target.value);
 		this.props.setAttributes({ typedText });
 	};
 

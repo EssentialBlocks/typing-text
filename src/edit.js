@@ -5,13 +5,10 @@ import { useEffect, useRef, useState } from "@wordpress/element";
 import {
     BlockControls,
     AlignmentToolbar,
-    useBlockProps,
 } from "@wordpress/block-editor";
-import { select } from "@wordpress/data";
-import { safeHTML } from "@wordpress/dom";
 
 const {
-    duplicateBlockIdFix,
+    BlockProps
 } = window.EBTypingTextControls;
 
 /**
@@ -22,10 +19,9 @@ import Typed from "typed.js";
 /**
  * Internal dependencies
  */
-import classnames from "classnames";
-
 import Inspector from "./inspector";
 import Style from "./style";
+import { escapeHTML } from "@wordpress/escape-html";
 
 export default function Edit(props) {
     const {
@@ -92,7 +88,7 @@ export default function Edit(props) {
     const getStrings = (typedText) => {
         let strings = [];
         if (typeof typedText === "object" && typedText.length > 0) {
-            typedText.map((item) => strings.push(safeHTML(item.text)));
+            typedText.map((item) => strings.push(escapeHTML(item.text)));
         } else {
             strings = ["first string", "second string"];
         }
@@ -118,18 +114,16 @@ export default function Edit(props) {
         showCursor,
     ]);
 
+    // you must declare this variable
+    const enhancedProps = {
+        ...props,
+        blockPrefix: 'eb-typing-text',
+        style: <Style {...props} />
+    };
+
+
     // this useEffect is for creating an unique id for each block's unique className by a random unique number
     useEffect(() => {
-        //Hanlde duplicate issues
-        const BLOCK_PREFIX = "eb-typing-text";
-        duplicateBlockIdFix({
-            BLOCK_PREFIX,
-            blockId,
-            setAttributes,
-            select,
-            clientId,
-        });
-
         //Set Default "typedText"
         if (typedText.length === 0) {
             const defaultTypedText = [
@@ -157,10 +151,6 @@ export default function Edit(props) {
         };
     }, []);
 
-    const blockProps = useBlockProps({
-        className: classnames(className, `eb-guten-block-main-parent-wrapper`),
-    });
-
     // Return if there is no typed text
     if (!typedText) return <div />;
 
@@ -178,8 +168,7 @@ export default function Edit(props) {
                     setAttributes={setAttributes}
                 />
             )}
-            <div {...blockProps}>
-                <Style {...props} />
+            <BlockProps.Edit {...enhancedProps}>
                 <div
                     className={`eb-parent-wrapper eb-parent-${blockId} ${classHook}`}
                 >
@@ -192,7 +181,7 @@ export default function Edit(props) {
                         <span className="eb-typed-suffix">{suffix}</span>
                     </div>
                 </div>
-            </div>
+            </BlockProps.Edit>
         </>
     );
 }
