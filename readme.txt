@@ -1,9 +1,10 @@
 === Typing Text ===
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir
 Tags: block, blocks, typing text, animated text, type text, typewriter, animated, gutenberg, gutenberg blocks
-Requires at least: 5.0
-Tested up to: 6.5
-Stable tag: 1.2.7
+Requires at least: 6.0
+Tested up to: 7.0
+Requires PHP: 7.4
+Stable tag: 1.5.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,6 +83,23 @@ Yes, it will work with any standard WordPress theme.
 
 
 == Changelog ==
+
+= 1.5.0 - 10/08/2026 =
+* Improved: Compatibility with PHP 7.4 through PHP 8.5
+* Improved: Compatibility with WordPress 6.0 through WordPress 7.0
+* Fixed: Fatal error on PHP 7.4 caused by an unguarded `str_contains()` call
+* Fixed: Fatal error when generated asset files or the style handler were missing
+* Fixed: "This block has encountered an error and cannot be previewed" when opening the Style tab or the Typography editor without Essential Blocks installed
+* Improved: A failing sidebar control can no longer break the block preview
+* Fixed: Prefix and Suffix panels disappearing from the Style tab when their text was empty
+* Fixed: Font Weight in the Typography editor showing "Default" instead of the applied weight, and 600 not being selectable
+* Fixed: Tablet and mobile Typography settings never being applied in the editor
+* Fixed: Typography settings emitting invalid CSS when a global font source was selected
+* Fixed: Cleared colors falling back to white instead of the global color
+* Fixed: Typed Text repeater in the editor rendering unstyled
+* Fixed: Alignment and hover transition producing invalid CSS
+* Fixed: Plugin stylesheet hiding unrelated elements that use the `is-hidden` class
+* Few minor bug fixes & improvements
 
 = 1.2.7 - 12/08/2024 =
 * Improved: Security Enhancement

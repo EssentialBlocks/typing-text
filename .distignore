@@ -1,61 +1,105 @@
-# A set of files you probably don't want in your WordPress.org distribution
-.babelrc
-.deployignore
-.distignore
-.editorconfig
-.eslintignore
-.eslintrc
-.gitmodules
+# Files and directories excluded from the WordPress.org distribution zip.
+#
+# Consumed by `wp dist-archive`. Each non-comment line becomes a `zip --exclude`
+# pattern of the form `*/<line>`; a line that resolves to a directory gets `/*`
+# appended automatically. Do NOT anchor lines with a leading slash — that
+# produces a `*//name/*` pattern which matches nothing.
+
+# --- Version control ---
 .git
 .gitignore
-.github
 .gitattributes
+.gitmodules
+.github
 .gitlab-ci.yml
-.travis.yml
-.DS_Store
-Thumbs.db
-behat.yml
-bitbucket-pipelines.yml
-bin
+
+# --- CI / test tooling ---
 .circleci/config.yml
-composer.json
-composer.lock
-dependencies.yml
-Gruntfile.js
-package.json
-package-lock.json
+.travis.yml
+bitbucket-pipelines.yml
+behat.yml
 phpunit.xml
 phpunit.xml.dist
 multisite.xml
 multisite.xml.dist
 .phpcs.xml
-phpcs.xml
 .phpcs.xml.dist
+phpcs.xml
 phpcs.xml.dist
-README.md
-webpack.config.js
-wp-cli.local.yml
-yarn.lock
 tests
-vendor
-node_modules
-*.sql
-*.tar.gz
-*.zip
+bin
+
+# --- Build config ---
+.babelrc
+.babelrc.js
+.babelrc.json
+babel.config.js
+babel.config.json
+webpack.config.js
+Gruntfile.js
 gulpfile.js
-.git
-node_modules/**/*.*
-**/*.zip
+config
+dependencies.yml
+wp-cli.local.yml
+
+# --- Package managers / dependencies ---
+package.json
+package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+yarn.lock
+composer.json
+composer.lock
+node_modules
+vendor
+
+# --- Editor / linter config ---
+.editorconfig
+.eslintignore
+.eslintrc
+.eslintrc.js
+.eslintrc.json
+.eslintcache
+.prettierrc
+.prettierrc.js
+.prettierrc.json
+.prettierignore
+.nvmrc
+.idea
+.vscode
+
+# --- Sources (compiled into dist/) ---
 src
 util
-.wordpress-org
-.idea
-/controls/
-config
+controls
+
+# --- Source maps ---
+*.map
+
+# --- Bundled submodule leftovers ---
+# The root `.git` entry above resolves to a directory, so dist-archive turns it
+# into `.git/*` and it never matches a submodule's `.git` *file* (a gitlink).
+# That nested file needs its own entry.
+lib/style-handler/.git
 lib/style-handler/helpers.js
 lib/style-handler/style-handler.js
 lib/style-handler/gitignore
-lib/style-handler/dist/index.js.map
+lib/style-handler/.gitignore
 lib/style-handler/README.md
-dist/*.*.map
 
+# --- Repo docs / wp.org assets (not shipped in the plugin zip) ---
+.wordpress-org
+.deployignore
+.distignore
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+compatibility-report.md
+
+# --- Junk / archives ---
+.DS_Store
+Thumbs.db
+*.log
+*.sql
+*.zip
+*.tar.gz

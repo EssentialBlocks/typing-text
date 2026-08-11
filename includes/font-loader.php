@@ -48,8 +48,9 @@ class Type_Font_Loader {
      * @access public
      */
     public function get_fonts_on_render_block( $block_content, $block ) {
-        if ( isset( $block['attrs'] ) ) {
-            if ( 'essential-blocks' === self::$block_name || $block['blockName'] === self::$block_name ) {
+        if ( isset( $block['attrs'] ) && is_array( $block['attrs'] ) ) {
+            $block_name = isset( $block['blockName'] ) ? $block['blockName'] : '';
+            if ( 'essential-blocks' === self::$block_name || $block_name === self::$block_name ) {
                 $fonts        = self::get_fonts_family( $block['attrs'] );
                 self::$gfonts = array_unique( array_merge( self::$gfonts, $fonts ) );
             }

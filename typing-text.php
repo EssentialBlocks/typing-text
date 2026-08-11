@@ -3,15 +3,23 @@
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
- * Version:         1.2.7
+ * Version:         1.5.0
  * Author:          WPDeveloper
  * Author URI:      https://wpdeveloper.net
  * License:         GPL-3.0-or-later
  * License URI:     https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:     typing-text
+ * Requires PHP:    7.4
+ * Requires at least: 6.0
+ * Tested up to:    7.0
  *
  * @package         typing-text
  */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Registers all block assets so that they can be enqueued through the block editor
@@ -23,22 +31,35 @@
 require_once __DIR__ . '/includes/font-loader.php';
 require_once __DIR__ . '/includes/post-meta.php';
 require_once __DIR__ . '/includes/helpers.php';
-require_once __DIR__ . '/lib/style-handler/style-handler.php';
+
+// The style handler ships as a git submodule; an uninitialised checkout would fatal here.
+if ( file_exists( __DIR__ . '/lib/style-handler/style-handler.php' ) ) {
+    require_once __DIR__ . '/lib/style-handler/style-handler.php';
+}
 
 function create_block_typing_text_block_init() {
 
-    define( 'TYPING_TEXT_BLOCKS_VERSION', "1.2.7" );
-    define( 'TYPING_TEXT_BLOCKS_ADMIN_URL', plugin_dir_url( __FILE__ ) );
-    define( 'TYPING_TEXT_BLOCKS_ADMIN_PATH', dirname( __FILE__ ) );
+    if ( ! defined( 'TYPING_TEXT_BLOCKS_VERSION' ) ) {
+        define( 'TYPING_TEXT_BLOCKS_VERSION', "1.5.0" );
+    }
+    if ( ! defined( 'TYPING_TEXT_BLOCKS_ADMIN_URL' ) ) {
+        define( 'TYPING_TEXT_BLOCKS_ADMIN_URL', plugin_dir_url( __FILE__ ) );
+    }
+    if ( ! defined( 'TYPING_TEXT_BLOCKS_ADMIN_PATH' ) ) {
+        define( 'TYPING_TEXT_BLOCKS_ADMIN_PATH', dirname( __FILE__ ) );
+    }
 
     $script_asset_path = TYPING_TEXT_BLOCKS_ADMIN_PATH . "/dist/index.asset.php";
     if ( ! file_exists( $script_asset_path ) ) {
-        throw new Error(
-            'You need to run `npm start` or `npm run build` for the "typing-text/typing-text-block" block first.'
-        );
+        // Build output missing (`npm run build` not run). Bail out instead of
+        // throwing an uncaught Error, which would take the whole site down.
+        return;
     }
-    $index_js         = TYPING_TEXT_BLOCKS_ADMIN_URL . 'dist/index.js';
-    $script_asset     = require $script_asset_path;
+    $index_js     = TYPING_TEXT_BLOCKS_ADMIN_URL . 'dist/index.js';
+    $script_asset = require $script_asset_path;
+    if ( ! is_array( $script_asset ) || ! isset( $script_asset['dependencies'] ) ) {
+        return;
+    }
     $all_dependencies = array_merge( $script_asset['dependencies'], [
         'wp-blocks',
         'wp-i18n',
@@ -72,12 +93,13 @@ function create_block_typing_text_block_init() {
         TYPING_TEXT_BLOCKS_VERSION
     );
 
-    $style_css = TYPING_TEXT_BLOCKS_ADMIN_URL . 'dist/style.css';
+    $style_css      = TYPING_TEXT_BLOCKS_ADMIN_URL . 'dist/style.css';
+    $style_css_path = TYPING_TEXT_BLOCKS_ADMIN_PATH . '/dist/style.css';
     wp_register_style(
         'typing-text-block-frontend-style',
         $style_css,
         ["essential-blocks-animation"],
-        filemtime( TYPING_TEXT_BLOCKS_ADMIN_PATH . '/dist/style.css' )
+        file_exists( $style_css_path ) ? filemtime( $style_css_path ) : TYPING_TEXT_BLOCKS_VERSION
     );
 
     $typed_js = TYPING_TEXT_BLOCKS_ADMIN_URL . 'assets/js/typed.min.js';
@@ -85,11 +107,19 @@ function create_block_typing_text_block_init() {
         'typig-text-blocks-typedjs',
         $typed_js,
         ["jquery"],
+        TYPING_TEXT_BLOCKS_VERSION,
         true
     );
 
-    $frontend_js_path = include_once dirname( __FILE__ ) . "/dist/frontend/index.asset.php";
-    $frontend_js      = "dist/frontend/index.js";
+    $frontend_asset_path = TYPING_TEXT_BLOCKS_ADMIN_PATH . "/dist/frontend/index.asset.php";
+    if ( ! file_exists( $frontend_asset_path ) ) {
+        return;
+    }
+    $frontend_js_path = require $frontend_asset_path;
+    if ( ! is_array( $frontend_js_path ) || ! isset( $frontend_js_path['dependencies'] ) ) {
+        return;
+    }
+    $frontend_js = "dist/frontend/index.js";
     wp_register_script(
         'eb-typing-text-frontend',
         plugins_url( $frontend_js, __FILE__ ),

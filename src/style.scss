@@ -1,4 +1,7 @@
-.is-hidden {
+// Hides the source strings that typed.js reads from. Scoped to the block's own
+// wrapper — a bare `.is-hidden { display: none }` ships on the front end and
+// would hide any unrelated theme or plugin element using that common class name.
+.eb-typed-text-wrapper.is-hidden {
 	display: none;
 }
 
@@ -7,6 +10,17 @@
 }
 
 // Sortable style
+.eb-sortable-typing-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	.drag-helper {
+		list-style: none;
+		margin: 0;
+	}
+}
+
 .eb-typed-sortable-item {
 	display: -ms-flexbox;
 	display: flex;
@@ -34,13 +48,26 @@
 	margin-top: 10px;
 }
 
+.drag-handle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 8px;
+	cursor: grab;
+
+	&:active {
+		cursor: grabbing;
+	}
+}
+
 .eb-typed-sortable-trash {
 	font-size: 16px;
 	border-left: 1px solid gray;
-	line-height: 2.5em;
-	flex: 1;
-	text-align: center;
-	padding: 8px;
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 10px;
 }
 
 .eb-typed-sortable-trash:hover {
