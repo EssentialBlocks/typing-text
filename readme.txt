@@ -1,5 +1,5 @@
 === Typing Text ===
-Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir
+Contributors: wpdevteam, re_enter_rupok, Asif2BD, rahat89, fencermonir, RahatSheikhLeon
 Tags: block, blocks, typing text, animated text, type text, typewriter, animated, gutenberg, gutenberg blocks
 Requires at least: 6.0
 Tested up to: 7.0
