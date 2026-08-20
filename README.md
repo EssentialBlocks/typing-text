@@ -16,7 +16,7 @@ The animation is powered by [typed.js](https://github.com/mattboldt/typed.js/) o
 
 | | Minimum | Tested up to |
 |---|---|---|
-| WordPress | 6.0 | 7.0 |
+| WordPress | 6.0 | 7.1 |
 | PHP | 7.4 | 8.5 |
 
 ## Installation

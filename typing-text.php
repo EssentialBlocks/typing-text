@@ -11,7 +11,7 @@
  * Text Domain:     typing-text
  * Requires PHP:    7.4
  * Requires at least: 6.0
- * Tested up to:    7.0
+ * Tested up to:    7.1
  *
  * @package         typing-text
  */
