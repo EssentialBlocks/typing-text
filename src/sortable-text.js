@@ -13,17 +13,6 @@ import {
 } from "react-sortable-hoc";
 import arrayMove from "array-move";
 
-// Style objects
-const trashStyle = {
-	fontSize: 14,
-	borderLeft: "1px solid #b4b4cb",
-	lineHeight: "2.5em",
-	flex: 2,
-	textAlign: "center",
-	display: "flex",
-	justifyContent: "center",
-};
-
 const DragHandle = SortableHandle(() => (
 	<span className="drag-handle">
 		<svg
@@ -46,8 +35,7 @@ const DragHandle = SortableHandle(() => (
 
 const TrashIcon = ({ position, onDeleteItem }) => (
 	<span
-		className="eb-social-delete-icon"
-		style={trashStyle}
+		className="eb-typed-sortable-trash"
 		onClick={() => onDeleteItem(position)}
 	>
 		<svg
@@ -79,9 +67,9 @@ const SortableItem = SortableElement(
 	}) => {
 		return (
 			<li className="drag-helper">
-				<span className="eb-sortable-item">
+				<span className="eb-typed-sortable-item">
 					<span
-						className="eb-sortable-title"
+						className="eb-typed-sortable-title"
 						onClick={() => onTitleClick(position)}
 					>
 						{text}

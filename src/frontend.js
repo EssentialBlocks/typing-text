@@ -1,14 +1,12 @@
 jQuery(document).ready(function ($) {
+	// typed.min.js is a separate handle; bail out rather than throwing a
+	// ReferenceError if a caching or optimisation plugin drops it.
+	if (typeof Typed === "undefined") {
+		return;
+	}
+
 	$(".eb-typed-wrapper").each(function () {
-		let typeSpeed = $(this).find('.eb-typed-content').data("type-speed"),
-			startDelay = $(this).find('.eb-typed-content').data("start-delay"),
-			smartBackspace = $(this).find('.eb-typed-content').data("smart-backspace"),
-			backSpeed = $(this).find('.eb-typed-content').data("back-speed"),
-			backDelay = $(this).find('.eb-typed-content').data("back-delay"),
-			fade = $(this).find('.eb-typed-content').data("fade"),
-			fadeDelay = $(this).find('.eb-typed-content').data("fade-delay"),
-			loop = $(this).find('.eb-typed-content').data("loop"),
-			showCursor = $(this).find('.eb-typed-content').data("cursor");
+		const $content = $(this).find(".eb-typed-content");
 
 		// Generate array of strings for TypedJs
 		let strings = [];
@@ -18,21 +16,34 @@ jQuery(document).ready(function ($) {
 				strings.push(this.innerHTML);
 			});
 
+		// typed.js throws on an empty strings array.
+		if (strings.length === 0) {
+			return;
+		}
+
+		const options = {
+			strings: strings,
+			typeSpeed: $content.data("type-speed"),
+			startDelay: $content.data("start-delay"),
+			smartBackspace: $content.data("smart-backspace"),
+			backSpeed: $content.data("back-speed"),
+			backDelay: $content.data("back-delay"),
+			fadeOut: $content.data("fade"),
+			fadeOutDelay: $content.data("fade-delay"),
+			loop: $content.data("loop"),
+			showCursor: $content.data("cursor"),
+		};
+
 		$(this)
 			.find(".eb-typed-view")
 			.each(function () {
-				new Typed(this, {
-					strings: strings,
-					typeSpeed: typeSpeed,
-					startDelay: startDelay,
-					smartBackspace: smartBackspace,
-					backSpeed: backSpeed,
-					backDelay: backDelay,
-					fadeOut: fade,
-					fadeOutDelay: fadeDelay,
-					loop: loop,
-					showCursor: showCursor,
-				});
+				// Guard against a second init on the same node (block rendered
+				// twice, or the script enqueued more than once on a page).
+				if (this.dataset.ebTypedInit === "1") {
+					return;
+				}
+				this.dataset.ebTypedInit = "1";
+				new Typed(this, options);
 			});
 	});
 });

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useRef, useState } from "@wordpress/element";
+import { useEffect, useRef } from "@wordpress/element";
 import {
     BlockControls,
     AlignmentToolbar,
@@ -21,6 +21,7 @@ import Typed from "typed.js";
  */
 import Inspector from "./inspector";
 import Style from "./style";
+import BlockErrorBoundary from "./error-boundary";
 import { escapeHTML } from "@wordpress/escape-html";
 
 export default function Edit(props) {
@@ -53,7 +54,10 @@ export default function Edit(props) {
         classHook,
     } = attributes;
     const block = useRef(null);
-    const [typed, setTyped] = useState(null);
+    // Held in a ref, not state. The previous `useState` version was captured by
+    // the mount effect's cleanup closure while still null, so the Typed instance
+    // was never destroyed on unmount and its timers kept running.
+    const typedRef = useRef(null);
 
     const generateOptions = () => {
         // Generate options for Typed instance
@@ -96,11 +100,11 @@ export default function Edit(props) {
         return strings;
     };
 
+    // Rebuild the Typed instance whenever an option changes.
     useEffect(() => {
-        if (typed) {
-            typed.destroy();
-            setTyped(new Typed(block.current, generateOptions()));
-        }
+        if (!typedRef.current || !block.current) return;
+        typedRef.current.destroy();
+        typedRef.current = new Typed(block.current, generateOptions());
     }, [
         typedText,
         typeSpeed,
@@ -118,7 +122,13 @@ export default function Edit(props) {
     const enhancedProps = {
         ...props,
         blockPrefix: 'eb-typing-text',
-        style: <Style {...props} />
+        // Contained separately from the inspector: if style generation throws,
+        // the block should render unstyled rather than vanish entirely.
+        style: (
+            <BlockErrorBoundary label="style">
+                <Style {...props} />
+            </BlockErrorBoundary>
+        )
     };
 
 
@@ -126,27 +136,24 @@ export default function Edit(props) {
     useEffect(() => {
         //Set Default "typedText"
         if (typedText.length === 0) {
-            const defaultTypedText = [
-                {
-                    text: "first string",
-                },
-                {
-                    text: "second string",
-                },
-            ];
-
-            setAttributes({ typedText: defaultTypedText });
-            setAttributes({ prefix: "This is the " });
-            setAttributes({ suffix: "of the sentence." });
+            // One setAttributes call, not three — three separate calls each
+            // pushed their own entry onto the editor's undo stack.
+            setAttributes({
+                typedText: [{ text: "first string" }, { text: "second string" }],
+                prefix: "This is the ",
+                suffix: "of the sentence.",
+            });
         }
 
         //Init Typed class execute
-        const new_typed = new Typed(block.current, generateOptions());
-        setTyped(new_typed);
+        if (block.current) {
+            typedRef.current = new Typed(block.current, generateOptions());
+        }
         return () => {
             // Destroy Typed instance
-            if (typed) {
-                typed.destroy();
+            if (typedRef.current) {
+                typedRef.current.destroy();
+                typedRef.current = null;
             }
         };
     }, []);
@@ -163,10 +170,12 @@ export default function Edit(props) {
                 />
             </BlockControls>
             {isSelected && (
-                <Inspector
-                    attributes={attributes}
-                    setAttributes={setAttributes}
-                />
+                <BlockErrorBoundary label="inspector">
+                    <Inspector
+                        attributes={attributes}
+                        setAttributes={setAttributes}
+                    />
+                </BlockErrorBoundary>
             )}
             <BlockProps.Edit {...enhancedProps}>
                 <div
@@ -176,9 +185,13 @@ export default function Edit(props) {
                         className={`eb-typed-wrapper ${blockId}`}
                         data-id={blockId}
                     >
-                        <span className="eb-typed-prefix">{prefix}</span>
-                        <span className="eb-typed-text" ref={block} />
-                        <span className="eb-typed-suffix">{suffix}</span>
+                        {/* The .eb-typed-content wrapper mirrors save.js so the
+                            editor and the front end share the same DOM shape. */}
+                        <div className="eb-typed-content">
+                            <span className="eb-typed-prefix">{prefix}</span>
+                            <span className="eb-typed-view" ref={block} />
+                            <span className="eb-typed-suffix">{suffix}</span>
+                        </div>
                     </div>
                 </div>
             </BlockProps.Edit>

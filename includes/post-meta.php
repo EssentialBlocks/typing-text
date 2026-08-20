@@ -9,7 +9,7 @@ class Type_Post_Meta
 {
     public function __construct()
     {
-        add_filter('init', array($this, 'register_meta'));
+        add_action('init', array($this, 'register_meta'));
     }
 
     /**
@@ -17,6 +17,15 @@ class Type_Post_Meta
      */
     public function register_meta()
     {
+        // `_eb_attr` is shared across the whole Essential Blocks family and the
+        // registration is identical everywhere (see Essential Blocks core,
+        // includes/Core/PostMeta.php). Re-registering it replaces the previous
+        // plugin's auth_callback with an equivalent one for no benefit, so only
+        // claim the key when nobody else has.
+        if ( function_exists( 'registered_meta_key_exists' ) && registered_meta_key_exists( 'post', '_eb_attr' ) ) {
+            return;
+        }
+
         register_meta(
             'post',
             '_eb_attr',

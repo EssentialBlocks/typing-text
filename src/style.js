@@ -109,6 +109,20 @@ export default function Style(props) {
         noMainBgi: true,
     });
 
+    // Fallback colour. Must match the attribute defaults in attributes.js —
+    // hardcoding #fff here made a cleared colour render white-on-white.
+    const defaultColor = "var(--eb-global-primary-color)";
+
+    // AlignmentToolbar clears to `undefined`, which would emit the literal
+    // `text-align: undefined`. Only emit the declaration when it is set.
+    const textAlignStyle = textAlign ? `text-align: ${textAlign};` : "";
+
+    // A missing transition string would produce `transition: , ;`, which is
+    // invalid and makes the browser drop the whole declaration.
+    const transitionStyle = [wrpBgTransitionStyle, bdShadowTransitionStyle]
+        .filter(Boolean)
+        .join(", ");
+
     // wrapper styles css in strings ⬇
     const wrapperStylesDesktop = `
 
@@ -117,8 +131,8 @@ export default function Style(props) {
 		 ${wrapperPaddingStylesDesktop}
 		 ${bdShadowStyesDesktop}
 		 ${wrpBackgroundStylesDesktop}
-		 text-align: ${textAlign};
-		 transition: ${wrpBgTransitionStyle}, ${bdShadowTransitionStyle};
+		 ${textAlignStyle}
+		 ${transitionStyle ? `transition: ${transitionStyle};` : ""}
 	 }
 
 	 .eb-typed-wrapper.${blockId}:hover {
@@ -159,7 +173,7 @@ export default function Style(props) {
     const prefixTypoStylesDesktop = `
 	 .${blockId} .eb-typed-prefix{
 		 ${prefixTextTypoStylesDesktop}
-		 color: ${prefixColor || "#fff"};
+		 color: ${prefixColor || defaultColor};
 	 }
 	 `;
 
@@ -179,7 +193,7 @@ export default function Style(props) {
     const suffixTypoStylesDesktop = `
 	 .${blockId} .eb-typed-suffix{
 		 ${suffixTextTypoStylesDesktop}
-		 color: ${suffixTextColor || "#fff"};
+		 color: ${suffixTextColor || defaultColor};
 	 }
 	 `;
 
@@ -199,7 +213,7 @@ export default function Style(props) {
     const typedTypoStylesDesktop = `
 	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view,.${blockId} .typed-cursor{
 		 ${typedTextTypoStylesDesktop}
-		 color: ${typedTextColor || "#fff"};
+		 color: ${typedTextColor || defaultColor};
 	 }
 	 `;
 

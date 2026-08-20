@@ -122,17 +122,19 @@ const attributes = {
         noOverlay: true,
         noMainBgi: true,
     }),
+    // Declared as strings to match `type: "string"`. These were numeric `600`,
+    // which conflicts with the declared type and can trip block validation.
     typedTextFontWeight: {
         type: "string",
-        default: 600,
+        default: "600",
     },
     prefixTextFontWeight: {
         type: "string",
-        default: 600,
+        default: "600",
     },
     suffixTextFontWeight: {
         type: "string",
-        default: 600,
+        default: "600",
     },
 };
 
