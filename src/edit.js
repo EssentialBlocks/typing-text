@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useRef } from "@wordpress/element";
+import { useEffect, useRef, useState } from "@wordpress/element";
 import {
     BlockControls,
     AlignmentToolbar,
@@ -58,6 +58,12 @@ export default function Edit(props) {
     // the mount effect's cleanup closure while still null, so the Typed instance
     // was never destroyed on unmount and its timers kept running.
     const typedRef = useRef(null);
+    // True only when this block mounted with no strings yet — a freshly
+    // inserted block, whose defaults are seeded by the mount effect below.
+    // While it is set, Typed construction waits for those defaults to land, so
+    // the block builds one instance instead of building one from the fallback
+    // strings and immediately tearing it down when the real ones arrive.
+    const pendingDefaultsRef = useRef((typedText || []).length === 0);
 
     const generateOptions = () => {
         // Generate options for Typed instance
@@ -100,23 +106,73 @@ export default function Edit(props) {
         return strings;
     };
 
-    // Rebuild the Typed instance whenever an option changes.
+    // typed.js has no API for changing options in place, so every option change
+    // has to rebuild the instance — and a rebuild blanks the element and retypes
+    // from the first character. Dragging the Type Speed slider emits one
+    // setAttributes per step, which previously meant one visible restart per
+    // step. Deferring the *rebuild* keeps that to a single restart once the
+    // slider settles. The attributes themselves are never deferred: typeSpeed is
+    // stored the moment it changes, so the control, its displayed value and the
+    // saved post content all behave exactly as before.
+    const REBUILD_DEBOUNCE_MS = 300;
+
+    const currentOptions = generateOptions();
+    const currentOptionsKey = JSON.stringify(currentOptions);
+    // The options the live Typed instance was actually built from. Comparing by
+    // value rather than by reference also stops the rebuild from firing on a
+    // `typedText` array that was re-created without its contents changing.
+    const [appliedOptions, setAppliedOptions] = useState(currentOptions);
+    const appliedOptionsKey = JSON.stringify(appliedOptions);
+
     useEffect(() => {
-        if (!typedRef.current || !block.current) return;
-        typedRef.current.destroy();
-        typedRef.current = new Typed(block.current, generateOptions());
-    }, [
-        typedText,
-        typeSpeed,
-        startDelay,
-        smartBackspace,
-        backSpeed,
-        backDelay,
-        fadeOut,
-        fadeOutDelay,
-        loop,
-        showCursor,
-    ]);
+        if (currentOptionsKey === appliedOptionsKey) return;
+
+        // Nothing is animating yet, so there is no restart to hide — apply at
+        // once. This is the freshly-inserted-block path, where waiting would
+        // only delay the first render of the typing preview.
+        if (!typedRef.current) {
+            setAppliedOptions(currentOptions);
+            return;
+        }
+
+        const timer = setTimeout(
+            () => setAppliedOptions(currentOptions),
+            REBUILD_DEBOUNCE_MS
+        );
+        // Each new option value cancels the previous pending rebuild, so a drag
+        // applies once, with the last value the user chose, and leaves no timer
+        // behind.
+        return () => clearTimeout(timer);
+    }, [currentOptionsKey, appliedOptionsKey]);
+
+    // `generateOptions()` falls back to the same two placeholder strings the
+    // defaults are seeded with, so the options snapshot is byte-identical before
+    // and after seeding. Readiness therefore has to be its own dependency —
+    // keyed off the options alone, the effect would never re-run and a freshly
+    // inserted block would never start typing at all.
+    const hasStrings = (typedText || []).length > 0;
+
+    // Single owner of the Typed instance: it is built here and destroyed by this
+    // effect's own cleanup, so React's lifecycle guarantees at most one instance
+    // is attached to `.eb-typed-view` at any time.
+    useEffect(() => {
+        if (!block.current) return;
+
+        // Wait for the mount-time defaults instead of building an instance from
+        // the placeholder strings and discarding it a tick later.
+        if (pendingDefaultsRef.current) {
+            if (!hasStrings) return;
+            pendingDefaultsRef.current = false;
+        }
+
+        const instance = new Typed(block.current, appliedOptions);
+        typedRef.current = instance;
+
+        return () => {
+            instance.destroy();
+            typedRef.current = null;
+        };
+    }, [appliedOptions, hasStrings]);
 
     // you must declare this variable
     const enhancedProps = {
@@ -132,10 +188,13 @@ export default function Edit(props) {
     };
 
 
-    // this useEffect is for creating an unique id for each block's unique className by a random unique number
+    // Seed the defaults for a freshly inserted block. Kept apart from Typed
+    // construction on purpose: doing both in one effect meant this
+    // setAttributes re-rendered the block and destroyed the instance the very
+    // same effect had just created. The values written here are unchanged.
     useEffect(() => {
         //Set Default "typedText"
-        if (typedText.length === 0) {
+        if ((typedText || []).length === 0) {
             // One setAttributes call, not three — three separate calls each
             // pushed their own entry onto the editor's undo stack.
             setAttributes({
@@ -144,18 +203,6 @@ export default function Edit(props) {
                 suffix: "of the sentence.",
             });
         }
-
-        //Init Typed class execute
-        if (block.current) {
-            typedRef.current = new Typed(block.current, generateOptions());
-        }
-        return () => {
-            // Destroy Typed instance
-            if (typedRef.current) {
-                typedRef.current.destroy();
-                typedRef.current = null;
-            }
-        };
     }, []);
 
     // Return if there is no typed text
