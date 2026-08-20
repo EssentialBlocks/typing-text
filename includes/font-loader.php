@@ -78,7 +78,17 @@ class Type_Font_Loader {
      * @since 4.0.0
      * @access public
      */
-    public function fonts_loader( $handle_name = 'eb-block-fonts' ) {
+    /**
+     * Register and enqueue the collected Google fonts.
+     *
+     * The handle was `eb-block-fonts`, which Essential Blocks core
+     * (includes/Core/FontLoader.php) and every other carved-out block plugin
+     * also used. `wp_register_style()` is a no-op once a handle is taken, so on
+     * a page holding blocks from two of them only the first loader's families
+     * were ever requested and the rest fell back to the theme font. Each plugin
+     * needs its own handle to fetch its own families.
+     */
+    public function fonts_loader( $handle_name = 'typing-text-block-fonts' ) {
         $googleFont = true;
         if ( 'essential-blocks' === self::$block_name ) {
             $eb_settings = get_option( 'eb_settings', [] );
