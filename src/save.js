@@ -34,7 +34,14 @@ const Save = ({ attributes }) => {
                         data-cursor={showCursor}
                     >
                         <span className="eb-typed-prefix">{prefix}</span>
-                        <span className="eb-typed-text-wrapper is-hidden">
+                        {/* The class is what dist/style.css targets; the inline
+                            rule is a fallback so the source strings stay hidden
+                            even when that stylesheet is deferred or arrives late,
+                            which is what let them flash on a cold page load. */}
+                        <span
+                            className="eb-typed-text-wrapper is-hidden"
+                            style={{ display: "none" }}
+                        >
                             {typedText.map((item, index) => (
                                 <span key={index} className="eb-typed-text">{item.text}</span>
                             ))}
