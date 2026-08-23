@@ -33,7 +33,7 @@ jobs:
       - name: Running NPM Install & Build
         run: |
           npm install
-          npm install --prefix controls --legacy-peer-deps
+          npm install --prefix controls --force
           npm run build
       - name: WordPress Plugin Deploy
         id: deploy
