@@ -253,6 +253,16 @@ export default function Style(props) {
 		 ${typedTypoStylesMobile}
 	`);
 
+    // `blockId` is assigned by BlockProps.Edit in a post-paint mount effect, so
+    // on a freshly inserted block the first render would otherwise emit every
+    // rule selected by `.undefined`, which matches nothing: the block paints
+    // unstyled and then snaps to its real typography once the id lands.
+    // Rendering nothing until the id exists removes that intermediate paint, and
+    // keeps `.undefined` CSS out of the `blockMeta` attribute that the PHP style
+    // handler writes to the generated frontend stylesheet. Every style rule is
+    // generated exactly as before once `blockId` is set.
+    if (!blockId) return null;
+
     return (
         <>
             <StyleComponent
