@@ -4,7 +4,5 @@
 	"title": "Typing Text",
 	"category": "widgets",
 	"description": "Make Your Website Interactive With Typing Text Animation",
-	"textdomain": "typing-text",
-	"editorScript": "file:./dist/index.js",
-	"style": "file:./dist/style.css"
+	"textdomain": "typing-text"
 }

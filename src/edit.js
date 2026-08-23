@@ -3,32 +3,12 @@
  */
 import { useEffect, useRef, useState } from "@wordpress/element";
 import {
-	BlockControls,
-	AlignmentToolbar,
-	useBlockProps,
+    BlockControls,
+    AlignmentToolbar,
 } from "@wordpress/block-editor";
-import { select } from "@wordpress/data";
-
-import {
-	dimensionsMargin,
-	dimensionsPadding,
-} from "./constants/dimensionsNames";
-import {
-	typoPrefix_prefixText,
-	typoPrefix_suffixText,
-	typoPrefix_typedText,
-} from "./constants/typographyPrefixConstants";
-import { WrpBdShadow } from "./constants/borderShadowConstants";
-import { backgroundWrapper } from "./constants/backgroundsConstants";
 
 const {
-	softMinifyCssStrings,
-	generateTypographyStyles,
-	generateDimensionsControlStyles,
-	generateBorderShadowStyles,
-	generateBackgroundControlStyles,
-	// mimmikCssForPreviewBtnClick,
-	duplicateBlockIdFix,
+    BlockProps
 } = window.EBTypingTextControls;
 
 /**
@@ -39,407 +19,288 @@ import Typed from "typed.js";
 /**
  * Internal dependencies
  */
-import classnames from "classnames";
-
 import Inspector from "./inspector";
+import Style from "./style";
+import BlockErrorBoundary from "./error-boundary";
+import { escapeHTML } from "@wordpress/escape-html";
 
 export default function Edit(props) {
-	const { attributes, setAttributes, className, clientId, isSelected } = props;
-	const {
-		blockId,
-		blockMeta,
-		// responsive control attribute ⬇
-		resOption,
-		prefix,
-		typedText,
-		typeSpeed,
-		startDelay,
-		smartBackspace,
-		backSpeed,
-		backDelay,
-		fadeOut,
-		fadeOutDelay,
-		loop,
-		showCursor,
-		suffix,
-		prefixColor,
-		typedTextColor,
-		suffixTextColor,
-		textAlign,
-		classHook,
-	} = attributes;
-	const block = useRef(null);
-	const [typed, setTyped] = useState(null);
+    const {
+        attributes,
+        setAttributes,
+        className,
+        clientId,
+        isSelected,
+        name
+    } = props;
+    const {
+        blockId,
+        blockMeta,
+        // responsive control attribute ⬇
+        resOption,
+        prefix,
+        typedText,
+        typeSpeed,
+        startDelay,
+        smartBackspace,
+        backSpeed,
+        backDelay,
+        fadeOut,
+        fadeOutDelay,
+        loop,
+        showCursor,
+        suffix,
+        textAlign,
+        classHook,
+    } = attributes;
+    const block = useRef(null);
+    // Held in a ref, not state. The previous `useState` version was captured by
+    // the mount effect's cleanup closure while still null, so the Typed instance
+    // was never destroyed on unmount and its timers kept running.
+    const typedRef = useRef(null);
+    // True only when this block mounted with no strings yet — a freshly
+    // inserted block, whose defaults are seeded by the mount effect below.
+    // While it is set, Typed construction waits for those defaults to land, so
+    // the block builds one instance instead of building one from the fallback
+    // strings and immediately tearing it down when the real ones arrive.
+    const pendingDefaultsRef = useRef((typedText || []).length === 0);
 
-	const generateOptions = () => {
-		// Generate options for Typed instance
-		const {
-			typedText,
-			typeSpeed,
-			startDelay,
-			smartBackspace,
-			backSpeed,
-			backDelay,
-			fadeOut,
-			fadeOutDelay,
-			loop,
-			showCursor,
-		} = attributes;
-		let strings = getStrings(typedText);
+    const generateOptions = () => {
+        // Generate options for Typed instance
+        const {
+            typedText,
+            typeSpeed,
+            startDelay,
+            smartBackspace,
+            backSpeed,
+            backDelay,
+            fadeOut,
+            fadeOutDelay,
+            loop,
+            showCursor,
+        } = attributes;
+        let strings = getStrings(typedText);
 
-		return {
-			strings,
-			typeSpeed,
-			startDelay,
-			smartBackspace,
-			backSpeed,
-			backDelay,
-			fadeOut,
-			fadeOutDelay,
-			loop,
-			showCursor,
-		};
-	};
+        return {
+            strings,
+            typeSpeed,
+            startDelay,
+            smartBackspace,
+            backSpeed,
+            backDelay,
+            fadeOut,
+            fadeOutDelay,
+            loop,
+            showCursor,
+        };
+    };
 
-	const getStrings = (typedText) => {
-		let strings = [];
-		typedText.map((item) => strings.push(item.text));
-		return strings;
-	};
+    const getStrings = (typedText) => {
+        let strings = [];
+        if (typeof typedText === "object" && typedText.length > 0) {
+            typedText.map((item) => strings.push(escapeHTML(item.text)));
+        } else {
+            strings = ["first string", "second string"];
+        }
 
-	useEffect(() => {
-		const options = generateOptions();
-		const new_typed = new Typed(block.current, options);
-		setTyped(new_typed);
-		return () => {
-			// Destroy Typed instance
-			if (typed) {
-				typed.destroy();
-			}
-		};
-	}, []);
+        return strings;
+    };
 
-	useEffect(() => {
-		if (typed) {
-			typed.destroy();
-			setTyped(new Typed(block.current, generateOptions()));
-		}
-	}, [
-		typedText,
-		typeSpeed,
-		startDelay,
-		smartBackspace,
-		backSpeed,
-		backDelay,
-		fadeOut,
-		fadeOutDelay,
-		loop,
-		showCursor,
-	]);
+    // typed.js has no API for replacing an option set wholesale, and rebuilding
+    // the instance blanks the element and retypes from the first character. But
+    // it does re-read most of the timing options off the instance every time it
+    // schedules the next tick, so those can be written to the running instance
+    // instead of forcing a rebuild:
+    //
+    //   typeSpeed     humanizer(this.typeSpeed)   -- typewrite()
+    //   backSpeed     humanizer(this.backSpeed)   -- backspace()
+    //   backDelay     this.backDelay              -- doneTyping()
+    //   startDelay    this.startDelay             -- begin()
+    //   fadeOutDelay  this.fadeOutDelay           -- initFadeOut()
+    //
+    // Everything else is baked in at construction: `strings` is expanded into
+    // `sequence`/`strPos`, `showCursor` decides whether a cursor node is ever
+    // created, `fadeOut` decides whether the fade-out stylesheet is injected and
+    // `smartBackspace` seeds `stopNum`. Those still rebuild.
+    const LIVE_OPTIONS = [
+        "typeSpeed",
+        "backSpeed",
+        "backDelay",
+        "startDelay",
+        "fadeOutDelay",
+    ];
 
-	useEffect(() => {
-		if (typedText.length > 0) return;
+    // Dragging a slider emits one setAttributes per step. Live options no longer
+    // reach the rebuild at all, so this now only coalesces genuine rebuilds —
+    // typing into the strings input, which fires per keystroke.
+    const REBUILD_DEBOUNCE_MS = 300;
 
-		const defaultTypedText = [
-			{
-				text: "first string",
-			},
-			{
-				text: "second string",
-			},
-		];
+    const currentOptions = generateOptions();
 
-		setAttributes({ typedText: defaultTypedText });
-		setAttributes({ prefix: "This is the " });
-		setAttributes({ suffix: "of the sentence." });
-	}, []);
+    const pickLive = (options) =>
+        LIVE_OPTIONS.reduce((live, key) => {
+            live[key] = options[key];
+            return live;
+        }, {});
 
-	// this useEffect is for creating an unique id for each block's unique className by a random unique number
-	useEffect(() => {
-		const BLOCK_PREFIX = "eb-typing-text";
-		duplicateBlockIdFix({
-			BLOCK_PREFIX,
-			blockId,
-			setAttributes,
-			select,
-			clientId,
-		});
-	}, []);
+    // Only the options that cannot be applied in place may trigger a rebuild.
+    const structuralOptions = Object.keys(currentOptions).reduce((rest, key) => {
+        if (!LIVE_OPTIONS.includes(key)) rest[key] = currentOptions[key];
+        return rest;
+    }, {});
+    const structuralKey = JSON.stringify(structuralOptions);
+    const liveKey = JSON.stringify(pickLive(currentOptions));
 
-	const blockProps = useBlockProps({
-		className: classnames(className, `eb-guten-block-main-parent-wrapper`),
-	});
+    // The structural options the live Typed instance was actually built from.
+    // Comparing by value rather than by reference also stops the rebuild from
+    // firing on a `typedText` array that was re-created without its contents
+    // changing.
+    const [appliedStructural, setAppliedStructural] = useState(structuralOptions);
+    const appliedStructuralKey = JSON.stringify(appliedStructural);
 
-	// Return if there is no typed text
-	if (!typedText) return <div />;
-	const {
-		dimensionStylesDesktop: wrapperMarginStylesDesktop,
-		dimensionStylesTab: wrapperMarginStylesTab,
-		dimensionStylesMobile: wrapperMarginStylesMobile,
-	} = generateDimensionsControlStyles({
-		controlName: dimensionsMargin,
-		styleFor: "margin",
-		attributes,
-	});
+    useEffect(() => {
+        if (structuralKey === appliedStructuralKey) return;
 
-	const {
-		dimensionStylesDesktop: wrapperPaddingStylesDesktop,
-		dimensionStylesTab: wrapperPaddingStylesTab,
-		dimensionStylesMobile: wrapperPaddingStylesMobile,
-	} = generateDimensionsControlStyles({
-		controlName: dimensionsPadding,
-		styleFor: "padding",
-		attributes,
-	});
+        // Nothing is animating yet, so there is no restart to hide — apply at
+        // once. This is the freshly-inserted-block path, where waiting would
+        // only delay the first render of the typing preview.
+        if (!typedRef.current) {
+            setAppliedStructural(structuralOptions);
+            return;
+        }
 
-	// Prefix typography
-	const {
-		typoStylesDesktop: prefixTextTypoStylesDesktop,
-		typoStylesTab: prefixTextTypoStylesTab,
-		typoStylesMobile: prefixTextTypoStylesMobile,
-	} = generateTypographyStyles({
-		attributes,
-		defaultFontSize: 22,
-		prefixConstant: typoPrefix_prefixText,
-	});
+        const timer = setTimeout(
+            () => setAppliedStructural(structuralOptions),
+            REBUILD_DEBOUNCE_MS
+        );
+        // Each new option value cancels the previous pending rebuild, so a burst
+        // of edits applies once, with the last value the user chose, and leaves
+        // no timer behind.
+        return () => clearTimeout(timer);
+    }, [structuralKey, appliedStructuralKey]);
 
-	// suffix typoghraphy
-	const {
-		typoStylesDesktop: suffixTextTypoStylesDesktop,
-		typoStylesTab: suffixTextTypoStylesTab,
-		typoStylesMobile: suffixTextTypoStylesMobile,
-	} = generateTypographyStyles({
-		attributes,
-		defaultFontSize: 22,
-		prefixConstant: typoPrefix_suffixText,
-	});
+    // Type Speed, Start Delay, Back Speed, Back Delay and Fade Delay land here
+    // rather than in the rebuild above: nothing is destroyed, so
+    // `.eb-typed-view` is never blanked and the text is never retyped from the
+    // first character. `startDelay` is the one value typed.js reads only in
+    // begin(), so a new delay applies from the next loop instead of instantly —
+    // applying it instantly is exactly what used to blank the element.
+    useEffect(() => {
+        const instance = typedRef.current;
+        if (!instance) return;
 
-	// typed text typoghrapy
-	const {
-		typoStylesDesktop: typedTextTypoStylesDesktop,
-		typoStylesTab: typedTextTypoStylesTab,
-		typoStylesMobile: typedTextTypoStylesMobile,
-	} = generateTypographyStyles({
-		attributes,
-		defaultFontSize: 22,
-		prefixConstant: typoPrefix_typedText,
-	});
+        const live = pickLive(currentOptions);
+        Object.keys(live).forEach((key) => {
+            instance[key] = live[key];
+            // Keep the option snapshot typed.js stores at construction in step
+            // with the instance fields, so a later reset() cannot resurrect a
+            // stale value.
+            if (instance.options) {
+                instance.options[key] = live[key];
+            }
+        });
+    }, [liveKey]);
 
-	// wrapper border & shadow settings
-	const {
-		styesDesktop: bdShadowStyesDesktop,
-		styesTab: bdShadowStyesTab,
-		styesMobile: bdShadowStyesMobile,
-		stylesHoverDesktop: bdShadowStylesHoverDesktop,
-		stylesHoverTab: bdShadowStylesHoverTab,
-		stylesHoverMobile: bdShadowStylesHoverMobile,
-		transitionStyle: bdShadowTransitionStyle,
-	} = generateBorderShadowStyles({
-		controlName: WrpBdShadow,
-		attributes,
-	});
+    // `generateOptions()` falls back to the same two placeholder strings the
+    // defaults are seeded with, so the options snapshot is byte-identical before
+    // and after seeding. Readiness therefore has to be its own dependency —
+    // keyed off the options alone, the effect would never re-run and a freshly
+    // inserted block would never start typing at all.
+    const hasStrings = (typedText || []).length > 0;
 
-	// wrapper background controller
-	const {
-		backgroundStylesDesktop: wrpBackgroundStylesDesktop,
-		hoverBackgroundStylesDesktop: wrpHoverBackgroundStylesDesktop,
-		bgTransitionStyle: wrpBgTransitionStyle,
-	} = generateBackgroundControlStyles({
-		attributes,
-		controlName: backgroundWrapper,
-		noOverlay: true,
-		noMainBgi: true,
-	});
+    // Single owner of the Typed instance: it is built here and destroyed by this
+    // effect's own cleanup, so React's lifecycle guarantees at most one instance
+    // is attached to `.eb-typed-view` at any time.
+    useEffect(() => {
+        if (!block.current) return;
 
-	// wrapper styles css in strings ⬇
-	const wrapperStylesDesktop = `
+        // Wait for the mount-time defaults instead of building an instance from
+        // the placeholder strings and discarding it a tick later.
+        if (pendingDefaultsRef.current) {
+            if (!hasStrings) return;
+            pendingDefaultsRef.current = false;
+        }
 
-	 .eb-typed-wrapper.${blockId} {
-		 ${wrapperMarginStylesDesktop}
-		 ${wrapperPaddingStylesDesktop}
-		 ${bdShadowStyesDesktop}
-		 ${wrpBackgroundStylesDesktop}
-		 text-align: ${textAlign};
-		 transition: ${wrpBgTransitionStyle}, ${bdShadowTransitionStyle};
-	 }
+        // Built from the full current options, not just the structural ones, so
+        // a rebuild triggered by a string change still picks up the latest Type
+        // Speed rather than the value the previous build used.
+        const instance = new Typed(block.current, currentOptions);
+        typedRef.current = instance;
 
-	 .eb-typed-wrapper.${blockId}:hover {
-		 ${wrpHoverBackgroundStylesDesktop}
-		 ${bdShadowStylesHoverDesktop}
-	 }
+        return () => {
+            instance.destroy();
+            typedRef.current = null;
+        };
+    }, [appliedStructuralKey, hasStrings]);
 
-	 .eb-typed-wrapper.${blockId}:before {
-		 z-index: -11;
-	 }
-	 `;
+    // you must declare this variable
+    const enhancedProps = {
+        ...props,
+        blockPrefix: 'eb-typing-text',
+        // Contained separately from the inspector: if style generation throws,
+        // the block should render unstyled rather than vanish entirely.
+        style: (
+            <BlockErrorBoundary label="style">
+                <Style {...props} />
+            </BlockErrorBoundary>
+        )
+    };
 
-	const wrapperStylesTab = `
-	 .eb-typed-wrapper.${blockId}{
-		 ${wrapperMarginStylesTab}
-		 ${wrapperPaddingStylesTab}
-		 ${bdShadowStyesTab}
-	 }
 
-	 .eb-typed-wrapper.${blockId}:hover {
-		 ${bdShadowStylesHoverTab}
-	 }
-	 `;
+    // Seed the defaults for a freshly inserted block. Kept apart from Typed
+    // construction on purpose: doing both in one effect meant this
+    // setAttributes re-rendered the block and destroyed the instance the very
+    // same effect had just created. The values written here are unchanged.
+    useEffect(() => {
+        //Set Default "typedText"
+        if ((typedText || []).length === 0) {
+            // One setAttributes call, not three — three separate calls each
+            // pushed their own entry onto the editor's undo stack.
+            setAttributes({
+                typedText: [{ text: "first string" }, { text: "second string" }],
+                prefix: "This is the ",
+                suffix: "of the sentence.",
+            });
+        }
+    }, []);
 
-	const wrapperStylesMobile = `
-	 .eb-typed-wrapper.${blockId}{
-		 ${wrapperMarginStylesMobile}
-		 ${wrapperPaddingStylesMobile}
-		 ${bdShadowStyesMobile}
-	 }
+    // Return if there is no typed text
+    if (!typedText) return <div />;
 
-	 .eb-typed-wrapper.${blockId}:hover {
-		 ${bdShadowStylesHoverMobile}
-	 }
-	 `;
-
-	// prefix text styles css in strings ⬇
-	const prefixTypoStylesDesktop = `
-	 .${blockId} .eb-typed-prefix{
-		 ${prefixTextTypoStylesDesktop}
-		 color: ${prefixColor || "#fff"};
-	 }
-	 `;
-
-	const prefixTypoStylesTab = `
-	 .${blockId} .eb-typed-prefix{
-		 ${prefixTextTypoStylesTab}
-	 }
-	 `;
-
-	const prefixTypoStylesMobile = `
-	 .${blockId} .eb-typed-prefix{
-		 ${prefixTextTypoStylesMobile}
-	 }
-	 `;
-
-	// suffix text styles css in strings ⬇
-	const suffixTypoStylesDesktop = `
-	 .${blockId} .eb-typed-suffix{
-		 ${suffixTextTypoStylesDesktop}
-		 color: ${suffixTextColor || "#fff"};
-	 }
-	 `;
-
-	const suffixTypoStylesTab = `
-	 .${blockId} .eb-typed-suffix{
-		 ${suffixTextTypoStylesTab}
-	 }
-	 `;
-
-	const suffixTypoStylesMobile = `
-	 .${blockId} .eb-typed-suffix{
-		 ${suffixTextTypoStylesMobile}
-	 }
-	 `;
-
-	// typed text styles css in strings ⬇
-	const typedTypoStylesDesktop = `
-	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view,.${blockId} .typed-cursor{
-		 ${typedTextTypoStylesDesktop}
-		 color: ${typedTextColor || "#fff"};
-	 }
-	 `;
-
-	const typedTypoStylesTab = `
-	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
-		 ${typedTextTypoStylesTab}
-	 }
-	 `;
-
-	const typedTypoStylesMobile = `
-	 .${blockId} .eb-typed-text,.${blockId} .eb-typed-view, .${blockId} .typed-cursor{
-		 ${typedTextTypoStylesMobile}
-	 }
-	 `;
-
-	// all css styles for large screen width (desktop/laptop) in strings ⬇
-	const desktopAllStyles = softMinifyCssStrings(`
-		 ${wrapperStylesDesktop}
-		 ${prefixTypoStylesDesktop}
-		 ${suffixTypoStylesDesktop}
-		 ${typedTypoStylesDesktop}
-	 `);
-
-	// all css styles for Tab in strings ⬇
-	const tabAllStyles = softMinifyCssStrings(`
-		 ${wrapperStylesTab}
-		 ${prefixTypoStylesTab}
-		 ${suffixTypoStylesTab}
-		 ${typedTypoStylesTab}
-	 `);
-
-	// all css styles for Mobile in strings ⬇
-	const mobileAllStyles = softMinifyCssStrings(`
-		 ${wrapperStylesMobile}
-		 ${prefixTypoStylesMobile}
-		 ${suffixTypoStylesMobile}
-		 ${typedTypoStylesMobile}
-	 `);
-	// Set All Style in "blockMeta" Attribute
-	useEffect(() => {
-		const styleObject = {
-			desktop: desktopAllStyles,
-			tab: tabAllStyles,
-			mobile: mobileAllStyles,
-		};
-		if (JSON.stringify(blockMeta) != JSON.stringify(styleObject)) {
-			setAttributes({ blockMeta: styleObject });
-		}
-	}, [attributes]);
-
-	return (
-		<>
-			<BlockControls>
-				<AlignmentToolbar
-					value={textAlign}
-					onChange={(textAlign) => setAttributes({ textAlign })}
-				/>
-			</BlockControls>
-			{isSelected && (
-				<Inspector attributes={attributes} setAttributes={setAttributes} />
-			)}
-			<div {...blockProps}>
-				<style>
-					{`
-				${desktopAllStyles}
-
-				/* mimmikcssStart */
-
-				${resOption === "Tablet" ? tabAllStyles : " "}
-				${resOption === "Mobile" ? tabAllStyles + mobileAllStyles : " "}
-
-				/* mimmikcssEnd */
-
-				@media all and (max-width: 1024px) {
-
-					/* tabcssStart */
-					${softMinifyCssStrings(tabAllStyles)}
-					/* tabcssEnd */
-
-				}
-
-				@media all and (max-width: 767px) {
-
-					/* mobcssStart */
-					${softMinifyCssStrings(mobileAllStyles)}
-					/* mobcssEnd */
-
-				}
-				`}
-				</style>
-				<div className={`eb-parent-wrapper eb-parent-${blockId} ${classHook}`}>
-					<div className={`eb-typed-wrapper ${blockId}`} data-id={blockId}>
-						<span className="eb-typed-prefix">{prefix}</span>
-						<span className="eb-typed-text" ref={block} />
-						<span className="eb-typed-suffix">{suffix}</span>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+    return (
+        <>
+            <BlockControls>
+                <AlignmentToolbar
+                    value={textAlign}
+                    onChange={(textAlign) => setAttributes({ textAlign })}
+                />
+            </BlockControls>
+            {isSelected && (
+                <BlockErrorBoundary label="inspector">
+                    <Inspector
+                        attributes={attributes}
+                        setAttributes={setAttributes}
+                    />
+                </BlockErrorBoundary>
+            )}
+            <BlockProps.Edit {...enhancedProps}>
+                <div
+                    className={`eb-parent-wrapper eb-parent-${blockId} ${classHook}`}
+                >
+                    <div
+                        className={`eb-typed-wrapper ${blockId}`}
+                        data-id={blockId}
+                    >
+                        {/* The .eb-typed-content wrapper mirrors save.js so the
+                            editor and the front end share the same DOM shape. */}
+                        <div className="eb-typed-content">
+                            <span className="eb-typed-prefix">{prefix}</span>
+                            <span className="eb-typed-view" ref={block} />
+                            <span className="eb-typed-suffix">{suffix}</span>
+                        </div>
+                    </div>
+                </div>
+            </BlockProps.Edit>
+        </>
+    );
 }

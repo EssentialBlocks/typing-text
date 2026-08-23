@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { Component } from "@wordpress/element";
-
+import { escapeHTML } from "@wordpress/escape-html";
 /**
  * External dependencies
  */
@@ -12,17 +12,6 @@ import {
 	SortableHandle,
 } from "react-sortable-hoc";
 import arrayMove from "array-move";
-
-// Style objects
-const trashStyle = {
-	fontSize: 14,
-	borderLeft: "1px solid #b4b4cb",
-	lineHeight: "2.5em",
-	flex: 2,
-	textAlign: "center",
-	display: "flex",
-	justifyContent: "center",
-};
 
 const DragHandle = SortableHandle(() => (
 	<span className="drag-handle">
@@ -46,8 +35,7 @@ const DragHandle = SortableHandle(() => (
 
 const TrashIcon = ({ position, onDeleteItem }) => (
 	<span
-		className="eb-social-delete-icon"
-		style={trashStyle}
+		className="eb-typed-sortable-trash"
 		onClick={() => onDeleteItem(position)}
 	>
 		<svg
@@ -79,9 +67,9 @@ const SortableItem = SortableElement(
 	}) => {
 		return (
 			<li className="drag-helper">
-				<span className="eb-sortable-item">
+				<span className="eb-typed-sortable-item">
 					<span
-						className="eb-sortable-title"
+						className="eb-typed-sortable-title"
 						onClick={() => onTitleClick(position)}
 					>
 						{text}
@@ -89,12 +77,13 @@ const SortableItem = SortableElement(
 					<DragHandle />
 					<TrashIcon position={position} onDeleteItem={onDeleteItem} />
 				</span>
+				
 				{clickedIndex === position && (
 					<div className="eb-typed-input-wrapper">
 						<input
 							type="text"
 							value={text}
-							onChange={() => onTextChange(event, position)}
+							onChange={(event) => onTextChange(event, position)}
 							placeholder="Add text"
 						/>
 					</div>
@@ -145,7 +134,7 @@ class SortableText extends Component {
 	// Typed text change callback
 	onTextChange = (event, position) => {
 		let typedText = [...this.props.typedText];
-		typedText[position].text = event.target.value;
+		typedText[position].text = escapeHTML(event.target.value);
 		this.props.setAttributes({ typedText });
 	};
 

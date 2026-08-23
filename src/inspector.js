@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from "@wordpress/i18n";
-import { useEffect } from "@wordpress/element";
 import { InspectorControls } from "@wordpress/block-editor";
 import {
 	PanelBody,
@@ -13,7 +12,7 @@ import {
 	TextControl,
 	TabPanel,
 } from "@wordpress/components";
-import { select } from "@wordpress/data";
+
 /**
  * Internal dependencies
  */
@@ -222,68 +221,69 @@ const Inspector = ({ attributes, setAttributes }) => {
 							)}
 							{tab.name === "styles" && (
 								<>
-									{prefix && (
-										<PanelBody
-											title={__("Prefix", "essential-blocks")}
-											initialOpen={false}
-										>
-											<ColorControl
-												label={__("Prefix Color", "essential-blocks")}
-												color={prefixColor}
-												onChange={(prefixColor) =>
-													setAttributes({ prefixColor })
-												}
-											/>
+									{/*
+									 * These panels are rendered unconditionally on purpose.
+									 * Gating them on `prefix` / `suffix` / `typedText.length`
+									 * made the whole panel vanish the moment the text was
+									 * cleared, so a user could never style an empty-by-default
+									 * prefix or suffix, nor restyle one they had just emptied.
+									 */}
+									<PanelBody
+										title={__("Prefix", "essential-blocks")}
+										initialOpen={true}
+									>
+										<ColorControl
+											label={__("Prefix Color", "essential-blocks")}
+											color={prefixColor}
+											onChange={(prefixColor) =>
+												setAttributes({ prefixColor })
+											}
+										/>
 
-											<TypographyDropdown
-												baseLabel={__("Typography", "essential-blocks")}
-												typographyPrefixConstant={typoPrefix_prefixText}
-												resRequiredProps={resRequiredProps}
-											/>
-										</PanelBody>
-									)}
+										<TypographyDropdown
+											baseLabel={__("Typography", "essential-blocks")}
+											typographyPrefixConstant={typoPrefix_prefixText}
+											resRequiredProps={resRequiredProps}
+										/>
+									</PanelBody>
 
-									{typedText.length > 0 && (
-										<PanelBody
-											title={__("Typed Text", "essential-blocks")}
-											initialOpen={false}
-										>
-											<ColorControl
-												label={__("Typed Text Color", "essential-blocks")}
-												color={typedTextColor}
-												onChange={(typedTextColor) =>
-													setAttributes({ typedTextColor })
-												}
-											/>
+									<PanelBody
+										title={__("Typed Text", "essential-blocks")}
+										initialOpen={false}
+									>
+										<ColorControl
+											label={__("Typed Text Color", "essential-blocks")}
+											color={typedTextColor}
+											onChange={(typedTextColor) =>
+												setAttributes({ typedTextColor })
+											}
+										/>
 
-											<TypographyDropdown
-												baseLabel={__("Typography", "essential-blocks")}
-												typographyPrefixConstant={typoPrefix_typedText}
-												resRequiredProps={resRequiredProps}
-											/>
-										</PanelBody>
-									)}
+										<TypographyDropdown
+											baseLabel={__("Typography", "essential-blocks")}
+											typographyPrefixConstant={typoPrefix_typedText}
+											resRequiredProps={resRequiredProps}
+										/>
+									</PanelBody>
 
-									{suffix && (
-										<PanelBody
-											title={__("Suffix", "essential-blocks")}
-											initialOpen={false}
-										>
-											<ColorControl
-												label={__("Suffix Color", "essential-blocks")}
-												color={suffixTextColor}
-												onChange={(suffixTextColor) =>
-													setAttributes({ suffixTextColor })
-												}
-											/>
+									<PanelBody
+										title={__("Suffix", "essential-blocks")}
+										initialOpen={false}
+									>
+										<ColorControl
+											label={__("Suffix Color", "essential-blocks")}
+											color={suffixTextColor}
+											onChange={(suffixTextColor) =>
+												setAttributes({ suffixTextColor })
+											}
+										/>
 
-											<TypographyDropdown
-												baseLabel={__("Typography", "essential-blocks")}
-												typographyPrefixConstant={typoPrefix_suffixText}
-												resRequiredProps={resRequiredProps}
-											/>
-										</PanelBody>
-									)}
+										<TypographyDropdown
+											baseLabel={__("Typography", "essential-blocks")}
+											typographyPrefixConstant={typoPrefix_suffixText}
+											resRequiredProps={resRequiredProps}
+										/>
+									</PanelBody>
 								</>
 							)}
 							{tab.name === "advanced" && (
