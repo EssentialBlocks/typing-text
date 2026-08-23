@@ -106,44 +106,100 @@ export default function Edit(props) {
         return strings;
     };
 
-    // typed.js has no API for changing options in place, so every option change
-    // has to rebuild the instance — and a rebuild blanks the element and retypes
-    // from the first character. Dragging the Type Speed slider emits one
-    // setAttributes per step, which previously meant one visible restart per
-    // step. Deferring the *rebuild* keeps that to a single restart once the
-    // slider settles. The attributes themselves are never deferred: typeSpeed is
-    // stored the moment it changes, so the control, its displayed value and the
-    // saved post content all behave exactly as before.
+    // typed.js has no API for replacing an option set wholesale, and rebuilding
+    // the instance blanks the element and retypes from the first character. But
+    // it does re-read most of the timing options off the instance every time it
+    // schedules the next tick, so those can be written to the running instance
+    // instead of forcing a rebuild:
+    //
+    //   typeSpeed     humanizer(this.typeSpeed)   -- typewrite()
+    //   backSpeed     humanizer(this.backSpeed)   -- backspace()
+    //   backDelay     this.backDelay              -- doneTyping()
+    //   startDelay    this.startDelay             -- begin()
+    //   fadeOutDelay  this.fadeOutDelay           -- initFadeOut()
+    //
+    // Everything else is baked in at construction: `strings` is expanded into
+    // `sequence`/`strPos`, `showCursor` decides whether a cursor node is ever
+    // created, `fadeOut` decides whether the fade-out stylesheet is injected and
+    // `smartBackspace` seeds `stopNum`. Those still rebuild.
+    const LIVE_OPTIONS = [
+        "typeSpeed",
+        "backSpeed",
+        "backDelay",
+        "startDelay",
+        "fadeOutDelay",
+    ];
+
+    // Dragging a slider emits one setAttributes per step. Live options no longer
+    // reach the rebuild at all, so this now only coalesces genuine rebuilds —
+    // typing into the strings input, which fires per keystroke.
     const REBUILD_DEBOUNCE_MS = 300;
 
     const currentOptions = generateOptions();
-    const currentOptionsKey = JSON.stringify(currentOptions);
-    // The options the live Typed instance was actually built from. Comparing by
-    // value rather than by reference also stops the rebuild from firing on a
-    // `typedText` array that was re-created without its contents changing.
-    const [appliedOptions, setAppliedOptions] = useState(currentOptions);
-    const appliedOptionsKey = JSON.stringify(appliedOptions);
+
+    const pickLive = (options) =>
+        LIVE_OPTIONS.reduce((live, key) => {
+            live[key] = options[key];
+            return live;
+        }, {});
+
+    // Only the options that cannot be applied in place may trigger a rebuild.
+    const structuralOptions = Object.keys(currentOptions).reduce((rest, key) => {
+        if (!LIVE_OPTIONS.includes(key)) rest[key] = currentOptions[key];
+        return rest;
+    }, {});
+    const structuralKey = JSON.stringify(structuralOptions);
+    const liveKey = JSON.stringify(pickLive(currentOptions));
+
+    // The structural options the live Typed instance was actually built from.
+    // Comparing by value rather than by reference also stops the rebuild from
+    // firing on a `typedText` array that was re-created without its contents
+    // changing.
+    const [appliedStructural, setAppliedStructural] = useState(structuralOptions);
+    const appliedStructuralKey = JSON.stringify(appliedStructural);
 
     useEffect(() => {
-        if (currentOptionsKey === appliedOptionsKey) return;
+        if (structuralKey === appliedStructuralKey) return;
 
         // Nothing is animating yet, so there is no restart to hide — apply at
         // once. This is the freshly-inserted-block path, where waiting would
         // only delay the first render of the typing preview.
         if (!typedRef.current) {
-            setAppliedOptions(currentOptions);
+            setAppliedStructural(structuralOptions);
             return;
         }
 
         const timer = setTimeout(
-            () => setAppliedOptions(currentOptions),
+            () => setAppliedStructural(structuralOptions),
             REBUILD_DEBOUNCE_MS
         );
-        // Each new option value cancels the previous pending rebuild, so a drag
-        // applies once, with the last value the user chose, and leaves no timer
-        // behind.
+        // Each new option value cancels the previous pending rebuild, so a burst
+        // of edits applies once, with the last value the user chose, and leaves
+        // no timer behind.
         return () => clearTimeout(timer);
-    }, [currentOptionsKey, appliedOptionsKey]);
+    }, [structuralKey, appliedStructuralKey]);
+
+    // Type Speed, Start Delay, Back Speed, Back Delay and Fade Delay land here
+    // rather than in the rebuild above: nothing is destroyed, so
+    // `.eb-typed-view` is never blanked and the text is never retyped from the
+    // first character. `startDelay` is the one value typed.js reads only in
+    // begin(), so a new delay applies from the next loop instead of instantly —
+    // applying it instantly is exactly what used to blank the element.
+    useEffect(() => {
+        const instance = typedRef.current;
+        if (!instance) return;
+
+        const live = pickLive(currentOptions);
+        Object.keys(live).forEach((key) => {
+            instance[key] = live[key];
+            // Keep the option snapshot typed.js stores at construction in step
+            // with the instance fields, so a later reset() cannot resurrect a
+            // stale value.
+            if (instance.options) {
+                instance.options[key] = live[key];
+            }
+        });
+    }, [liveKey]);
 
     // `generateOptions()` falls back to the same two placeholder strings the
     // defaults are seeded with, so the options snapshot is byte-identical before
@@ -165,14 +221,17 @@ export default function Edit(props) {
             pendingDefaultsRef.current = false;
         }
 
-        const instance = new Typed(block.current, appliedOptions);
+        // Built from the full current options, not just the structural ones, so
+        // a rebuild triggered by a string change still picks up the latest Type
+        // Speed rather than the value the previous build used.
+        const instance = new Typed(block.current, currentOptions);
         typedRef.current = instance;
 
         return () => {
             instance.destroy();
             typedRef.current = null;
         };
-    }, [appliedOptions, hasStrings]);
+    }, [appliedStructuralKey, hasStrings]);
 
     // you must declare this variable
     const enhancedProps = {
