@@ -4,6 +4,9 @@
 	"description": "Example block written with ESNext standard and JSX support – build step required.",
 	"author": "WPDeveloper",
 	"license": "GPL-2.0-or-later",
+	"engines": {
+		"node": ">=20.19.0"
+	},
 	"main": "Gruntfile.js",
 	"scripts": {
 		"start": "wp-scripts start",
