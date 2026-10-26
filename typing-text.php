@@ -3,7 +3,7 @@
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
- * Version:         1.3.0
+ * Version:         1.3.1
  * Author:          WPDeveloper
  * Author URI:      https://wpdeveloper.net
  * License:         GPL-3.0-or-later
@@ -29,7 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 require_once __DIR__ . '/includes/font-loader.php';
-require_once __DIR__ . '/includes/post-meta.php';
 require_once __DIR__ . '/includes/helpers.php';
 
 /*
@@ -75,7 +74,7 @@ if ( file_exists( __DIR__ . '/lib/style-handler/style-handler.php' ) ) {
 function create_block_typing_text_block_init() {
 
     if ( ! defined( 'TYPING_TEXT_BLOCKS_VERSION' ) ) {
-        define( 'TYPING_TEXT_BLOCKS_VERSION', "1.3.0" );
+        define( 'TYPING_TEXT_BLOCKS_VERSION', "1.3.1" );
     }
     if ( ! defined( 'TYPING_TEXT_BLOCKS_ADMIN_URL' ) ) {
         define( 'TYPING_TEXT_BLOCKS_ADMIN_URL', plugin_dir_url( __FILE__ ) );
