@@ -76,6 +76,10 @@ controls
 # --- Source maps ---
 *.map
 
+# --- Unused controls helper bundle; the block's frontend script is dist/frontend/index.js ---
+dist/frontend.js
+dist/frontend.asset.php
+
 # --- Bundled submodule leftovers ---
 # The root `.git` entry above resolves to a directory, so dist-archive turns it
 # into `.git/*` and it never matches a submodule's `.git` *file* (a gitlink).
