@@ -51,3 +51,8 @@ src export-ignore
 util	export-ignore
 .wordpress-org	export-ignore
 .idea export-ignore
+*.map export-ignore
+controls export-ignore
+config export-ignore
+pnpm-lock.yaml export-ignore
+compatibility-report.md export-ignore

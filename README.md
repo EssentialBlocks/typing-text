@@ -87,7 +87,7 @@ Branches:
 
 - [@RahatSheikhLeon](https://github.com/RahatSheikhLeon)
 
-Plus everyone credited in the [plugin directory listing](https://wordpress.org/plugins/typing-text/): `wpdevteam`, `re_enter_rupok`, `Asif2BD`, `rahat89`, `fencermonir`.
+Plus everyone credited in the [plugin directory listing](https://wordpress.org/plugins/typing-text/): `wpdevteam`, `re_enter_rupok`, `Asif2BD`, `rahat89`.
 
 ## Support
 
