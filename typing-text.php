@@ -212,7 +212,7 @@ function typing_text_block_icon_selected_style() {
         'eb-block-icon-selected',
         plugins_url( 'assets/css/block-icon-selected.css', __FILE__ ),
         [],
-        '1.0.0'
+        TYPING_TEXT_BLOCKS_VERSION
     );
 }
 add_action( 'enqueue_block_editor_assets', 'typing_text_block_icon_selected_style' );
