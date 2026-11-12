@@ -4,7 +4,7 @@ Tags: block, blocks, typing text, animated text, type text, typewriter, animated
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -94,12 +94,11 @@ Yes, it will work with any standard WordPress theme.
 
 == Changelog ==
 
-= 1.3.2 - 02/11/2026 =
+= 1.3.2 - 12/11/2026 =
+* Fixed: Frontend conflict with Essential Blocks
+* Fixed: Animation preview in editor
 * Improved: Security enhancements
-* Fixed: Existing Typing Text blocks stopped working on the front end when Essential Blocks is active
-* Fixed: Entrance animations not previewing in the block editor
-* Fixed: Block icon hard to see when highlighted in the inserter and List View
-* Fixed: Chrome console warning about a deprecated DOM event
+* Few minor bug fixes & improvements
 
 = 1.3.1 - 27/10/2026 =
 * Improved: Security enhancements
