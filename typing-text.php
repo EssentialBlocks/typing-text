@@ -3,7 +3,7 @@
 /**
  * Plugin Name:     Typing Text
  * Description:     Make Your Website Interactive With Typing Text Animation
- * Version:         1.3.1
+ * Version:         1.3.2
  * Author:          WPDeveloper
  * Author URI:      https://wpdeveloper.net
  * License:         GPL-3.0-or-later
@@ -74,30 +74,13 @@ if ( file_exists( __DIR__ . '/lib/style-handler/style-handler.php' ) ) {
 function create_block_typing_text_block_init() {
 
     if ( ! defined( 'TYPING_TEXT_BLOCKS_VERSION' ) ) {
-        define( 'TYPING_TEXT_BLOCKS_VERSION', "1.3.1" );
+        define( 'TYPING_TEXT_BLOCKS_VERSION', "1.3.2" );
     }
     if ( ! defined( 'TYPING_TEXT_BLOCKS_ADMIN_URL' ) ) {
         define( 'TYPING_TEXT_BLOCKS_ADMIN_URL', plugin_dir_url( __FILE__ ) );
     }
     if ( ! defined( 'TYPING_TEXT_BLOCKS_ADMIN_PATH' ) ) {
         define( 'TYPING_TEXT_BLOCKS_ADMIN_PATH', dirname( __FILE__ ) );
-    }
-
-    /*
-     * Essential Blocks core already provides `essential-blocks/typing-text`.
-     * Stand down completely rather than registering a second implementation.
-     *
-     * The check has to happen *before* any asset registration, not just before
-     * register_block_type(). Registering the scripts and styles anyway is what
-     * put this plugin's copies of the animation, editor-CSS and controls assets
-     * into the same handle namespace as core's, where WordPress keeps only the
-     * first registrant and silently discards the rest.
-     *
-     * Calling this here also pins the decision for `Typing_Text_Helper::enqueues()`,
-     * which runs later on `admin_enqueue_scripts`.
-     */
-    if ( Typing_Text_Helper::is_standing_down() ) {
-        return;
     }
 
     $script_asset_path = TYPING_TEXT_BLOCKS_ADMIN_PATH . "/dist/index.asset.php";
@@ -185,18 +168,42 @@ function create_block_typing_text_block_init() {
 
     // Own block name, not core's: this guards against registering
     // `typing-text/typing-text-block` twice, which WordPress rejects with a
-    // _doing_it_wrong notice. The core-provides-it case is handled by the
-    // stand-down above.
+    // _doing_it_wrong notice.
     if ( ! WP_Block_Type_Registry::get_instance()->is_registered( 'typing-text/typing-text-block' ) ) {
+        $block_args = [
+            'style'  => 'typing-text-block-frontend-style',
+            'script' => 'eb-typing-text-frontend'
+        ];
+
+        // Essential Blocks has its own version of this block under another name. Posts saved
+        // with this one still need its front-end assets, so keep it registered, but leave out
+        // the editor bundle, which can't run beside Essential Blocks. Every handle above is
+        // namespaced to this plugin, so registering them can't clash with Essential Blocks.
+        if ( ! Typing_Text_Helper::is_standing_down() ) {
+            $block_args['editor_script'] = 'typing-text-block-editor-js';
+        }
+
         register_block_type(
             Typing_Text_Helper::get_block_register_path( 'typing-text/typing-text-block', TYPING_TEXT_BLOCKS_ADMIN_PATH ),
-            [
-                'editor_script' => 'typing-text-block-editor-js',
-                'style'         => 'typing-text-block-frontend-style',
-                'script'        => 'eb-typing-text-frontend'
-            ]
+            $block_args
         );
     }
 }
 
 add_action( 'init', 'create_block_typing_text_block_init', 99 );
+
+/**
+ * Block icons are filled #6C3BFF, which almost disappears on the highlighted row of
+ * the "/" inserter, a selected List View row and the drag chip. Recolour them there,
+ * as Essential Blocks does. The handle is shared, so the stylesheet prints once when
+ * several of these plugins are active.
+ */
+function typing_text_block_icon_selected_style() {
+    wp_enqueue_style(
+        'eb-block-icon-selected',
+        plugins_url( 'assets/css/block-icon-selected.css', __FILE__ ),
+        [],
+        TYPING_TEXT_BLOCKS_VERSION
+    );
+}
+add_action( 'enqueue_block_editor_assets', 'typing_text_block_icon_selected_style' );
